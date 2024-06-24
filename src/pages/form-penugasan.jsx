@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import TambahPenugasan from 'src/sections/user/view/tambah-penugasan-view';
+import TambahPenugasan from 'src/sections/penugasan/view/tambah-penugasan-view';
 
 // ----------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import { PenugasanView } from 'src/sections/user/view';
+import { PenugasanView } from 'src/sections/penugasan/view';
 
 // ----------------------------------------------------------------------
 

@@ -41,7 +41,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="All Data"
-            total={714000}
+            total={0}
             color="success"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
           />
@@ -50,7 +50,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Data Hari Ini"
-            total={1352831}
+            total={0}
             color="info"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
           />
@@ -59,7 +59,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Data Minggu Ini"
-            total={1723315}
+            total={0}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
           />
@@ -68,23 +68,23 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Data Bulan Ini"
-            total={200}
+            total={0}
             color="error"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
           />
         </Grid>
 
-        <Grid xs={12} md={6} lg={8}>
+        <Grid xs={12} md={6} lg={12}>
           <Card>
             <Box sx={{ p: 3, pb: 1 }}>
-              <Grid container>
-                <Grid item>
+              <Grid container spacing={5}>
+                <Grid item xs={8}>
                   <Typography variant="h6" sx={{ mb: 3 }}>
                     {' '}
                     Grafik Progress Pekerjaan
                   </Typography>
                 </Grid>
-                <Grid item>
+                <Grid item xs={4}>
                   <Box sx={{ minWidth: 120 }}>
                     <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label">All ST</InputLabel>
@@ -93,9 +93,9 @@ export default function AppView() {
                         id="demo-simple-select"
                         label="All ST"
                       >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        <MenuItem value={10}>--</MenuItem>
+                        {/* <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem> */}
                       </Select>
                     </FormControl>
                   </Box>

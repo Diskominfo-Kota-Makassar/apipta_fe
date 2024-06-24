@@ -17,6 +17,7 @@ export const FormPenugasanPage = lazy(() => import('src/pages/form-penugasan'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
+export const FormTambahUser = lazy(() => import('src/sections/master/form-tambah-user'));
 // ----------------------------------------------------------------------
 
 export default function App() {
@@ -56,6 +57,14 @@ export default function App() {
               }
             />
             <Route
+              path="penugasan/tambah-penugasan"
+              element={
+                <ProtectedRoute>
+                  <FormPenugasanPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="users"
               element={
                 <ProtectedRoute>
@@ -70,7 +79,7 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   {' '}
-                  <FormPenugasanPage />{' '}
+                  <FormTambahUser />
                 </ProtectedRoute>
               }
             />

@@ -27,10 +27,15 @@ import MenuList from '@mui/material/MenuList';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+
 import { postForm, getLayanan } from 'src/utils/api';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
+import { renderBooleanCell } from '@mui/x-data-grid';
 // ----------------------------------------------------------------------
 
 export default function FormTambahUser() {
@@ -45,7 +50,21 @@ export default function FormTambahUser() {
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  //   const handleClick = () => {
+  const [golongan, setGolongan] = React.useState('');
+  const [jabatan, setJabatan] = React.useState('');
+  const [entitas, setEntitas] = React.useState('');
+
+  const handleChangeGolongan = (event) => {
+    setGolongan(event.target.value);
+  };
+
+  const handleChangeJabatan = (event) => {
+    setJabatan(event.target.value);
+  };
+  // const handleClick = () => {
+  const handleChangeEntitas = (event) => {
+    setEntitas(event.target.value);
+  };
   //     console.info(`You clicked ${options[selectedIndex]}`);
   //   };
 
@@ -85,72 +104,76 @@ export default function FormTambahUser() {
     }
   };
 
-  const getJenisLayanan = async () => {
-    const jenisLayanan = await getLayanan();
-    setListLayanan(jenisLayanan);
-  };
-
   useEffect(() => {
     // getJenisLayanan();
   }, []);
 
-  const renderDropDownButton = (
-    <>
-      <ButtonGroup variant="contained" ref={anchorRef} aria-label="Button group with a nested menu">
-        {/* <Button onClick={handleClick}>{options[selectedIndex]}</Button> */}
-        {/* <Button></Button> */}
-        <Button
-          size="small"
-          aria-controls={open ? 'split-button-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
-          aria-label="select merge strategy"
-          aria-haspopup="menu"
-          onClick={handleToggle}
-        >
-          <Icon icon="mdi-light:chevron-down" width={30} />
-        </Button>
-      </ButtonGroup>
-      <Popper
-        sx={{
-          zIndex: 1,
-        }}
-        open={open}
-        anchorEl={anchorRef.current}
-        role={undefined}
-        transition
-        disablePortal
-      >
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-            }}
-          >
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList id="split-button-menu" autoFocusItem>
-                  {listLayanan.map((option, index) => (
-                    <MenuItem
-                      key={option.id}
-                      selected={index === selectedIndex}
-                      onClick={(event) => handleMenuItemClick(event, index)}
-                    >
-                      {option.nama}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-    </>
+  const renderBukuTamu = (
+    <CardContent>
+      <form onSubmit={handleSubmitForm}>
+        <Stack spacing={2}>
+          <TextField name="nama" label="Nama" />
+          <TextField name="username" label="Username" />
+          <TextField name="password" label="Password" />
+          <FormControl fullWidth>
+            <InputLabel id="entitas">Entitas</InputLabel>
+            <Select
+              labelId="entitas"
+              value={entitas}
+              label="Entitas"
+              onChange={handleChangeEntitas}
+            >
+              <MenuItem value="Entitas A">Entitas A</MenuItem>
+              <MenuItem value="Entitas B">Entitas B</MenuItem>
+              <MenuItem value="Entitas C">Entitas C</MenuItem>
+            </Select>
+          </FormControl>
+          <DatePicker label="Masa Berlaku" name="masa-berlaku" />
+          <TextField name="email" label="Email" />
+          <TextField name="email" label="NIP" />
+          <FormControl fullWidth>
+            <InputLabel id="golongan">Golongan</InputLabel>
+            <Select
+              labelId="golongan"
+              value={golongan}
+              label="Golongan"
+              onChange={handleChangeGolongan}
+            >
+              <MenuItem value="A">Golongan A</MenuItem>
+              <MenuItem value="B">Golongan B</MenuItem>
+              <MenuItem value="C">Golongan C</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="jabatan">Jabatan</InputLabel>
+            <Select
+              labelId="jabatan"
+              value={jabatan}
+              label="Jabatan"
+              onChange={handleChangeJabatan}
+            >
+              <MenuItem value="Ketua TIM">Ketua TIM</MenuItem>
+              <MenuItem value="Dalnis">Dalnis</MenuItem>
+              <MenuItem value="WPJ">WPJ</MenuItem>
+              <MenuItem value="BPKP">BPKP</MenuItem>
+              <MenuItem value="KT">KT</MenuItem>
+              <MenuItem value="Obrik">Obrik</MenuItem>
+            </Select>
+          </FormControl>
+          <Grid container justifyContent="flex-end">
+            <Button variant="contained" type="submit">
+              SIMPAN
+            </Button>
+          </Grid>
+        </Stack>
+      </form>
+    </CardContent>
   );
+
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Form Permohonan</Typography>
+        <Typography variant="h4">Tambah User</Typography>
 
         <Button
           variant="contained"
@@ -162,15 +185,15 @@ export default function FormTambahUser() {
         </Button>
       </Stack>
 
-      <CardContent>{renderDropDownButton}</CardContent>
-
       <ToastContainer position="top-center" />
 
       <Stack>
         <Card>
           <Grid container>
             <Grid item sm={12} md={12}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>{}</LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {renderBukuTamu}
+              </LocalizationProvider>
             </Grid>
           </Grid>
         </Card>

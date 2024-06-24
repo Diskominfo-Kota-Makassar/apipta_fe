@@ -148,10 +148,14 @@ export default function UsersView() {
                 // onRequestSort={handleSort}
                 // onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'jenis_layanan', label: 'Jenis Layanan' },
-                  { id: 'nama', label: 'Nama/Instansi' },
-                  { id: 'tanggal', label: 'Tanggal' },
-                  { id: 'keterangan', label: 'Keterangan', align: 'center' },
+                  { id: 'jenis_layanan', label: 'No' },
+                  { id: 'nama', label: 'Nama' },
+                  { id: 'nama', label: 'Username' },
+                  { id: 'nama', label: 'Entitas' },
+                  { id: 'nama', label: 'Masa berlaku' },
+                  { id: 'nama', label: 'Email' },
+                  { id: 'nama', label: 'NIP' },
+                  { id: 'keterangan', label: 'Catatan', align: 'center' },
                   { id: '', label: 'Aksi' },
                 ]}
               />

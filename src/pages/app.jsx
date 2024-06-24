@@ -8,7 +8,7 @@ export default function AppPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard | Kelurahan Manggala </title>
+        <title> Dashboard | APIP TA </title>
       </Helmet>
 
       <AppView />

@@ -12,8 +12,8 @@ import UsersView from './sections/master/users_view';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
-export const PermohonanPage = lazy(() => import('src/pages/permohonan'));
-export const FormPermohonanPage = lazy(() => import('src/pages/form-permohonan'));
+export const PenugasanPage = lazy(() => import('src/pages/penugasan'));
+export const FormPenugasanPage = lazy(() => import('src/pages/form-penugasan'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
@@ -51,7 +51,7 @@ export default function App() {
               path="penugasan"
               element={
                 <ProtectedRoute>
-                  <PermohonanPage />
+                  <PenugasanPage />
                 </ProtectedRoute>
               }
             />
@@ -70,7 +70,7 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   {' '}
-                  <FormPermohonanPage />{' '}
+                  <FormPenugasanPage />{' '}
                 </ProtectedRoute>
               }
             />

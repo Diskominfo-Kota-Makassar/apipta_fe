@@ -5,8 +5,8 @@ import DashboardLayout from 'src/layouts/dashboard';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
-export const PermohonanPage = lazy(() => import('src/pages/permohonan'));
-export const FormPermohonanPage = lazy(() => import('src/pages/form-permohonan'));
+export const PenugasanPage = lazy(() => import('src/pages/penugasan'));
+export const FormPenugasanPage = lazy(() => import('src/pages/form-penugasan'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
@@ -25,8 +25,8 @@ export default function Router() {
       ),
       children: [
         { element: <IndexPage />, index: true },
-        { path: 'permohonan', element: <PermohonanPage /> },
-        { path: 'permohonan/tambah-permohonan', element: <FormPermohonanPage /> },
+        { path: 'penugasan', element: <PenugasanPage /> },
+        { path: 'penugasan/tambah-penugasan', element: <FormPenugasanPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],

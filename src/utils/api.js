@@ -3,6 +3,27 @@ import axios from 'axios';
 // const baseURL = 'http://localhost:3200/api';
 const baseURL = 'https://apipta.makassarkota.go.id/api';
 
+export const postLogin = async ({ surat_tugas = '', username = '', password = '', role_id }) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/login`,
+      {
+        username,
+        password,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getRolesFromAPI = async () => {
   try {
     const response = await axios.get(`${baseURL}/roles`, {

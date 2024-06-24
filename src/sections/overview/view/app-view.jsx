@@ -21,15 +21,7 @@ import AppWebsiteVisits from '../app-website-visits';
 export default function AppView() {
   const [countPermohonan, setCountPermohonan] = useState();
 
-  const getAllPermohonanFromApi = async () => {
-    const allLayanan = await getAllPermohonan();
-    console.log(allLayanan);
-    setCountPermohonan(allLayanan.data.length);
-  };
-
-  useEffect(() => {
-    getAllPermohonanFromApi();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <Container maxWidth="xl">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -11,10 +11,14 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { bgGradient } from 'src/theme/css';
 import { useAuth } from 'src/routes/hooks/useAuth';
 
+import { MenuItem, Select, InputLabel, FormControl, CircularProgress } from '@mui/material';
+
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { getRolesFromAPI, postLogin } from 'src/utils/api';
 
 // ----------------------------------------------------------------------
 
@@ -22,29 +26,76 @@ export default function LoginView() {
   const notify = (comment) => toast(comment);
   const theme = useTheme();
 
+  const [loading, setLoading] = useState(false);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
 
+  const [jabatanList, setJabatanList] = useState([{}]);
+  const [jabatan, setJabatan] = useState('');
+
   const handleClick = () => {};
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (event) => {
+    event.preventDefault();
     // Here you would usually send a request to your backend to authenticate the user
     // For the sake of this example, we're using a mock authentication
-    if (username === 'admin' && password === 'adminapipta24') {
-      // Replace with actual authentication logic
-      await login({ username });
+
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+
+    const res = await postLogin({
+      role_id: jabatan,
+      surat_tugas: form.get('surat_tugas'),
+      username: form.get('username'),
+      password: form.get('password'),
+    });
+
+    console.log(res);
+
+    if (res.status === 200) {
+      setLoading(false);
+      notify('Berhasil Login');
+      await login(res.data);
     } else {
+      setLoading(false);
       notify('Username atau password yang kamu masukkan salah');
     }
+  };
+
+  const handleChangeJabatan = (event) => {
+    setJabatan(event.target.value);
   };
 
   const renderForm = (
     <>
       <form onSubmit={handleLogin}>
         <Stack spacing={3}>
+          <FormControl fullWidth>
+            <InputLabel>Pilih Role User</InputLabel>
+            <Select
+              labelId="jabatan"
+              value={jabatan}
+              label="Jabatan"
+              onChange={handleChangeJabatan}
+            >
+              {jabatanList.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {' '}
+                  {option.name}{' '}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel>Pilih Surat Tugas</InputLabel>
+            <Select name="surat_tugas" label="Surat Tugas">
+              <MenuItem value="Surat Tugas 1">Surat Tugas 1</MenuItem>
+              <MenuItem value="Surat Tugas 2">Surat Tugas 2</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             name="username"
             label="Username"
@@ -88,6 +139,15 @@ export default function LoginView() {
     </>
   );
 
+  const handleRolesFromAPI = async () => {
+    const roles = await getRolesFromAPI();
+    setJabatanList(roles.data);
+  };
+
+  useEffect(() => {
+    handleRolesFromAPI();
+  }, []);
+
   return (
     <Box
       sx={{
@@ -115,7 +175,7 @@ export default function LoginView() {
           }}
         >
           {/* <Typography>Login</Typography> */}
-          <Typography sx={{ mb: 3 }} variant="h4">
+          <Typography sx={{ mb: 5 }} variant="h4">
             APLIKASI APIP TA
           </Typography>
 
@@ -167,6 +227,18 @@ export default function LoginView() {
           {renderForm}
         </Card>
       </Stack>
+      {loading && (
+        <CircularProgress
+          size={48}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: '-12px',
+            marginLeft: '-12px',
+          }}
+        />
+      )}
       <ToastContainer position="top-center" />
     </Box>
   );

@@ -27,7 +27,7 @@ import MenuList from '@mui/material/MenuList';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { postForm, getLayanan } from 'src/utils/api';
+import { postForm } from 'src/utils/api';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
@@ -140,14 +140,7 @@ export default function TambahPenugasan() {
     }
   };
 
-  const getJenisLayanan = async () => {
-    const jenisLayanan = await getLayanan();
-    setListLayanan(jenisLayanan);
-  };
-
-  useEffect(() => {
-    // getJenisLayanan();
-  }, []);
+  useEffect(() => {}, []);
 
   const renderBukuTamu = (
     <CardContent>

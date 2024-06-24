@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { TextField, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
+import { TextField, CircularProgress } from '@mui/material';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -28,14 +28,18 @@ import MenuList from '@mui/material/MenuList';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import Select from '@mui/material/Select';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 
-import { postForm, getLayanan } from 'src/utils/api';
+import { getRolesFromAPI, postSubmitUser } from 'src/utils/api';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 import { renderBooleanCell } from '@mui/x-data-grid';
+
 // ----------------------------------------------------------------------
 
 export default function FormTambahUser() {
@@ -51,8 +55,17 @@ export default function FormTambahUser() {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const [golongan, setGolongan] = React.useState('');
+  const [jabatanList, setJabatanList] = React.useState([{}]);
   const [jabatan, setJabatan] = React.useState('');
   const [entitas, setEntitas] = React.useState('');
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleChangeGolongan = (event) => {
     setGolongan(event.target.value);
@@ -61,42 +74,38 @@ export default function FormTambahUser() {
   const handleChangeJabatan = (event) => {
     setJabatan(event.target.value);
   };
-  // const handleClick = () => {
   const handleChangeEntitas = (event) => {
     setEntitas(event.target.value);
   };
-  //     console.info(`You clicked ${options[selectedIndex]}`);
-  //   };
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setOpen(false);
-    const namaLayananApi = listLayanan[index].nama;
-    setNamaLayanan(namaLayananApi);
+  const handleRolesFromAPI = async () => {
+    const roles = await getRolesFromAPI();
+    setJabatanList(roles.data);
   };
 
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const handleSubmitForm = async (event) => {
+  const handleSubmitUser = async (event) => {
     event.preventDefault();
     setLoading(true);
     const form = new FormData(event.currentTarget);
-    const jenis_layanan = namaLayanan;
 
-    const res = 200;
+    const res = await postSubmitUser({
+      nama: form.get('nama'),
+      username: form.get('username'),
+      password: form.get('password'),
+      role_id: jabatan,
+      entitas,
+      masa_berlaku: form.get('masa_berlaku'),
+      email: form.get('email'),
+      nip: form.get('nip'),
+      golongan,
+      jabatan,
+    });
 
-    if (res.status === 200) {
+    console.log(res);
+
+    if (res.status === 201) {
       setLoading(false);
+      window.location.reload();
       notify('Berhasil Menambahkan');
     } else {
       setLoading(false);
@@ -105,12 +114,12 @@ export default function FormTambahUser() {
   };
 
   useEffect(() => {
-    // getJenisLayanan();
+    handleRolesFromAPI();
   }, []);
 
   const renderBukuTamu = (
     <CardContent>
-      <form onSubmit={handleSubmitForm}>
+      <form onSubmit={handleSubmitUser}>
         <Stack spacing={2}>
           <TextField name="nama" label="Nama" />
           <TextField name="username" label="Username" />
@@ -128,9 +137,9 @@ export default function FormTambahUser() {
               <MenuItem value="Entitas C">Entitas C</MenuItem>
             </Select>
           </FormControl>
-          <DatePicker label="Masa Berlaku" name="masa-berlaku" />
+          <DatePicker label="Masa Berlaku" name="masa_berlaku" />
           <TextField name="email" label="Email" />
-          <TextField name="email" label="NIP" />
+          <TextField name="nip" label="NIP" />
           <FormControl fullWidth>
             <InputLabel id="golongan">Golongan</InputLabel>
             <Select
@@ -139,9 +148,9 @@ export default function FormTambahUser() {
               label="Golongan"
               onChange={handleChangeGolongan}
             >
-              <MenuItem value="A">Golongan A</MenuItem>
-              <MenuItem value="B">Golongan B</MenuItem>
-              <MenuItem value="C">Golongan C</MenuItem>
+              <MenuItem value="Golongan A">Golongan A</MenuItem>
+              <MenuItem value="Golongan B">Golongan B</MenuItem>
+              <MenuItem value="Golongan C">Golongan C</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth>
@@ -152,12 +161,12 @@ export default function FormTambahUser() {
               label="Jabatan"
               onChange={handleChangeJabatan}
             >
-              <MenuItem value="Ketua TIM">Ketua TIM</MenuItem>
-              <MenuItem value="Dalnis">Dalnis</MenuItem>
-              <MenuItem value="WPJ">WPJ</MenuItem>
-              <MenuItem value="BPKP">BPKP</MenuItem>
-              <MenuItem value="KT">KT</MenuItem>
-              <MenuItem value="Obrik">Obrik</MenuItem>
+              {jabatanList.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {' '}
+                  {option.name}{' '}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <Grid container justifyContent="flex-end">

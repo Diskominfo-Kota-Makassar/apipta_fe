@@ -20,20 +20,6 @@ import {
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import BukuTamuDetail from './view/detailpermohonan/bukutamu';
-import KeteranganTidakMampuDetail from './view/detailpermohonan/keteranganTidakMampu';
-import KeteranganBelumMenikahDetail from './view/detailpermohonan/keteranganBelumMenikah';
-import KeteranganKelahiran from './view/detailpermohonan/keteranganKelahiran';
-import KeteranganKewarisanDetail from './view/detailpermohonan/keteranganKewarisan';
-import SuratMasuk from './view/detailpermohonan/suratMasuk';
-import SuratKeluar from './view/detailpermohonan/suratKeluar';
-import SerbaSerbi from './view/detailpermohonan/serbaSerbi';
-import RegisterMenikah from './view/detailpermohonan/registerMenikah';
-import KeteranganKematianDetail from './view/detailpermohonan/keteranganKematian';
-import KeteranganPengesahanDetail from './view/detailpermohonan/keteranganPengesahan';
-import KeteranganUsahaDetail from './view/detailpermohonan/keteranganUsaha';
-import KeteranganDomisiliDetail from './view/detailpermohonan/keteranganDomisili';
-
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
@@ -87,7 +73,7 @@ export default function UserTableRow({
         </TableCell>
       </TableRow>
 
-      <Dialog fullScreen={fullScreen} open={open} onClose={handleCloseMenu}>
+      {/* <Dialog fullScreen={fullScreen} open={open} onClose={handleCloseMenu}>
         <DialogTitle>Detail Permohonan</DialogTitle>
         {allData.jenis_layanan === 'Buku Tamu' && <BukuTamuDetail rows={allData} />}
         {allData.jenis_layanan === 'Surat Keterangan Tidak Mampu' && (
@@ -119,7 +105,7 @@ export default function UserTableRow({
         <DialogActions>
           <Button onClick={handleCloseMenu}>Cancel</Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 }

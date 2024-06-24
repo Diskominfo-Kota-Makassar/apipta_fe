@@ -1,13 +1,70 @@
 import axios from 'axios';
 
 // const baseURL = 'http://localhost:3200/api';
-const baseURL = 'https://dash.manggala.kel.makassarkota.go.id/api';
+const baseURL = 'https://apipta.makassarkota.go.id/api';
 
-export const getLayanan = async () => {
+export const getRolesFromAPI = async () => {
   try {
-    const response = await axios.get(`${baseURL}/jenis_layanan`);
+    const response = await axios.get(`${baseURL}/roles`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     const result = await response.data;
-    console.log(result);
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const postSubmitUser = async ({
+  nama = '',
+  username = '',
+  password = '',
+  role_id,
+  entitas = '',
+  masa_berlaku,
+  email = '',
+  nip = '',
+  golongan = '',
+  jabatan = '',
+}) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/register`,
+      {
+        nama,
+        username,
+        password,
+        role_id,
+        entitas,
+        masa_berlaku,
+        email,
+        nip,
+        golongan,
+        jabatan,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getUsersFromAPI = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/user/all`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.data;
     return result;
   } catch (error) {
     return error;

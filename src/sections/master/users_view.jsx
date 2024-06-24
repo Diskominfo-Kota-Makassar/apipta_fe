@@ -11,12 +11,10 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
-
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
-import { getAllPermohonan } from 'src/utils/api';
+import { getUsersFromAPI } from 'src/utils/api';
 import { format } from 'date-fns';
 import TableNoData from '../user/table-no-data';
 import UserTableRow from '../user/user-table-row';
@@ -29,27 +27,29 @@ import { emptyRows, applyFilter, getComparator } from '../user/utils';
 // ----------------------------------------------------------------------
 
 export default function UsersView() {
-  // const [page, setPage] = useState(0);
+  const [usersList, setUsersList] = useState([]);
 
-  // const [order, setOrder] = useState('asc');
+  const [page, setPage] = useState(0);
 
-  // const [selected, setSelected] = useState([]);
+  const [order, setOrder] = useState('asc');
 
-  // const [orderBy, setOrderBy] = useState('nama');
+  const [selected, setSelected] = useState([]);
 
-  // const [filterName, setFilterName] = useState('');
+  const [orderBy, setOrderBy] = useState('nama');
 
-  // const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [filterName, setFilterName] = useState('');
+
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // const [allPermohonan, setAllPermohonan] = useState([]);
 
-  // const handleSort = (event, id) => {
-  //   const isAsc = orderBy === id && order === 'asc';
-  //   if (id !== '') {
-  //     setOrder(isAsc ? 'desc' : 'asc');
-  //     setOrderBy(id);
-  //   }
-  // };
+  const handleSort = (event, id) => {
+    const isAsc = orderBy === id && order === 'asc';
+    if (id !== '') {
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(id);
+    }
+  };
 
   // const handleSelectAllClick = (event) => {
   //   if (event.target.checked) {
@@ -78,14 +78,14 @@ export default function UsersView() {
   //   setSelected(newSelected);
   // };
 
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-  // const handleChangeRowsPerPage = (event) => {
-  //   setPage(0);
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  // };
+  const handleChangeRowsPerPage = (event) => {
+    setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
+  };
 
   // const handleFilterByName = (event) => {
   //   setPage(0);
@@ -107,9 +107,15 @@ export default function UsersView() {
   //   setAllPermohonan(allLayanan.data);
   // };
 
-  // useEffect(() => {
-  //   // getAllPermohonanFromApi();
-  // }, []);
+  const handleRolesFromAPI = async () => {
+    const users = await getUsersFromAPI();
+    console.log(users.data);
+    setUsersList(users.data);
+  };
+
+  useEffect(() => {
+    handleRolesFromAPI();
+  }, []);
 
   return (
     <Container>
@@ -141,14 +147,14 @@ export default function UsersView() {
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
               <UserTableHead
-                // order={order}
+                order={order}
                 // orderBy={orderBy}
                 // rowCount={allPermohonan.length}
                 // numSelected={selected.length}
                 // onRequestSort={handleSort}
                 // onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'jenis_layanan', label: 'No' },
+                  { id: 'no', label: 'No' },
                   { id: 'nama', label: 'Nama' },
                   { id: 'nama', label: 'Username' },
                   { id: 'nama', label: 'Entitas' },
@@ -160,22 +166,22 @@ export default function UsersView() {
                 ]}
               />
               <TableBody>
-                {/* {dataFiltered
+                {usersList
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <UserTableRow
                       index={index + 1}
                       key={row.id}
-                      jenis_layanan={row.jenis_layanan}
                       nama={row.nama}
-                      nama_instansi={row.namaInstansiPengirim}
-                      tanggal={
-                        row.tanggal !== '' ? format(new Date(row.tanggal), 'dd/MM/yyyy') : ''
-                      }
-                      keterangan={row.keterangan}
+                      username={row.username}
+                      entitas={row.entitas}
+                      masa_berlaku={row.masa_berlaku}
+                      email={row.email}
+                      nip={row.nip}
+                      catatan="-"
                       allData={row}
                     />
-                  ))} */}
+                  ))}
 
                 <TableEmptyRows
                   height={77}
@@ -188,15 +194,15 @@ export default function UsersView() {
           </TableContainer>
         </Scrollbar>
 
-        {/* <TablePagination
+        <TablePagination
           page={page}
           component="div"
-          count={allPermohonan.length}
+          count={usersList.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
+        />
       </Card>
     </Container>
   );

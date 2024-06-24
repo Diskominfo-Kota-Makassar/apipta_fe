@@ -1,1 +1,1 @@
-export { default as PermohonanView } from './permohonan-view';
+export { default as PenugasanView } from './penugasan-view';

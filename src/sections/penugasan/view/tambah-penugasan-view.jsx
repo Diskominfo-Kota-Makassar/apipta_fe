@@ -4,7 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { toast, ToastContainer } from 'react-toastify';
-import { getUsersFromAPI } from 'src/utils/api';
+import { getUsersFromAPI, postSubmitPenugasan } from 'src/utils/api';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -19,6 +19,10 @@ import Iconify from 'src/components/iconify';
 import * as React from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import 'react-toastify/dist/ReactToastify.css';
+import ListItemText from '@mui/material/ListItemText';
+import Checkbox from '@mui/material/Checkbox';
+import OutlinedInput from '@mui/material/OutlinedInput';
+
 // ----------------------------------------------------------------------
 
 export default function TambahPenugasan() {
@@ -65,8 +69,13 @@ export default function TambahPenugasan() {
     setKt(event.target.value);
   };
   const handleChangeAt = (event) => {
-    setAt([...at, event.target.value]);
-    console.log(at);
+    const {
+      target: { value },
+    } = event;
+    setAt(
+      // On autofill we get a stringified value.
+      typeof value === 'number' ? value.split(',') : value
+    );
   };
 
   const handleClose = (event) => {
@@ -77,8 +86,47 @@ export default function TambahPenugasan() {
     setOpen(false);
   };
 
-  const handlePostPenugasan = (event) => {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
+  const handlePostPenugasan = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+
+    const res = await postSubmitPenugasan({
+      no: form.get('no'),
+      tgl: form.get('tgl'),
+      uraian: form.get('uraian'),
+      tgl_mulai: form.get('tgl_mulai'),
+      tgl_berakhir: form.get('tgl_berakhir'),
+      pj_id: pj,
+      wpj_id: wpj,
+      dalnis_id: dalnis,
+      kt_id: kt,
+      tim_id: at,
+      bpkp,
+    });
+
+    console.log(res);
+
+    if (res.status === 201) {
+      setLoading(false);
+      window.location.reload();
+      notify('Berhasil Menambahkan Penugasan');
+    } else {
+      setLoading(false);
+      notify('Gagal Menambahkan Penugasan');
+    }
   };
 
   const handleUsersFromAPI = useCallback(async () => {
@@ -132,11 +180,11 @@ export default function TambahPenugasan() {
                 <CardContent>
                   <form onSubmit={handlePostPenugasan}>
                     <Stack spacing={2}>
-                      <TextField name="nama" label="NO.ST" />
-                      <DatePicker label="Tgl.ST" name="tanggal" />
-                      <TextField name="alamat" label="Uraian ST" />
-                      <DatePicker label="Tanggal Mulai" name="tanggal" />
-                      <DatePicker label="Tanggal Berakhir" name="tanggal" />
+                      <TextField name="no" label="NO.ST" />
+                      <DatePicker label="Tgl.ST" name="tgl" />
+                      <TextField name="uraian" label="Uraian ST" />
+                      <DatePicker label="Tanggal Mulai" name="tgl_mulai" />
+                      <DatePicker label="Tanggal Berakhir" name="tgl_berakhir" />
                       <FormControl fullWidth>
                         <InputLabel>Pilih PJ</InputLabel>
                         <Select value={pj} label="Pilih PJ" onChange={handleChangePj}>
@@ -181,14 +229,22 @@ export default function TambahPenugasan() {
                           ))}
                         </Select>
                       </FormControl>
-
                       <FormControl fullWidth>
-                        <InputLabel>Pilih AT</InputLabel>
-                        <Select value={at} label="Pilih AT" onChange={handleChangeAt}>
-                          {atList.map((option) => (
-                            <MenuItem key={option.id} value={option.id}>
-                              {' '}
-                              {option.nama}{' '}
+                        <InputLabel id="Pilih Anggota Tim">Pilih Anggota Tim</InputLabel>
+                        <Select
+                          labelId="Pilih Anggota Tim"
+                          id="Pilih Anggota Tim"
+                          multiple
+                          value={at}
+                          onChange={handleChangeAt}
+                          input={<OutlinedInput label="Pilih Anggota Tim" />}
+                          renderValue={(selected) => selected.join(', ')}
+                          MenuProps={MenuProps}
+                        >
+                          {atList.map((user) => (
+                            <MenuItem key={user.id} value={user.id}>
+                              <Checkbox checked={at.indexOf(user.id) > -1} />
+                              <ListItemText primary={user.nama} />
                             </MenuItem>
                           ))}
                         </Select>

@@ -16,7 +16,7 @@ import { users } from 'src/_mock/user';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
-import { getAllPermohonan } from 'src/utils/api';
+import { getPenugasanFromAPI } from 'src/utils/api';
 import { format } from 'date-fns';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -40,7 +40,7 @@ export default function PermohonanPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [allPermohonan, setAllPermohonan] = useState([]);
+  const [allPenugasan, setAllPenugasan] = useState([]);
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -92,7 +92,7 @@ export default function PermohonanPage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: allPermohonan,
+    inputData: allPenugasan,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -101,13 +101,14 @@ export default function PermohonanPage() {
 
   const router = useRouter();
 
-  const getAllPermohonanFromApi = async () => {
-    const allLayanan = await getAllPermohonan();
-    setAllPermohonan(allLayanan.data);
+  const handlePenugasanFromAPI = async () => {
+    const penugasan = await getPenugasanFromAPI();
+    setAllPenugasan(penugasan.data);
+    console.log(penugasan.data);
   };
 
   useEffect(() => {
-    // getAllPermohonanFromApi();
+    handlePenugasanFromAPI();
   }, []);
 
   return (
@@ -138,18 +139,18 @@ export default function PermohonanPage() {
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={allPermohonan.length}
+                rowCount={allPenugasan.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'jenis_layanan', label: 'NO' },
-                  { id: 'jenis_layanan', label: 'NO.ST' },
-                  { id: 'jenis_layanan', label: 'TGL.ST' },
-                  { id: 'jenis_layanan', label: 'URAIAN.ST' },
-                  { id: 'nama', label: 'PJ' },
-                  { id: 'tanggal', label: 'TANGGAL MULAI' },
-                  { id: 'tanggal', label: 'TANGGAL BERAKHIR' },
+                  { id: '', label: 'NO' },
+                  { id: 'no', label: 'NO.ST' },
+                  { id: 'tgl', label: 'TGL.ST' },
+                  { id: 'uraian', label: 'URAIAN.ST' },
+                  { id: 'pj_id', label: 'PJ' },
+                  { id: 'tgl_mulai', label: 'TANGGAL MULAI' },
+                  { id: 'tgl_berakhir', label: 'TANGGAL BERAKHIR' },
                   { id: 'keterangan', label: 'STATUS', align: 'center' },
                   { id: '', label: 'AKSI' },
                 ]}
@@ -161,12 +162,12 @@ export default function PermohonanPage() {
                     <UserTableRow
                       index={index + 1}
                       key={row.id}
-                      jenis_layanan={row.jenis_layanan}
-                      nama={row.nama}
-                      nama_instansi={row.namaInstansiPengirim}
-                      tanggal={
-                        row.tanggal !== '' ? format(new Date(row.tanggal), 'dd/MM/yyyy') : ''
-                      }
+                      no={row.no}
+                      tgl={row.tgl}
+                      uraian={row.uraian}
+                      pj_id={row.pj_id}
+                      tgl_mulai={row.tgl_mulai}
+                      tgl_berakhir={row.tgl_berakhir}
                       keterangan={row.keterangan}
                       allData={row}
                     />
@@ -186,7 +187,7 @@ export default function PermohonanPage() {
         <TablePagination
           page={page}
           component="div"
-          count={allPermohonan.length}
+          count={allPenugasan.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}

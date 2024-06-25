@@ -93,8 +93,12 @@ export default function LoginView() {
           <FormControl fullWidth>
             <InputLabel>Pilih Surat Tugas</InputLabel>
             <Select name="surat_tugas" label="Surat Tugas">
-              <MenuItem value="Surat Tugas 1">Surat Tugas 1</MenuItem>
-              <MenuItem value="Surat Tugas 2">Surat Tugas 2</MenuItem>
+              <MenuItem key="Surat Tugas 1" value="Surat Tugas 1">
+                Surat Tugas 1
+              </MenuItem>
+              <MenuItem key="Surat Tugas 2" value="Surat Tugas 2">
+                Surat Tugas 2
+              </MenuItem>
             </Select>
           </FormControl>
           <TextField

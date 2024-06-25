@@ -101,8 +101,6 @@ export default function FormTambahUser() {
       jabatan,
     });
 
-    console.log(res);
-
     if (res.status === 201) {
       setLoading(false);
       window.location.reload();

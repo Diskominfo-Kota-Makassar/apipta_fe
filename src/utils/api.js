@@ -78,6 +78,48 @@ export const postSubmitUser = async ({
   }
 };
 
+export const postSubmitPenugasan = async ({
+  no = '',
+  tgl = '',
+  uraian = '',
+  tgl_mulai = '',
+  tgl_berakhir = '',
+  pj_id = '',
+  wpj_id = '',
+  dalnis_id = '',
+  tim_id = [],
+  kt_id = '',
+  bpkp = '',
+}) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/penugasan`,
+      {
+        no,
+        tgl,
+        uraian,
+        tgl_mulai,
+        tgl_berakhir,
+        pj_id,
+        wpj_id,
+        dalnis_id,
+        tim_id,
+        kt_id,
+        bpkp,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getUsersFromAPI = async () => {
   try {
     const response = await axios.get(`${baseURL}/user/all`, {
@@ -92,6 +134,19 @@ export const getUsersFromAPI = async () => {
   }
 };
 
+export const getPenugasanFromAPI = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/penugasan`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.data;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
 export const postForm = async ({
   jenis_layanan = '',
   tanggal = '',

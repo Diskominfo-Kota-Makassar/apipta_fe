@@ -24,11 +24,12 @@ import Iconify from 'src/components/iconify';
 
 export default function UserTableRow({
   index,
-  jenis_layanan,
-  nama,
-  nama_instansi,
-  tanggal,
-  keterangan,
+  no,
+  tgl,
+  uraian,
+  pj_id,
+  tgl_mulai,
+  tgl_berakhir,
   allData,
 }) {
   const theme = useTheme();
@@ -52,70 +53,33 @@ export default function UserTableRow({
       <TableRow hover tabIndex={-1}>
         <TableCell />
 
-        <TableCell component="th" scope="row" padding="none">
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Typography variant="subtitle2" noWrap>
-              {jenis_layanan}
-            </Typography>
-          </Stack>
-        </TableCell>
+        <TableCell>{index}</TableCell>
+        <TableCell>{no}</TableCell>
 
-        <TableCell>{nama ?? nama_instansi}</TableCell>
+        <TableCell>{tgl}</TableCell>
 
-        <TableCell>{tanggal}</TableCell>
-
-        <TableCell>{keterangan}</TableCell>
-
+        <TableCell>{uraian}</TableCell>
+        <TableCell>{pj_id}</TableCell>
+        <TableCell>{tgl_mulai}</TableCell>
+        <TableCell>{tgl_berakhir}</TableCell>
+        <TableCell />
         <TableCell align="right">
           <IconButton onClick={handleOpen}>
             <Iconify icon="bx:show-alt" />
           </IconButton>
         </TableCell>
       </TableRow>
-
-      {/* <Dialog fullScreen={fullScreen} open={open} onClose={handleCloseMenu}>
-        <DialogTitle>Detail Permohonan</DialogTitle>
-        {allData.jenis_layanan === 'Buku Tamu' && <BukuTamuDetail rows={allData} />}
-        {allData.jenis_layanan === 'Surat Keterangan Tidak Mampu' && (
-          <KeteranganTidakMampuDetail rows={allData} />
-        )}
-        {allData.jenis_layanan === 'Surat Keterangan Belum Menikah' && (
-          <KeteranganBelumMenikahDetail rows={allData} />
-        )}
-        {allData.jenis_layanan === 'Surat Keterangan Kelahiran' && (
-          <KeteranganKelahiran rows={allData} />
-        )}
-        {allData.jenis_layanan === 'Surat Keterangan Domisili' && (
-          <KeteranganDomisiliDetail rows={allData} />
-        )}
-        {allData.jenis_layanan === 'Surat Keterangan Kewarisan' && (
-          <KeteranganKewarisanDetail rows={allData} />
-        )}
-        {allData.jenis_layanan === 'Surat Masuk' && <SuratMasuk rows={allData} />}
-        {allData.jenis_layanan === 'Surat Keluar' && <SuratKeluar rows={allData} />}
-        {allData.jenis_layanan === 'Serba-serbi' && <SerbaSerbi rows={allData} />}
-        {allData.jenis_layanan === 'Register Menikah' && <RegisterMenikah rows={allData} />}
-        {allData.jenis_layanan === 'Keterangan Kematian' && (
-          <KeteranganKematianDetail rows={allData} />
-        )}
-        {allData.jenis_layanan === 'Keterangan Pengesahan' && (
-          <KeteranganPengesahanDetail rows={allData} />
-        )}
-        {allData.jenis_layanan === 'Keterangan Usaha' && <KeteranganUsahaDetail rows={allData} />}
-        <DialogActions>
-          <Button onClick={handleCloseMenu}>Cancel</Button>
-        </DialogActions>
-      </Dialog> */}
     </>
   );
 }
 
 UserTableRow.propTypes = {
   index: PropTypes.any,
-  jenis_layanan: PropTypes.any,
-  tanggal: PropTypes.any,
-  nama: PropTypes.any,
-  nama_instansi: PropTypes.any,
-  keterangan: PropTypes.any,
+  no: PropTypes.any,
+  tgl: PropTypes.any,
+  uraian: PropTypes.any,
+  pj_id: PropTypes.any,
+  tgl_mulai: PropTypes.any,
+  tgl_berakhir: PropTypes.any,
   allData: PropTypes.any,
 };

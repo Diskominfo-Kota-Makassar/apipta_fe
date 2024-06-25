@@ -25,11 +25,7 @@ import { getRolesFromAPI, postLogin } from 'src/utils/api';
 export default function LoginView() {
   const notify = (comment) => toast(comment);
   const theme = useTheme();
-
   const [loading, setLoading] = useState(false);
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
 
@@ -101,16 +97,11 @@ export default function LoginView() {
               </MenuItem>
             </Select>
           </FormControl>
-          <TextField
-            name="username"
-            label="Username"
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <TextField name="username" label="Username" />
 
           <TextField
             name="password"
             label="Password"
-            onChange={(e) => setPassword(e.target.value)}
             type={showPassword ? 'text' : 'password'}
             InputProps={{
               endAdornment: (

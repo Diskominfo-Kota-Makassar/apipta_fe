@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -10,16 +11,12 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-import { getAllPermohonan } from 'src/utils/api';
-
 import AppWidgetSummary from '../app-widget-summary';
-import AppWebsiteVisits from '../app-website-visits';
 
 // ----------------------------------------------------------------------
 
 export default function AppView() {
-  const [countPermohonan, setCountPermohonan] = useState();
+  const userObject = useLocalStorage('user');
 
   useEffect(() => {}, []);
 

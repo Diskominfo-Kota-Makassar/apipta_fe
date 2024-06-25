@@ -1,79 +1,72 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { toast, ToastContainer } from 'react-toastify';
+import { getUsersFromAPI } from 'src/utils/api';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { TextField, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
-
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Unstable_Grid2';
 
-import { Icon } from '@iconify/react';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
 import Iconify from 'src/components/iconify';
 import * as React from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Grow from '@mui/material/Grow';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
-
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
-import { postForm } from 'src/utils/api';
-
 import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify';
 // ----------------------------------------------------------------------
 
 export default function TambahPenugasan() {
   const notify = (comment) => toast(comment);
 
-  const [listLayanan, setListLayanan] = useState([{ id: 1, nama: 'Buku Tamu' }]);
-  const [namaLayanan, setNamaLayanan] = useState('Buku Tamu');
-
   const [loading, setLoading] = useState(false);
-
-  const options = [
-    'Buku Tamu',
-    'Surat Keterangan Tidak Mampu',
-    'Surat Keterangan Belum Menikah',
-    'Surat Keterangan Kelahiran',
-    'Surat Keterangan Domisili',
-    'Surat Keterangan Kewarisan',
-    'Surat Masuk',
-    'Surat Keluar',
-    'Serba-serbi',
-    'Register Menikah',
-    'Keterangan Kematian',
-    'Keterangan Pengesahan',
-    'Keterangan Usaha',
-  ];
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
+  const [pj, setPj] = useState('');
+  const [wpj, setWpj] = useState('');
+  const [dalnis, setDalnis] = useState('');
+  const [kt, setKt] = useState('');
+  const [at, setAt] = useState([]);
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setOpen(false);
-    const namaLayananApi = listLayanan[index].nama;
-    setNamaLayanan(namaLayananApi);
-  };
+  const [pjList, setPjList] = useState([]);
+  const [wpjList, setWpjList] = useState([]);
+  const [dalnisList, setDalnisList] = useState([]);
+  const [ktList, setKtList] = useState([]);
+  const [atList, setAtList] = useState([]);
+
+  const [bpkp, setBpkp] = useState('');
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleChangeBpkp = (event) => {
+    setBpkp(event.target.value);
+  };
+
+  const handleChangePj = (event) => {
+    setPj(event.target.value);
+  };
+  const handleChangeWpj = (event) => {
+    setWpj(event.target.value);
+  };
+  const handleChangeDalnis = (event) => {
+    setDalnis(event.target.value);
+  };
+  const handleChangeKt = (event) => {
+    setKt(event.target.value);
+  };
+  const handleChangeAt = (event) => {
+    setAt([...at, event.target.value]);
+    console.log(at);
   };
 
   const handleClose = (event) => {
@@ -84,83 +77,35 @@ export default function TambahPenugasan() {
     setOpen(false);
   };
 
-  const handleSubmitForm = async (event) => {
+  const handlePostPenugasan = (event) => {
     event.preventDefault();
-    setLoading(true);
-    const form = new FormData(event.currentTarget);
-    const jenis_layanan = namaLayanan;
-
-    const res = await postForm({
-      tanggal: form.get('tanggal'),
-      jenis_layanan,
-      nama: form.get('nama'),
-      alamat: form.get('alamat'),
-      nomorHp: form.get('nomorHp'),
-      tujuan: form.get('tujuan'),
-      keterangan: form.get('keterangan'),
-      agama: form.get('agama'),
-      tmp_lahir: form.get('tmp_lahir'),
-      tgl_lahir: form.get('tgl_lahir'),
-      pekerjaan: form.get('pekerjaan'),
-      nm_ayah: form.get('nm_ayah'),
-      nm_ibu: form.get('nm_ibu'),
-      jkel: form.get('jkel'),
-      pewaris: form.get('pewaris'),
-      ahliWaris: form.get('ahliWaris'),
-      umur: form.get('umur'),
-      namaInstansiPengirim: form.get('namaInstansiPengirim'),
-      namaInstansiTujuan: form.get('namaInstansiTujuan'),
-      nomorSurat: form.get('nomorSurat'),
-      penanggungjawab: form.get('penanggungjawab'),
-      perihal: form.get('perihal'),
-      namaCalonIstri: form.get('namaCalonIstri'),
-      alamatCalonIstri: form.get('alamatCalonIstri'),
-      tempatLahirCalonIstri: form.get('tempatLahirCalonIstri'),
-      tanggalLahirCalonIstri: form.get('tanggalLahirCalonIstri'),
-      pekerjaanCalonIstri: form.get('pekerjaanCalonIstri'),
-      namaCalonSuami: form.get('namaCalonSuami'),
-      alamatCalonSuami: form.get('alamatCalonSuami'),
-      tempatLahirCalonSuami: form.get('tempatLahirCalonSuami'),
-      tanggalLahirCalonSuami: form.get('tanggalLahirCalonSuami'),
-      pekerjaanCalonSuami: form.get('pekerjaanCalonSuami'),
-      umurMeninggal: form.get('umurMeninggal'),
-      tempatMeninggal: form.get('tempatMeninggal'),
-      tanggalMeninggal: form.get('tanggalMeninggal'),
-      NIB: form.get('NIB'),
-      jenisUsaha: form.get('jenisUsaha'),
-      alamatUsaha: form.get('alamatUsaha'),
-    });
-
-    if (res.status === 200) {
-      setLoading(false);
-      notify('Berhasil Menambahkan');
-    } else {
-      setLoading(false);
-      notify('Gagal Menambahkan');
-    }
   };
 
-  useEffect(() => {}, []);
+  const handleUsersFromAPI = useCallback(async () => {
+    const users = await getUsersFromAPI();
+    const usersObject = await users.data;
+    usersObject.forEach((user) => {
+      if (user.role_id === 7) {
+        setPjList((prevPjList) => [...prevPjList, user]);
+      }
+      if (user.role_id === 8) {
+        setDalnisList((prevDalnisList) => [...prevDalnisList, user]);
+      }
+      if (user.role_id === 4) {
+        setWpjList((prevWpjList) => [...prevWpjList, user]);
+      }
+      if (user.role_id === 2) {
+        setKtList((prevKtList) => [...prevKtList, user]);
+      }
+      if (user.role_id === 3) {
+        setAtList((prevAtList) => [...prevAtList, user]);
+      }
+    });
+  }, []);
 
-  const renderBukuTamu = (
-    <CardContent>
-      <form onSubmit={handleSubmitForm}>
-        <Stack spacing={2}>
-          <DatePicker label="Pilih Tanggal" name="tanggal" />
-          <TextField name="nama" label="Nama" />
-          <TextField name="alamat" label="Alamat" />
-          <TextField name="nomorHp" label="Nomor Hp" />
-          <TextField name="tujuan" label="Tujuan" />
-          <TextField name="keterangan" label="Keterangan" />
-          <Grid container justifyContent="flex-end">
-            <Button variant="contained" type="submit">
-              Submit
-            </Button>
-          </Grid>
-        </Stack>
-      </form>
-    </CardContent>
-  );
+  useEffect(() => {
+    handleUsersFromAPI();
+  }, [handleUsersFromAPI]);
 
   return (
     <Container>
@@ -184,7 +129,85 @@ export default function TambahPenugasan() {
           <Grid container>
             <Grid item sm={12} md={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                {renderBukuTamu}
+                <CardContent>
+                  <form onSubmit={handlePostPenugasan}>
+                    <Stack spacing={2}>
+                      <TextField name="nama" label="NO.ST" />
+                      <DatePicker label="Tgl.ST" name="tanggal" />
+                      <TextField name="alamat" label="Uraian ST" />
+                      <DatePicker label="Tanggal Mulai" name="tanggal" />
+                      <DatePicker label="Tanggal Berakhir" name="tanggal" />
+                      <FormControl fullWidth>
+                        <InputLabel>Pilih PJ</InputLabel>
+                        <Select value={pj} label="Pilih PJ" onChange={handleChangePj}>
+                          {pjList.map((option) => (
+                            <MenuItem key={option.id} value={option.id}>
+                              {' '}
+                              {option.nama}{' '}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <FormControl fullWidth>
+                        <InputLabel>Pilih WPJ</InputLabel>
+                        <Select value={wpj} label="Pilih WPJ" onChange={handleChangeWpj}>
+                          {wpjList.map((option) => (
+                            <MenuItem key={option.id} value={option.id}>
+                              {' '}
+                              {option.nama}{' '}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <FormControl fullWidth>
+                        <InputLabel>Pilih Dalnis</InputLabel>
+                        <Select value={dalnis} label="Pilih Dalnis" onChange={handleChangeDalnis}>
+                          {dalnisList.map((option) => (
+                            <MenuItem key={option.id} value={option.id}>
+                              {' '}
+                              {option.nama}{' '}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <FormControl fullWidth>
+                        <InputLabel>Pilih KT</InputLabel>
+                        <Select value={kt} label="Pilih KT" onChange={handleChangeKt}>
+                          {ktList.map((option) => (
+                            <MenuItem key={option.id} value={option.id}>
+                              {' '}
+                              {option.nama}{' '}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+
+                      <FormControl fullWidth>
+                        <InputLabel>Pilih AT</InputLabel>
+                        <Select value={at} label="Pilih AT" onChange={handleChangeAt}>
+                          {atList.map((option) => (
+                            <MenuItem key={option.id} value={option.id}>
+                              {' '}
+                              {option.nama}{' '}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <FormControl fullWidth>
+                        <InputLabel id="golongan">Melibatkan QA BPKP</InputLabel>
+                        <Select label="Melibatkan QA BPKP" onChange={handleChangeBpkp}>
+                          <MenuItem value="ya">Ya</MenuItem>
+                          <MenuItem value="tidak">Tidak</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <Grid container justifyContent="flex-end">
+                        <Button variant="contained" type="submit">
+                          Submit
+                        </Button>
+                      </Grid>
+                    </Stack>
+                  </form>
+                </CardContent>
               </LocalizationProvider>
             </Grid>
           </Grid>

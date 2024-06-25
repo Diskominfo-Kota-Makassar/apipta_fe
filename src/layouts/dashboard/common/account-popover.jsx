@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -37,6 +38,7 @@ export default function AccountPopover() {
 
   const { logout } = useAuth();
 
+  const user = useLocalStorage('user');
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -93,7 +95,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {user[0].username}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap />
         </Box>

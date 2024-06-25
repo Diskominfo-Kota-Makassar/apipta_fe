@@ -53,12 +53,13 @@ export default function LoginView() {
       password: form.get('password'),
     });
 
-    console.log(res);
-
     if (res.status === 200) {
       setLoading(false);
       notify('Berhasil Login');
-      await login(res.data);
+      await login({
+        username: form.get('username'),
+        role_id: jabatan,
+      });
     } else {
       setLoading(false);
       notify('Username atau password yang kamu masukkan salah');

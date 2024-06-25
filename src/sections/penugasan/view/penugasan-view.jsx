@@ -143,12 +143,13 @@ export default function PermohonanPage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
+                  { id: 'jenis_layanan', label: 'NO' },
                   { id: 'jenis_layanan', label: 'NO.ST' },
                   { id: 'jenis_layanan', label: 'TGL.ST' },
                   { id: 'jenis_layanan', label: 'URAIAN.ST' },
                   { id: 'nama', label: 'PJ' },
                   { id: 'tanggal', label: 'TANGGAL MULAI' },
-                  { id: 'tanggal', label: 'TANGGAL BERKAHIR' },
+                  { id: 'tanggal', label: 'TANGGAL BERAKHIR' },
                   { id: 'keterangan', label: 'STATUS', align: 'center' },
                   { id: '', label: 'AKSI' },
                 ]}

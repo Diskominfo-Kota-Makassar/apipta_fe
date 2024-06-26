@@ -16,7 +16,10 @@ import { users } from 'src/_mock/user';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
-import { getAllPermohonan } from 'src/utils/api';
+// import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
+
+import { getPenugasanFromAPI } from 'src/utils/api';
 import { format } from 'date-fns';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -27,7 +30,9 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
-export default function PermohonanPage() {
+export default function PermintaanPage() {
+  const notify = (comment) => toast(comment);
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -40,7 +45,7 @@ export default function PermohonanPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [allPermohonan, setAllPermohonan] = useState([]);
+  const [allPenugasan, setAllPenugasan] = useState([]);
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -92,7 +97,7 @@ export default function PermohonanPage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: allPermohonan,
+    inputData: allPenugasan,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -101,27 +106,27 @@ export default function PermohonanPage() {
 
   const router = useRouter();
 
-  const getAllPermohonanFromApi = async () => {
-    const allLayanan = await getAllPermohonan();
-    setAllPermohonan(allLayanan.data);
+  const handlePenugasanFromAPI = async () => {
+    const penugasan = await getPenugasanFromAPI();
+    setAllPenugasan(penugasan.data);
   };
 
   useEffect(() => {
-    // getAllPermohonanFromApi();
+    handlePenugasanFromAPI();
   }, []);
 
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Penugasan</Typography>
+        <Typography variant="h4">Form Daftar Permintaan</Typography>
 
         <Button
           variant="contained"
-          onClick={() => router.push('/penugasan/tambah-penugasan')}
+          onClick={() => router.push('/permintaan/tambah-permintaan')}
           color="inherit"
           startIcon={<Iconify icon="eva:plus-fill" />}
         >
-          Tambah Penugasan
+          Tambah Permintaan
         </Button>
       </Stack>
 
@@ -138,19 +143,20 @@ export default function PermohonanPage() {
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={allPermohonan.length}
+                rowCount={allPenugasan.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'jenis_layanan', label: 'NO.ST' },
-                  { id: 'jenis_layanan', label: 'TGL.ST' },
-                  { id: 'jenis_layanan', label: 'URAIAN.ST' },
-                  { id: 'nama', label: 'PJ' },
-                  { id: 'tanggal', label: 'TANGGAL MULAI' },
-                  { id: 'tanggal', label: 'TANGGAL BERKAHIR' },
-                  { id: 'keterangan', label: 'STATUS', align: 'center' },
-                  { id: '', label: 'AKSI' },
+                  { id: '', label: 'NO' },
+                  { id: 'no', label: 'NO.ST' },
+                  { id: 'tgl', label: 'TGL.ST' },
+                  { id: 'uraian', label: 'URAIAN.ST' },
+                  { id: 'no_ref_kka', label: 'NO.REF KKA' },
+                  { id: 'no_ref_pka', label: 'NO.REF PKA' },
+                  { id: 'judul_dokumen', label: 'Judul Dokumen' },
+                  { id: '', label: 'Validasi', align: 'center' },
+                  { id: '', label: 'Aksi' },
                 ]}
               />
               <TableBody>
@@ -160,13 +166,15 @@ export default function PermohonanPage() {
                     <UserTableRow
                       index={index + 1}
                       key={row.id}
-                      jenis_layanan={row.jenis_layanan}
-                      nama={row.nama}
-                      nama_instansi={row.namaInstansiPengirim}
-                      tanggal={
-                        row.tanggal !== '' ? format(new Date(row.tanggal), 'dd/MM/yyyy') : ''
-                      }
+                      id={row.id}
+                      no={row.no}
+                      tgl={row.tgl}
+                      uraian={row.uraian}
+                      pj_id={row.pj_id}
+                      tgl_mulai={row.tgl_mulai}
+                      tgl_berakhir={row.tgl_berakhir}
                       keterangan={row.keterangan}
+                      notify={notify}
                       allData={row}
                     />
                   ))}
@@ -185,7 +193,7 @@ export default function PermohonanPage() {
         <TablePagination
           page={page}
           component="div"
-          count={allPermohonan.length}
+          count={allPenugasan.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}

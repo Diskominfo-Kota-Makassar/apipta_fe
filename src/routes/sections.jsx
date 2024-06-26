@@ -4,11 +4,9 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/dashboard';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
-export const BlogPage = lazy(() => import('src/pages/blog'));
 export const PenugasanPage = lazy(() => import('src/pages/penugasan'));
 export const FormPenugasanPage = lazy(() => import('src/pages/form-penugasan'));
 export const LoginPage = lazy(() => import('src/pages/login'));
-export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 // ----------------------------------------------------------------------
@@ -27,8 +25,6 @@ export default function Router() {
         { element: <IndexPage />, index: true },
         { path: 'penugasan', element: <PenugasanPage /> },
         { path: 'penugasan/tambah-penugasan', element: <FormPenugasanPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
       ],
     },
     {

@@ -7,16 +7,15 @@ import { Routes, Route, Outlet } from 'react-router-dom';
 import ThemeProvider from 'src/theme';
 import { ProtectedRoute } from './routes/components/protectedRoute';
 import { AuthProvider } from './routes/hooks/useAuth';
-import UsersView from './sections/master/users_view';
+import UsersView from './sections/master/user/view/users_view';
+import PermintaanPage from './sections/permintaan/view/permintaan-view';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
-export const BlogPage = lazy(() => import('src/pages/blog'));
 export const PenugasanPage = lazy(() => import('src/pages/penugasan'));
 export const FormPenugasanPage = lazy(() => import('src/pages/form-penugasan'));
 export const LoginPage = lazy(() => import('src/pages/login'));
-export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
-export const FormTambahUser = lazy(() => import('src/sections/master/form-tambah-user'));
+export const FormTambahUser = lazy(() => import('src/sections/master/user/view/form-tambah-user'));
 // ----------------------------------------------------------------------
 
 export default function App() {
@@ -60,6 +59,15 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <FormPenugasanPage />
+                </ProtectedRoute>
+              }
+            />
+            {/* Permintaan Page */}
+            <Route
+              path="permintaan"
+              element={
+                <ProtectedRoute>
+                  <PermintaanPage />
                 </ProtectedRoute>
               }
             />

@@ -18,10 +18,10 @@ import { getUsersFromAPI } from 'src/utils/api';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 
-import UserTableRow from '../user/user-table-row';
-import UserTableHead from '../user/user-table-head';
-import TableEmptyRows from '../user/table-empty-rows';
-import UserTableToolbar from '../user/user-table-toolbar';
+import UserTableRow from '../user-table-row';
+import UserTableHead from '../user-table-head';
+import TableEmptyRows from '../table-empty-rows';
+import UserTableToolbar from '../user-table-toolbar';
 
 // ----------------------------------------------------------------------
 

@@ -5,25 +5,17 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { TextField, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
+import { TextField, CircularProgress } from '@mui/material';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Unstable_Grid2';
 
-import { Icon } from '@iconify/react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import Iconify from 'src/components/iconify';
 import * as React from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Grow from '@mui/material/Grow';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
@@ -41,29 +33,9 @@ export default function TambahPenugasan() {
 
   const [loading, setLoading] = useState(false);
 
-  const options = [
-    'Buku Tamu',
-    'Surat Keterangan Tidak Mampu',
-    'Surat Keterangan Belum Menikah',
-    'Surat Keterangan Kelahiran',
-    'Surat Keterangan Domisili',
-    'Surat Keterangan Kewarisan',
-    'Surat Masuk',
-    'Surat Keluar',
-    'Serba-serbi',
-    'Register Menikah',
-    'Keterangan Kematian',
-    'Keterangan Pengesahan',
-    'Keterangan Usaha',
-  ];
-
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);

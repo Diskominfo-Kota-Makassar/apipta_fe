@@ -16,6 +16,9 @@ import { users } from 'src/_mock/user';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
+// import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
+
 import { getPenugasanFromAPI } from 'src/utils/api';
 import { format } from 'date-fns';
 import TableNoData from '../table-no-data';
@@ -28,6 +31,8 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 // ----------------------------------------------------------------------
 
 export default function PermohonanPage() {
+  const notify = (comment) => toast(comment);
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -104,7 +109,6 @@ export default function PermohonanPage() {
   const handlePenugasanFromAPI = async () => {
     const penugasan = await getPenugasanFromAPI();
     setAllPenugasan(penugasan.data);
-    console.log(penugasan.data);
   };
 
   useEffect(() => {
@@ -162,6 +166,7 @@ export default function PermohonanPage() {
                     <UserTableRow
                       index={index + 1}
                       key={row.id}
+                      id={row.id}
                       no={row.no}
                       tgl={row.tgl}
                       uraian={row.uraian}
@@ -169,6 +174,7 @@ export default function PermohonanPage() {
                       tgl_mulai={row.tgl_mulai}
                       tgl_berakhir={row.tgl_berakhir}
                       keterangan={row.keterangan}
+                      notify={notify}
                       allData={row}
                     />
                   ))}

@@ -16,14 +16,17 @@ import {
   DialogContentText,
   Button,
   DialogActions,
+  CircularProgress,
 } from '@mui/material';
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
+import { deletePenugasan, getPenugasanFromAPI } from 'src/utils/api';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
   index,
+  id,
   no,
   tgl,
   uraian,
@@ -31,8 +34,10 @@ export default function UserTableRow({
   tgl_mulai,
   tgl_berakhir,
   allData,
+  notify,
 }) {
   const theme = useTheme();
+  const [loading, setLoading] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
 
@@ -46,6 +51,31 @@ export default function UserTableRow({
 
   const handleCloseMenu = () => {
     setOpen(false);
+  };
+
+  const handleDeletePenugasan = async (event) => {
+    setOpenDialog(false);
+
+    const res = await deletePenugasan(id);
+
+    if (res.status === 200) {
+      setLoading(false);
+      window.location.reload();
+      notify('Berhasil Menghapus Penugasan');
+    } else {
+      setLoading(false);
+      notify('Gagal Menghapus Penugasan');
+    }
+  };
+
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -64,11 +94,45 @@ export default function UserTableRow({
         <TableCell>{tgl_berakhir}</TableCell>
         <TableCell />
         <TableCell align="right">
+          <IconButton onClick={handleClickOpenDialog}>
+            <Iconify icon="material-symbols:delete-outline" />
+          </IconButton>
           <IconButton onClick={handleOpen}>
-            <Iconify icon="bx:show-alt" />
+            <Iconify icon="tabler:edit" />
           </IconButton>
         </TableCell>
       </TableRow>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Konfirmasi Hapus</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Yakin ingin menghapus penugasan ini?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Batal</Button>
+          <Button onClick={handleDeletePenugasan} autoFocus>
+            Setuju
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {loading && (
+        <CircularProgress
+          size={48}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: '-12px',
+            marginLeft: '-12px',
+          }}
+        />
+      )}
     </>
   );
 }
@@ -76,10 +140,12 @@ export default function UserTableRow({
 UserTableRow.propTypes = {
   index: PropTypes.any,
   no: PropTypes.any,
+  id: PropTypes.any,
   tgl: PropTypes.any,
   uraian: PropTypes.any,
   pj_id: PropTypes.any,
   tgl_mulai: PropTypes.any,
   tgl_berakhir: PropTypes.any,
   allData: PropTypes.any,
+  notify: PropTypes.any,
 };

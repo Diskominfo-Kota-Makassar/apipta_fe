@@ -121,8 +121,9 @@ export default function TambahPenugasan() {
 
     if (res.status === 201) {
       setLoading(false);
-      window.location.reload();
+      // window.location.reload();
       notify('Berhasil Menambahkan Penugasan');
+      window.history.back();
     } else {
       setLoading(false);
       notify('Gagal Menambahkan Penugasan');

@@ -67,72 +67,65 @@ export default function LoginView() {
   };
 
   const renderForm = (
-    <>
-      <form onSubmit={handleLogin}>
-        <Stack spacing={3}>
-          <FormControl fullWidth>
-            <InputLabel>Pilih Role User</InputLabel>
-            <Select
-              labelId="jabatan"
-              value={jabatan}
-              label="Jabatan"
-              onChange={handleChangeJabatan}
-            >
-              {jabatanList.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {' '}
-                  {option.name}{' '}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel>Pilih Surat Tugas</InputLabel>
-            <Select name="surat_tugas" label="Surat Tugas">
-              <MenuItem key="Surat Tugas 1" value="Surat Tugas 1">
-                Surat Tugas 1
+    <form onSubmit={handleLogin}>
+      <Stack spacing={3}>
+        <FormControl fullWidth>
+          <InputLabel>Pilih Role User</InputLabel>
+          <Select labelId="jabatan" value={jabatan} label="Jabatan" onChange={handleChangeJabatan}>
+            {jabatanList.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
+                {' '}
+                {option.name}{' '}
               </MenuItem>
-              <MenuItem key="Surat Tugas 2" value="Surat Tugas 2">
-                Surat Tugas 2
-              </MenuItem>
-            </Select>
-          </FormControl>
-          <TextField name="username" label="Username" />
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel>Pilih Surat Tugas</InputLabel>
+          <Select name="surat_tugas" label="Surat Tugas">
+            <MenuItem key="Surat Tugas 1" value="Surat Tugas 1">
+              Surat Tugas 1
+            </MenuItem>
+            <MenuItem key="Surat Tugas 2" value="Surat Tugas 2">
+              Surat Tugas 2
+            </MenuItem>
+          </Select>
+        </FormControl>
+        <TextField name="username" label="Username" />
 
-          <TextField
-            name="password"
-            label="Password"
-            type={showPassword ? 'text' : 'password'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Stack>
+        <TextField
+          name="password"
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Stack>
 
-        <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-          {/* <Link variant="subtitle2" underline="hover">
+      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
+        {/* <Link variant="subtitle2" underline="hover">
           Forgot password?
         </Link> */}
-        </Stack>
+      </Stack>
 
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          color="inherit"
-          onClick={handleClick}
-        >
-          Login
-        </LoadingButton>
-      </form>
-    </>
+      <LoadingButton
+        fullWidth
+        size="large"
+        type="submit"
+        variant="contained"
+        color="inherit"
+        onClick={handleClick}
+      >
+        Login
+      </LoadingButton>
+    </form>
   );
 
   const handleRolesFromAPI = async () => {

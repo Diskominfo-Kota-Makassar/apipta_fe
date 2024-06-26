@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
 
 import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -15,18 +14,20 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 import { getUsersFromAPI } from 'src/utils/api';
-import { format } from 'date-fns';
-import TableNoData from '../user/table-no-data';
+
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
+
 import UserTableRow from '../user/user-table-row';
 import UserTableHead from '../user/user-table-head';
 import TableEmptyRows from '../user/table-empty-rows';
 import UserTableToolbar from '../user/user-table-toolbar';
-import { emptyRows, applyFilter, getComparator } from '../user/utils';
-// import { emptyRows } from '../user/utils';
 
 // ----------------------------------------------------------------------
 
 export default function UsersView() {
+  const notify = (comment) => toast(comment);
+
   const [usersList, setUsersList] = useState([]);
 
   const [page, setPage] = useState(0);
@@ -109,7 +110,6 @@ export default function UsersView() {
 
   const handleRolesFromAPI = async () => {
     const users = await getUsersFromAPI();
-    console.log(users.data);
     setUsersList(users.data);
   };
 
@@ -156,12 +156,12 @@ export default function UsersView() {
                 headLabel={[
                   { id: 'no', label: 'No' },
                   { id: 'nama', label: 'Nama' },
-                  { id: 'nama', label: 'Username' },
-                  { id: 'nama', label: 'Entitas' },
-                  { id: 'nama', label: 'Masa berlaku' },
-                  { id: 'nama', label: 'Email' },
-                  { id: 'nama', label: 'NIP' },
-                  { id: 'keterangan', label: 'Catatan', align: 'center' },
+                  { id: 'username', label: 'Username' },
+                  { id: 'entitas', label: 'Entitas' },
+                  { id: 'masa_berlaku', label: 'Masa berlaku' },
+                  { id: 'email', label: 'Email' },
+                  { id: 'nip', label: 'NIP' },
+                  { id: 'catatan', label: 'Catatan', align: 'center' },
                   { id: '', label: 'Aksi' },
                 ]}
               />
@@ -171,6 +171,7 @@ export default function UsersView() {
                   .map((row, index) => (
                     <UserTableRow
                       index={index + 1}
+                      id={row.id}
                       key={row.id}
                       nama={row.nama}
                       username={row.username}
@@ -179,6 +180,7 @@ export default function UsersView() {
                       email={row.email}
                       nip={row.nip}
                       catatan="-"
+                      notify={notify}
                       allData={row}
                     />
                   ))}

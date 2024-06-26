@@ -147,6 +147,35 @@ export const getPenugasanFromAPI = async () => {
     return error;
   }
 };
+
+export const deleteUser = async (id) => {
+  try {
+    const response = await axios.delete(`${baseURL}/user/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deletePenugasan = async (id) => {
+  try {
+    const response = await axios.delete(`${baseURL}/penugasan/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const postForm = async ({
   jenis_layanan = '',
   tanggal = '',

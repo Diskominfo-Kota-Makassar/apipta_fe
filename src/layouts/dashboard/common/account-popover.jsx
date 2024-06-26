@@ -38,7 +38,7 @@ export default function AccountPopover() {
 
   const { logout } = useAuth();
 
-  const user = useLocalStorage('user');
+  const user = useLocalStorage('user', null);
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -95,7 +95,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {user[0].username}
+            {user[0] === null ? '' : user[0].username}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap />
         </Box>

@@ -10,6 +10,7 @@ import { AuthProvider } from './routes/hooks/useAuth';
 import UsersView from './sections/master/user/view/users_view';
 import PermintaanPage from './sections/permintaan/view/permintaan-view';
 import ValidasiPermintaan from './sections/permintaan/view/validasi-permintaan';
+import TambahAuditKKA from './sections/audit-kka/view/tambah-audit-kka';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const PenugasanPage = lazy(() => import('src/pages/penugasan'));
@@ -17,6 +18,7 @@ export const FormPenugasanPage = lazy(() => import('src/pages/form-penugasan'));
 export const FormPermintaanPage = lazy(() => import('src/pages/form-permintaan'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
+export const AuditKKAView = lazy(() => import('src/sections/audit-kka/view/audit-kka-view'));
 export const FormTambahUser = lazy(() => import('src/sections/master/user/view/form-tambah-user'));
 // ----------------------------------------------------------------------
 
@@ -86,6 +88,22 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <ValidasiPermintaan />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka"
+              element={
+                <ProtectedRoute>
+                  <AuditKKAView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka/tambah-audit-kka"
+              element={
+                <ProtectedRoute>
+                  <TambahAuditKKA />
                 </ProtectedRoute>
               }
             />

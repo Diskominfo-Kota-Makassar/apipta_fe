@@ -1,14 +1,13 @@
 import { useState } from 'react';
+import { useRouter } from 'src/routes/hooks/use-router';
 import { useTheme } from '@mui/material/styles';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
-import Stack from '@mui/material/Stack';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
+import Switch from '@mui/material/Switch';
 import {
   Dialog,
   DialogTitle,
@@ -38,6 +37,10 @@ export default function UserTableRow({
   const [loading, setLoading] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
+
+  const router = useRouter();
+
+  const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   // const handleOpenMenu = (event) => {
   //   setOpen(event.currentTarget);
@@ -88,7 +91,9 @@ export default function UserTableRow({
 
         <TableCell>{uraian}</TableCell>
 
-        <TableCell />
+        <TableCell>
+          <Switch onClick={() => router.push('/permintaan/validasi-permintaan')} {...label} />
+        </TableCell>
         <TableCell align="right">
           <IconButton onClick={handleClickOpenDialog}>
             <Iconify icon="material-symbols:delete-outline" />

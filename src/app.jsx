@@ -9,10 +9,12 @@ import { ProtectedRoute } from './routes/components/protectedRoute';
 import { AuthProvider } from './routes/hooks/useAuth';
 import UsersView from './sections/master/user/view/users_view';
 import PermintaanPage from './sections/permintaan/view/permintaan-view';
+import ValidasiPermintaan from './sections/permintaan/view/validasi-permintaan';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const PenugasanPage = lazy(() => import('src/pages/penugasan'));
 export const FormPenugasanPage = lazy(() => import('src/pages/form-penugasan'));
+export const FormPermintaanPage = lazy(() => import('src/pages/form-permintaan'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const FormTambahUser = lazy(() => import('src/sections/master/user/view/form-tambah-user'));
@@ -68,6 +70,22 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <PermintaanPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="permintaan/tambah-permintaan"
+              element={
+                <ProtectedRoute>
+                  <FormPermintaanPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="permintaan/validasi-permintaan"
+              element={
+                <ProtectedRoute>
+                  <ValidasiPermintaan />
                 </ProtectedRoute>
               }
             />

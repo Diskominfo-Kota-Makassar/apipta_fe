@@ -11,6 +11,7 @@ import UsersView from './sections/master/user/view/users_view';
 import PermintaanPage from './sections/permintaan/view/permintaan-view';
 import ValidasiPermintaan from './sections/permintaan/view/validasi-permintaan';
 import TambahAuditKKA from './sections/audit-kka/view/tambah-audit-kka';
+import AnggotaTim from './sections/audit-kka/view/session/anggota-tim';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const PenugasanPage = lazy(() => import('src/pages/penugasan'));
@@ -104,6 +105,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <TambahAuditKKA />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka/anggota-tim"
+              element={
+                <ProtectedRoute>
+                  <AnggotaTim />
                 </ProtectedRoute>
               }
             />

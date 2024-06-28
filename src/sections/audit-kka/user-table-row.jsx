@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
-import Switch from '@mui/material/Switch';
 import {
   Dialog,
   DialogTitle,
@@ -89,6 +88,16 @@ export default function UserTableRow({
         <TableCell>{no_ref_pka}</TableCell>
 
         <TableCell>{uraian_kka}</TableCell>
+
+        <TableCell>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => router.push('/audit-kka/anggota-tim')}
+          >
+            LIHAT KKA
+          </Button>
+        </TableCell>
 
         <TableCell align="center">
           <IconButton onClick={handleClickOpenDialog}>

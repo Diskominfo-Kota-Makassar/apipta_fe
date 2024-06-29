@@ -3,7 +3,7 @@ import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@m
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
-import { getPenugasanFromAPI, postSubmitPenugasan } from 'src/utils/api';
+import { getPenugasanFromAPI, postSubmitPermintaan } from 'src/utils/api';
 import { MuiFileInput } from 'mui-file-input';
 
 import Stack from '@mui/material/Stack';
@@ -36,6 +36,7 @@ export default function TambahPermintaan() {
   const [valueFile, setValueFile] = useState(null);
 
   const [allPenugasan, setAllPenugasan] = useState([]);
+  const [noST, setNoST] = useState('');
   const [tglST, setTglST] = useState('');
   const [uraianST, setUraianST] = useState('');
 
@@ -69,19 +70,25 @@ export default function TambahPermintaan() {
 
   const handleChangeST = (event) => {
     const penugasan = allPenugasan.find((option) => option.id === event.target.value);
+    setNoST(penugasan.no);
     setTglST(penugasan.tgl);
     setUraianST(penugasan.uraian);
   };
 
-  const handlePostPenugasan = async (event) => {
+  const handlePostPermintaan = async (event) => {
     event.preventDefault();
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    const res = await postSubmitPenugasan({
-      no: form.get('no'),
-      tgl: form.get('tgl'),
-      uraian: form.get('uraian'),
+    const res = await postSubmitPermintaan({
+      no: noST,
+      tgl_penugasan: tglST,
+      uraian: uraianST,
+      no_ref_kka: form.get('no_ref_kka'),
+      no_ref_pka: form.get('no_ref_pka'),
+      judul_doc: form.get('judul_doc'),
+      ket: form.get('ket'),
+      file: valueFile,
     });
 
     console.log(res);
@@ -99,6 +106,7 @@ export default function TambahPermintaan() {
 
   const handlePenugasanFromAPI = async () => {
     const penugasan = await getPenugasanFromAPI();
+    console.log(penugasan);
     setAllPenugasan(penugasan.data);
   };
 
@@ -129,9 +137,9 @@ export default function TambahPermintaan() {
             <Grid item sm={12} md={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <CardContent>
-                  <form onSubmit={handlePostPenugasan}>
+                  <form onSubmit={handlePostPermintaan}>
                     <Stack spacing={2}>
-                      <TextField name="no" label="ID Permintaan" />
+                      {/* <TextField name="no" label="ID Permintaan" /> */}
                       <FormControl fullWidth>
                         <InputLabel>NO.ST</InputLabel>
                         <Select label="No.ST" onChange={handleChangeST}>
@@ -143,12 +151,12 @@ export default function TambahPermintaan() {
                           ))}
                         </Select>
                       </FormControl>
-                      <TextField disabled name="tgl" value={tglST} />
-                      <TextField disabled name="uraian" value={uraianST} />
-                      <TextField name="uraian" label="No.Ref KKA" />
-                      <TextField name="uraian" label="No.Ref PKA" />
-                      <TextField name="uraian" label="Judul Dokumen" />
-                      <TextField name="uraian" label="Catatan/keterangan dokumen" />
+                      <TextField disabled name="tgl_penugasan" value={tglST} />
+                      <TextField disabled name="uraian_penugasan" value={uraianST} />
+                      <TextField name="no_ref_kka" label="No.Ref KKA" />
+                      <TextField name="no_ref_pka" label="No.Ref PKA" />
+                      <TextField name="judul_doc" label="Judul Dokumen" />
+                      <TextField name="ket" label="Catatan/keterangan dokumen" />
                       <MuiFileInput
                         name="file"
                         placeholder="Pilih File"

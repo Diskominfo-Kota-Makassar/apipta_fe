@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { useTheme } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
@@ -26,10 +27,13 @@ import { deletePenugasan, getPenugasanFromAPI } from 'src/utils/api';
 export default function UserTableRow({
   index,
   id,
-  no_st,
-  tgl_st,
+  no,
+  tgl_penugasan,
+  judul_doc,
   uraian,
-
+  no_ref_kka,
+  no_ref_pka,
+  upload,
   allData,
   notify,
 }) {
@@ -37,6 +41,8 @@ export default function UserTableRow({
   const [loading, setLoading] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const router = useRouter();
 
@@ -85,14 +91,25 @@ export default function UserTableRow({
         <TableCell />
 
         <TableCell>{index}</TableCell>
-        <TableCell>{no_st}</TableCell>
+        <TableCell>{no}</TableCell>
 
-        <TableCell>{tgl_st}</TableCell>
+        <TableCell>{tgl_penugasan}</TableCell>
 
         <TableCell>{uraian}</TableCell>
-
+        <TableCell>{no_ref_kka}</TableCell>
+        <TableCell>{no_ref_pka}</TableCell>
+        <TableCell>{judul_doc}</TableCell>
         <TableCell>
-          <Switch onClick={() => router.push('/permintaan/validasi-permintaan')} {...label} />
+          <Switch
+            onClick={() => navigate('/permintaan/validasi-permintaan', { state: allData })}
+            {...label}
+          />
+          {/* <Switch
+            onClick={() =>
+              router.push({ pathname: '/permintaan/validasi-permintaan', query: 'aaaaa' })
+            }
+            {...label}
+          /> */}
         </TableCell>
         <TableCell align="right">
           <IconButton onClick={handleClickOpenDialog}>
@@ -112,7 +129,7 @@ export default function UserTableRow({
         <DialogTitle id="alert-dialog-title">Konfirmasi Hapus</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Yakin ingin menghapus penugasan ini?
+            Yakin ingin menghapus permintaan ini?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -140,10 +157,14 @@ export default function UserTableRow({
 
 UserTableRow.propTypes = {
   index: PropTypes.any,
-  no_st: PropTypes.any,
+  no: PropTypes.any,
   id: PropTypes.any,
-  tgl_st: PropTypes.any,
+  judul_doc: PropTypes.any,
+  tgl_penugasan: PropTypes.any,
   uraian: PropTypes.any,
+  no_ref_kka: PropTypes.any,
+  no_ref_pka: PropTypes.any,
+  upload: PropTypes.any,
   allData: PropTypes.any,
   notify: PropTypes.any,
 };

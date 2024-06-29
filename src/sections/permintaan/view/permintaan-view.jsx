@@ -19,7 +19,7 @@ import Scrollbar from 'src/components/scrollbar';
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 
-import { getPenugasanFromAPI } from 'src/utils/api';
+import { getPermintaanFromAPI } from 'src/utils/api';
 import { format } from 'date-fns';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -45,7 +45,7 @@ export default function PermintaanPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [allPenugasan, setAllPenugasan] = useState([]);
+  const [allPermintaan, setAllPermintaan] = useState([]);
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -97,7 +97,7 @@ export default function PermintaanPage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: allPenugasan,
+    inputData: allPermintaan,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -106,13 +106,14 @@ export default function PermintaanPage() {
 
   const router = useRouter();
 
-  const handlePenugasanFromAPI = async () => {
-    const penugasan = await getPenugasanFromAPI();
-    setAllPenugasan(penugasan.data);
+  const handlePermintaanFromAPI = async () => {
+    const permintaan = await getPermintaanFromAPI();
+    console.log(permintaan);
+    setAllPermintaan(permintaan.data);
   };
 
   useEffect(() => {
-    handlePenugasanFromAPI();
+    handlePermintaanFromAPI();
   }, []);
 
   return (
@@ -143,7 +144,7 @@ export default function PermintaanPage() {
               <UserTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={allPenugasan.length}
+                rowCount={allPermintaan.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
@@ -167,13 +168,12 @@ export default function PermintaanPage() {
                       index={index + 1}
                       key={row.id}
                       id={row.id}
+                      judul_doc={row.judul_doc}
                       no={row.no}
-                      tgl={row.tgl}
+                      tgl_penugasan={row.tgl_penugasan}
+                      no_ref_kka={row.no_ref_kka}
+                      no_ref_pka={row.no_ref_pka}
                       uraian={row.uraian}
-                      pj_id={row.pj_id}
-                      tgl_mulai={row.tgl_mulai}
-                      tgl_berakhir={row.tgl_berakhir}
-                      keterangan={row.keterangan}
                       notify={notify}
                       allData={row}
                     />
@@ -193,7 +193,7 @@ export default function PermintaanPage() {
         <TablePagination
           page={page}
           component="div"
-          count={allPenugasan.length}
+          count={allPermintaan.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}

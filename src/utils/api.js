@@ -119,6 +119,27 @@ export const postSubmitPenugasan = async ({
     return error;
   }
 };
+export const postUpdatePermintaan = async ({ id = '', status = '' }) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/permintaan/status`,
+      {
+        id,
+        status,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const postSubmitPermintaan = async ({
   file,
   no = '',

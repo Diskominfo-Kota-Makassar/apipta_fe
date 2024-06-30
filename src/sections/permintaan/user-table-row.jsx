@@ -33,6 +33,7 @@ export default function UserTableRow({
   uraian,
   no_ref_kka,
   no_ref_pka,
+  status,
   upload,
   allData,
   notify,
@@ -60,7 +61,7 @@ export default function UserTableRow({
     setOpen(false);
   };
 
-  const handleDeletePenugasan = async (event) => {
+  const handleDeletePermintaan = async (event) => {
     setOpenDialog(false);
 
     const res = await deletePermintaan(id);
@@ -101,6 +102,7 @@ export default function UserTableRow({
         <TableCell>{judul_doc}</TableCell>
         <TableCell>
           <Switch
+            checked={status}
             onClick={() => navigate('/permintaan/validasi-permintaan', { state: allData })}
             {...label}
           />
@@ -134,7 +136,7 @@ export default function UserTableRow({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Batal</Button>
-          <Button onClick={handleDeletePenugasan} autoFocus>
+          <Button onClick={handleDeletePermintaan} autoFocus>
             Setuju
           </Button>
         </DialogActions>
@@ -164,6 +166,7 @@ UserTableRow.propTypes = {
   uraian: PropTypes.any,
   no_ref_kka: PropTypes.any,
   no_ref_pka: PropTypes.any,
+  status: PropTypes.any,
   upload: PropTypes.any,
   allData: PropTypes.any,
   notify: PropTypes.any,

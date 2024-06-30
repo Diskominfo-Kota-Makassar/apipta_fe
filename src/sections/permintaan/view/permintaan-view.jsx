@@ -108,7 +108,7 @@ export default function PermintaanPage() {
 
   const handlePermintaanFromAPI = async () => {
     const permintaan = await getPermintaanFromAPI();
-
+    console.log(permintaan);
     setAllPermintaan(permintaan.data);
   };
 
@@ -173,6 +173,7 @@ export default function PermintaanPage() {
                       tgl_penugasan={row.tgl_penugasan}
                       no_ref_kka={row.no_ref_kka}
                       no_ref_pka={row.no_ref_pka}
+                      status={row.status === 1}
                       uraian={row.uraian}
                       notify={notify}
                       allData={row}

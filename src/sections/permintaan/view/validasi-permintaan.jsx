@@ -3,7 +3,12 @@ import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@m
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
-import { baseURL, getPenugasanFromAPI, postSubmitPenugasan } from 'src/utils/api';
+import {
+  baseURL,
+  getPenugasanFromAPI,
+  postSubmitPenugasan,
+  postUpdatePermintaan,
+} from 'src/utils/api';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { MuiFileInput } from 'mui-file-input';
 import { useLocation } from 'react-router-dom';
@@ -81,15 +86,14 @@ export default function ValidasiPermintaan() {
     setUraianST(penugasan.uraian);
   };
 
-  const handlePostPenugasan = async (event) => {
+  const handleUpdatePermintaan = async (event) => {
     event.preventDefault();
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    const res = await postSubmitPenugasan({
-      no: form.get('no'),
-      tgl: form.get('tgl'),
-      uraian: form.get('uraian'),
+    const res = await postUpdatePermintaan({
+      id: form.get('id'),
+      status: form.get('status'),
     });
 
     console.log(res);
@@ -97,11 +101,11 @@ export default function ValidasiPermintaan() {
     if (res.status === 201) {
       setLoading(false);
       // window.location.reload();
-      notify('Berhasil Menambahkan Penugasan');
+      notify('Berhasil Validasi');
       window.history.back();
     } else {
       setLoading(false);
-      notify('Gagal Menambahkan Penugasan');
+      notify('Gagal Validasi');
     }
   };
 
@@ -137,7 +141,7 @@ export default function ValidasiPermintaan() {
             <Grid item sm={12} md={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <CardContent>
-                  <form onSubmit={handlePostPenugasan}>
+                  <form>
                     <Stack spacing={2}>
                       <TextField name="no" value={allData.id} label="ID Permintaan" />
                       <TextField name="uraian" value={allData.no_ref_kka} label="No.Ref KKA" />
@@ -156,13 +160,19 @@ export default function ValidasiPermintaan() {
                       >
                         View
                       </Button>
-                      <Grid container justifyContent="flex-end">
-                        <Button variant="contained" type="submit">
-                          Validasi
-                        </Button>
-                      </Grid>
                     </Stack>
                   </form>
+                  <Grid container>
+                    <Grid item sm={12} md={12}>
+                      <form onSubmit={handleUpdatePermintaan}>
+                        <TextField type="hidden" name="id" value={allData.id} />
+                        <TextField type="hidden" name="status" value="1" />
+                        <Button fullWidth sx={{ mt: 5 }} variant="contained" type="submit">
+                          Validasi
+                        </Button>
+                      </form>
+                    </Grid>
+                  </Grid>
                 </CardContent>
               </LocalizationProvider>
             </Grid>

@@ -108,7 +108,7 @@ export default function PermintaanPage() {
 
   const handlePermintaanFromAPI = async () => {
     const permintaan = await getPermintaanFromAPI();
-    console.log(permintaan);
+
     setAllPermintaan(permintaan.data);
   };
 

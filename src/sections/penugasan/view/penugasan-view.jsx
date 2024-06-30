@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -31,6 +32,10 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 export default function PermohonanPage() {
   const notify = (comment) => toast(comment);
+
+  const user = useLocalStorage('user');
+
+  const surat_tugas_terpilih = user[0].surat_tugas;
 
   const [page, setPage] = useState(0);
 

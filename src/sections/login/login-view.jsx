@@ -18,7 +18,7 @@ import Iconify from 'src/components/iconify';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { getRolesFromAPI, postLogin } from 'src/utils/api';
+import { getRolesFromAPI, getPenugasanFromAPI, postLogin } from 'src/utils/api';
 
 // ----------------------------------------------------------------------
 
@@ -28,11 +28,18 @@ export default function LoginView() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
+  const [suratTugas, setSuratTugas] = useState('');
 
   const [jabatanList, setJabatanList] = useState([{}]);
   const [jabatan, setJabatan] = useState('');
 
+  const [allPenugasan, setAllPenugasan] = useState([]);
+
   const handleClick = () => {};
+
+  const handleChangeST = (event) => {
+    setSuratTugas(event.target.value);
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -42,9 +49,15 @@ export default function LoginView() {
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
+    if (jabatan === '') {
+      setLoading(false);
+      notify('Pilih Role User Terlebih Dahulu');
+      return;
+    }
+
     const res = await postLogin({
       role_id: jabatan,
-      surat_tugas: form.get('surat_tugas'),
+      surat_tugas: suratTugas,
       username: form.get('username'),
       password: form.get('password'),
     });
@@ -55,6 +68,7 @@ export default function LoginView() {
       await login({
         username: form.get('username'),
         role_id: jabatan,
+        surat_tugas: suratTugas,
       });
     } else {
       setLoading(false);
@@ -66,12 +80,22 @@ export default function LoginView() {
     setJabatan(event.target.value);
   };
 
+  const handlePenugasanFromAPI = async () => {
+    const penugasan = await getPenugasanFromAPI();
+    setAllPenugasan(penugasan.data);
+  };
+
   const renderForm = (
     <form onSubmit={handleLogin}>
       <Stack spacing={3}>
         <FormControl fullWidth>
           <InputLabel>Pilih Role User</InputLabel>
-          <Select labelId="jabatan" value={jabatan} label="Jabatan" onChange={handleChangeJabatan}>
+          <Select
+            labelId="jabatan"
+            value={jabatan}
+            label="Pilih Role User"
+            onChange={handleChangeJabatan}
+          >
             {jabatanList.map((option) => (
               <MenuItem key={option.id} value={option.id}>
                 {' '}
@@ -82,13 +106,13 @@ export default function LoginView() {
         </FormControl>
         <FormControl fullWidth>
           <InputLabel>Pilih Surat Tugas</InputLabel>
-          <Select name="surat_tugas" label="Surat Tugas">
-            <MenuItem key="Surat Tugas 1" value="Surat Tugas 1">
-              Surat Tugas 1
-            </MenuItem>
-            <MenuItem key="Surat Tugas 2" value="Surat Tugas 2">
-              Surat Tugas 2
-            </MenuItem>
+          <Select onChange={handleChangeST} label="Pilih Surat Tugas">
+            {allPenugasan.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
+                {' '}
+                {option.no}{' '}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
         <TextField name="username" label="Username" />
@@ -135,6 +159,7 @@ export default function LoginView() {
 
   useEffect(() => {
     handleRolesFromAPI();
+    handlePenugasanFromAPI();
   }, []);
 
   return (

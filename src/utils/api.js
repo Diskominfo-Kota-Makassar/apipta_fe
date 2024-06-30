@@ -229,6 +229,20 @@ export const deletePenugasan = async (id) => {
   }
 };
 
+export const deletePermintaan = async (id) => {
+  try {
+    const response = await axios.delete(`${baseURL}/permintaan/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const postForm = async ({
   jenis_layanan = '',
   tanggal = '',

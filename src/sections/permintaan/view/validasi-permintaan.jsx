@@ -34,8 +34,7 @@ export default function ValidasiPermintaan() {
   const location = useLocation();
   const allData = location.state || {};
 
-  console.log(baseURL);
-  const urlFile = allData.file.split('/')[1];
+  const urlFile = allData.file;
 
   const [loading, setLoading] = useState(false);
 

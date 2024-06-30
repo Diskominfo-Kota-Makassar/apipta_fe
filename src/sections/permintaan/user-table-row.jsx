@@ -21,7 +21,7 @@ import {
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { deletePenugasan, getPenugasanFromAPI } from 'src/utils/api';
+import { deletePermintaan, getPenugasanFromAPI } from 'src/utils/api';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
@@ -63,7 +63,7 @@ export default function UserTableRow({
   const handleDeletePenugasan = async (event) => {
     setOpenDialog(false);
 
-    const res = await deletePenugasan(id);
+    const res = await deletePermintaan(id);
 
     if (res.status === 200) {
       setLoading(false);

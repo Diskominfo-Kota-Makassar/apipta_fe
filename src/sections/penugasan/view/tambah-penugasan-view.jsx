@@ -38,6 +38,7 @@ export default function TambahPenugasan() {
   const [wpj, setWpj] = useState('');
   const [dalnis, setDalnis] = useState('');
   const [kt, setKt] = useState('');
+  const [obrik, setObrik] = useState('');
   const [at, setAt] = useState([]);
 
   const [pjList, setPjList] = useState([]);
@@ -45,6 +46,7 @@ export default function TambahPenugasan() {
   const [dalnisList, setDalnisList] = useState([]);
   const [ktList, setKtList] = useState([]);
   const [atList, setAtList] = useState([]);
+  const [obrikList, setObrikList] = useState([]);
 
   const [bpkp, setBpkp] = useState('');
 
@@ -67,6 +69,9 @@ export default function TambahPenugasan() {
   };
   const handleChangeKt = (event) => {
     setKt(event.target.value);
+  };
+  const handleChangeObrik = (event) => {
+    setObrik(event.target.value);
   };
   const handleChangeAt = (event) => {
     const {
@@ -142,6 +147,9 @@ export default function TambahPenugasan() {
       }
       if (user.role_id === 4) {
         setWpjList((prevWpjList) => [...prevWpjList, user]);
+      }
+      if (user.role_id === 5) {
+        setObrikList((prevObrikList) => [...prevObrikList, user]);
       }
       if (user.role_id === 2) {
         setKtList((prevKtList) => [...prevKtList, user]);
@@ -255,6 +263,17 @@ export default function TambahPenugasan() {
                         <Select label="Melibatkan QA BPKP" onChange={handleChangeBpkp}>
                           <MenuItem value="ya">Ya</MenuItem>
                           <MenuItem value="tidak">Tidak</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <FormControl fullWidth>
+                        <InputLabel>Pilih Obrik</InputLabel>
+                        <Select value={obrik} label="Pilih Obrik" onChange={handleChangeObrik}>
+                          {obrikList.map((option) => (
+                            <MenuItem key={option.id} value={option.id}>
+                              {' '}
+                              {option.nama}{' '}
+                            </MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                       <Grid container justifyContent="flex-end">

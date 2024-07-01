@@ -48,44 +48,6 @@ export default function ValidasiPermintaan() {
 
   const [valueFile, setValueFile] = useState(null);
 
-  const [allPenugasan, setAllPenugasan] = useState([]);
-  const [tglST, setTglST] = useState('');
-  const [uraianST, setUraianST] = useState('');
-
-  const handleChangeFile = (newValue) => {
-    setValueFile(newValue);
-  };
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-
-  const handleChangeST = (event) => {
-    const penugasan = allPenugasan.find((option) => option.id === event.target.value);
-    setTglST(penugasan.tgl);
-    setUraianST(penugasan.uraian);
-  };
-
   const handleUpdatePermintaan = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -107,14 +69,7 @@ export default function ValidasiPermintaan() {
     }
   };
 
-  const handlePenugasanFromAPI = async () => {
-    const penugasan = await getPenugasanFromAPI();
-    setAllPenugasan(penugasan.data);
-  };
-
-  useEffect(() => {
-    handlePenugasanFromAPI();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <Container>
@@ -165,9 +120,21 @@ export default function ValidasiPermintaan() {
                       <form onSubmit={handleUpdatePermintaan}>
                         <TextField type="hidden" name="id" value={allData.id} />
                         <TextField type="hidden" name="status" value="1" />
-                        <Button fullWidth sx={{ mt: 5 }} variant="contained" type="submit">
-                          Validasi
-                        </Button>
+                        {allData.status === 0 ? (
+                          <Button fullWidth sx={{ mt: 5 }} variant="contained" type="submit">
+                            Validasi
+                          </Button>
+                        ) : (
+                          <Button
+                            disabled
+                            fullWidth
+                            sx={{ mt: 5 }}
+                            variant="contained"
+                            type="submit"
+                          >
+                            Tervalidasi
+                          </Button>
+                        )}
                       </form>
                     </Grid>
                   </Grid>

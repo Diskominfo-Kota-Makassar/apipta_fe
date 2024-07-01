@@ -22,6 +22,7 @@ import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
+import navConfigAdmin from './config-navigation-admin';
 
 // ----------------------------------------------------------------------
 
@@ -70,6 +71,13 @@ export default function Nav({ openNav, onCloseNav }) {
       ))}
     </Stack>
   );
+  const renderMenuAdmin = (
+    <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
+      {navConfigAdmin.map((item) => (
+        <NavItem key={item.title} item={item} />
+      ))}
+    </Stack>
+  );
 
   const renderContent = (
     <Scrollbar
@@ -85,11 +93,9 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box>
         <Logo sx={{ mt: 3, ml: 4 }} />
       </Box>
-
       {renderAccount}
-
-      {renderMenu}
-
+      {/* {user[0].role_id === 1 ? renderMenuAdmin : renderMenu} */}
+      {renderMenuAdmin}
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   );

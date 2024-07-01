@@ -19,7 +19,7 @@ import {
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { deletePenugasan, getPenugasanFromAPI } from 'src/utils/api';
+import { deleteAudit } from 'src/utils/api';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
@@ -27,7 +27,7 @@ export default function UserTableRow({
   id,
   no_ref_kka,
   no_ref_pka,
-  uraian_kka,
+  judul,
   notify,
   allData,
 }) {
@@ -55,15 +55,15 @@ export default function UserTableRow({
   const handleDeletePenugasan = async (event) => {
     setOpenDialog(false);
 
-    const res = await deletePenugasan(id);
+    const res = await deleteAudit(id);
 
     if (res.status === 200) {
       setLoading(false);
       window.location.reload();
-      notify('Berhasil Menghapus Penugasan');
+      notify('Berhasil Menghapus Audit');
     } else {
       setLoading(false);
-      notify('Gagal Menghapus Penugasan');
+      notify('Gagal Menghapus Audit');
     }
   };
 
@@ -87,7 +87,7 @@ export default function UserTableRow({
 
         <TableCell>{no_ref_pka}</TableCell>
 
-        <TableCell>{uraian_kka}</TableCell>
+        <TableCell>{judul}</TableCell>
 
         <TableCell>
           <Button
@@ -148,7 +148,7 @@ UserTableRow.propTypes = {
   no_ref_kka: PropTypes.any,
   id: PropTypes.any,
   no_ref_pka: PropTypes.any,
-  uraian_kka: PropTypes.any,
+  judul: PropTypes.any,
   allData: PropTypes.any,
   notify: PropTypes.any,
 };

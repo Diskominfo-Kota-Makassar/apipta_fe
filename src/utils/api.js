@@ -38,6 +38,20 @@ export const getRolesFromAPI = async () => {
   }
 };
 
+export const getAuditFromAPI = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/audit_kka`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.data;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const postSubmitUser = async ({
   nama = '',
   username = '',
@@ -110,6 +124,47 @@ export const postSubmitPenugasan = async ({
       {
         headers: {
           'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const postSubmitAuditKKA = async ({
+  file_kesimpulan = File(),
+  file_bukti_dukung = File(),
+  hasil_pengujian = File(),
+  no_penugasan = '',
+  no_ref_kka = '',
+  no_ref_pka = '',
+  judul = '',
+  tim_anggota = '',
+  tim_ketua = '',
+  catatan_review = '',
+  catatan_wpj = '',
+}) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/audit_kka`,
+      {
+        file_kesimpulan,
+        file_bukti_dukung,
+        hasil_pengujian,
+        no_penugasan,
+        no_ref_kka,
+        no_ref_pka,
+        judul,
+        tim_anggota,
+        tim_ketua,
+        catatan_review,
+        catatan_wpj,
+      },
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
       }
     );
@@ -264,6 +319,19 @@ export const deletePermintaan = async (id) => {
   }
 };
 
+export const deleteAudit = async (id) => {
+  try {
+    const response = await axios.delete(`${baseURL}/audit_kka/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
 export const postForm = async ({
   jenis_layanan = '',
   tanggal = '',

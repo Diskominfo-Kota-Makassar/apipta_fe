@@ -3,15 +3,8 @@ import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@m
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
-import {
-  baseURL,
-  getPenugasanFromAPI,
-  postSubmitPenugasan,
-  postUpdatePermintaan,
-} from 'src/utils/api';
-import { useRouter } from 'src/routes/hooks/use-router';
+import { getPenugasanFromAPI, postSubmitPenugasan } from 'src/utils/api';
 import { MuiFileInput } from 'mui-file-input';
-import { useLocation } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -29,17 +22,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { all } from 'axios';
 
 // ----------------------------------------------------------------------
 
 export default function ValidasiPermintaan() {
   const notify = (comment) => toast(comment);
-
-  const location = useLocation();
-  const allData = location.state || {};
-
-  const urlFile = allData.file;
 
   const [loading, setLoading] = useState(false);
 
@@ -86,24 +73,27 @@ export default function ValidasiPermintaan() {
     setUraianST(penugasan.uraian);
   };
 
-  const handleUpdatePermintaan = async (event) => {
+  const handlePostPenugasan = async (event) => {
     event.preventDefault();
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    const res = await postUpdatePermintaan({
-      id: form.get('id'),
-      status: form.get('status'),
+    const res = await postSubmitPenugasan({
+      no: form.get('no'),
+      tgl: form.get('tgl'),
+      uraian: form.get('uraian'),
     });
 
-    if (res.status === 200) {
+    console.log(res);
+
+    if (res.status === 201) {
       setLoading(false);
       // window.location.reload();
-      notify('Berhasil Validasi');
+      notify('Berhasil Menambahkan Penugasan');
       window.history.back();
     } else {
       setLoading(false);
-      notify('Gagal Validasi');
+      notify('Gagal Menambahkan Penugasan');
     }
   };
 
@@ -139,38 +129,22 @@ export default function ValidasiPermintaan() {
             <Grid item sm={12} md={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <CardContent>
-                  <form>
+                  <form onSubmit={handlePostPenugasan}>
                     <Stack spacing={2}>
-                      <TextField name="no" value={allData.id} label="ID Permintaan" />
-                      <TextField name="uraian" value={allData.no_ref_kka} label="No.Ref KKA" />
-                      <TextField name="uraian" value={allData.no_ref_pka} label="No.Ref PKA" />
-                      <TextField name="uraian" value={allData.judul_doc} label="Judul Dokumen" />
-                      <TextField
-                        name="uraian"
-                        value={allData.uraian}
-                        label="Catatan/keterangan dokumen"
-                      />
-                      <TextField name="uraian" value={allData.tgl_penugasan} label="Tgl" />
-
-                      <Button
-                        variant="contained"
-                        onClick={() => window.open(`${baseURL}/file/${urlFile}`, '_blank')}
-                      >
-                        View
-                      </Button>
-                    </Stack>
-                  </form>
-                  <Grid container>
-                    <Grid item sm={12} md={12}>
-                      <form onSubmit={handleUpdatePermintaan}>
-                        <TextField type="hidden" name="id" value={allData.id} />
-                        <TextField type="hidden" name="status" value="1" />
-                        <Button fullWidth sx={{ mt: 5 }} variant="contained" type="submit">
+                      <TextField name="no" label="ID Permintaan" />
+                      <TextField name="uraian" label="No.Ref KKA" />
+                      <TextField name="uraian" label="No.Ref PKA" />
+                      <TextField name="uraian" label="Judul Dokumen" />
+                      <TextField name="uraian" label="Catatan/keterangan dokumen" />
+                      <TextField name="uraian" label="Tgl" />
+                      <Button variant="contained">View</Button>
+                      <Grid container justifyContent="flex-end">
+                        <Button variant="contained" type="submit">
                           Validasi
                         </Button>
-                      </form>
-                    </Grid>
-                  </Grid>
+                      </Grid>
+                    </Stack>
+                  </form>
                 </CardContent>
               </LocalizationProvider>
             </Grid>

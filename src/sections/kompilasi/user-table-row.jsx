@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
-import Switch from '@mui/material/Switch';
 import {
   Dialog,
   DialogTitle,
@@ -21,29 +19,22 @@ import {
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { deletePermintaan, getPenugasanFromAPI } from 'src/utils/api';
+import { deleteAudit } from 'src/utils/api';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
   index,
   id,
-  no,
-  tgl_penugasan,
-  judul_doc,
-  uraian,
   no_ref_kka,
   no_ref_pka,
-  status,
-  upload,
-  allData,
+  judul,
   notify,
+  allData,
 }) {
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
-
-  const navigate = useNavigate();
 
   const router = useRouter();
 
@@ -61,18 +52,18 @@ export default function UserTableRow({
     setOpen(false);
   };
 
-  const handleDeletePermintaan = async (event) => {
+  const handleDeletePenugasan = async (event) => {
     setOpenDialog(false);
-    setLoading(true);
-    const res = await deletePermintaan(id);
+
+    const res = await deleteAudit(id);
 
     if (res.status === 200) {
       setLoading(false);
-      notify('Berhasil Menghapus Permintaan');
       window.location.reload();
+      notify('Berhasil Menghapus Audit');
     } else {
       setLoading(false);
-      notify('Gagal Menghapus Permintaan');
+      notify('Gagal Menghapus Audit');
     }
   };
 
@@ -92,28 +83,24 @@ export default function UserTableRow({
         <TableCell />
 
         <TableCell>{index}</TableCell>
-        <TableCell>{no}</TableCell>
-
-        <TableCell>{tgl_penugasan}</TableCell>
-
-        <TableCell>{uraian}</TableCell>
         <TableCell>{no_ref_kka}</TableCell>
+
         <TableCell>{no_ref_pka}</TableCell>
-        <TableCell>{judul_doc}</TableCell>
+
+        <TableCell>{judul}</TableCell>
+        <TableCell>{judul}</TableCell>
+
         <TableCell>
-          <Switch
-            checked={status}
-            onClick={() => navigate('/permintaan/validasi-permintaan', { state: allData })}
-            {...label}
-          />
-          {/* <Switch
-            onClick={() =>
-              router.push({ pathname: '/permintaan/validasi-permintaan', query: 'aaaaa' })
-            }
-            {...label}
-          /> */}
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => router.push('/audit-kka/anggota-tim')}
+          >
+            LIHAT
+          </Button>
         </TableCell>
-        <TableCell align="right">
+
+        <TableCell align="center">
           <IconButton onClick={handleClickOpenDialog}>
             <Iconify icon="material-symbols:delete-outline" />
           </IconButton>
@@ -131,12 +118,12 @@ export default function UserTableRow({
         <DialogTitle id="alert-dialog-title">Konfirmasi Hapus</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Yakin ingin menghapus permintaan ini?
+            Yakin ingin menghapus penugasan ini?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Batal</Button>
-          <Button onClick={handleDeletePermintaan} autoFocus>
+          <Button onClick={handleDeletePenugasan} autoFocus>
             Setuju
           </Button>
         </DialogActions>
@@ -159,15 +146,10 @@ export default function UserTableRow({
 
 UserTableRow.propTypes = {
   index: PropTypes.any,
-  no: PropTypes.any,
-  id: PropTypes.any,
-  judul_doc: PropTypes.any,
-  tgl_penugasan: PropTypes.any,
-  uraian: PropTypes.any,
   no_ref_kka: PropTypes.any,
+  id: PropTypes.any,
   no_ref_pka: PropTypes.any,
-  status: PropTypes.any,
-  upload: PropTypes.any,
+  judul: PropTypes.any,
   allData: PropTypes.any,
   notify: PropTypes.any,
 };

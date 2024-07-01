@@ -12,6 +12,13 @@ import PermintaanPage from './sections/permintaan/view/permintaan-view';
 import ValidasiPermintaan from './sections/permintaan/view/validasi-permintaan';
 import TambahAuditKKA from './sections/audit-kka/view/tambah-audit-kka';
 import AnggotaTim from './sections/audit-kka/view/session/anggota-tim';
+import KetuaTim from './sections/audit-kka/view/session/ketua-tim';
+import Dalnis from './sections/audit-kka/view/session/dalnis';
+import WPJ from './sections/audit-kka/view/session/wpj';
+import BPKP from './sections/audit-kka/view/session/bpkp';
+import Obrik from './sections/audit-kka/view/session/obrik';
+import PJ from './sections/audit-kka/view/session/pj';
+import TambahKompilasi from './sections/kompilasi/view/tambah-kompilasi';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const PenugasanPage = lazy(() => import('src/pages/penugasan'));
@@ -20,6 +27,7 @@ export const FormPermintaanPage = lazy(() => import('src/pages/form-permintaan')
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const AuditKKAView = lazy(() => import('src/sections/audit-kka/view/audit-kka-view'));
+export const KompilasiView = lazy(() => import('src/sections/kompilasi/view/kompilasi-view'));
 export const FormTambahUser = lazy(() => import('src/sections/master/user/view/form-tambah-user'));
 // ----------------------------------------------------------------------
 
@@ -117,6 +125,71 @@ export default function App() {
               }
             />
             <Route
+              path="audit-kka/ketua-tim"
+              element={
+                <ProtectedRoute>
+                  <KetuaTim />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka/dalnis"
+              element={
+                <ProtectedRoute>
+                  <Dalnis />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka/wpj"
+              element={
+                <ProtectedRoute>
+                  <WPJ />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka/bpkp"
+              element={
+                <ProtectedRoute>
+                  <BPKP />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka/obrik"
+              element={
+                <ProtectedRoute>
+                  <Obrik />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka/pj"
+              element={
+                <ProtectedRoute>
+                  <PJ />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="kompilasi"
+              element={
+                <ProtectedRoute>
+                  <KompilasiView />
+                </ProtectedRoute>
+              }
+            />
+            {/* Form Permohonan Page */}
+            <Route
+              path="kompilasi/tambah-temuan"
+              element={
+                <ProtectedRoute>
+                  <TambahKompilasi />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="users"
               element={
                 <ProtectedRoute>
@@ -124,7 +197,6 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-
             {/* Form Permohonan Page */}
             <Route
               path="users/tambah-user"

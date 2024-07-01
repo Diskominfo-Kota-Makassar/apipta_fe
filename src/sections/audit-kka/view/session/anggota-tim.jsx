@@ -19,6 +19,7 @@ import Iconify from 'src/components/iconify';
 import * as React from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import 'react-toastify/dist/ReactToastify.css';
+import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -33,7 +34,9 @@ export default function AnggotaTim() {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
-  const [valueFile, setValueFile] = useState(null);
+  const [valueHasilPengujian, setvalueHasilPengujian] = useState([]);
+  const [valueBuktiDukung, setValueBuktiDukung] = useState(null);
+  const [valueKesimpulanKKA, setValueKesimpulanKKA] = useState(null);
 
   const [allPenugasan, setAllPenugasan] = useState([]);
   const [tglST, setTglST] = useState('');
@@ -42,8 +45,8 @@ export default function AnggotaTim() {
   const [at, setAt] = useState([]);
   const [atList, setAtList] = useState([]);
 
-  const handleChangeFile = (newValue) => {
-    setValueFile(newValue);
+  const handleChangePengujian = (newValue) => {
+    setvalueHasilPengujian([...valueHasilPengujian, ...newValue]);
   };
 
   const handleToggle = () => {
@@ -110,6 +113,14 @@ export default function AnggotaTim() {
     }
   };
 
+  const handleChangeBuktiDukung = (newValue) => {
+    setValueBuktiDukung(newValue);
+  };
+
+  const handleChangeKesimpulanKKA = (newValue) => {
+    setValueKesimpulanKKA(newValue);
+  };
+
   const handlePenugasanFromAPI = async () => {
     const penugasan = await getPenugasanFromAPI();
     setAllPenugasan(penugasan.data);
@@ -155,30 +166,39 @@ export default function AnggotaTim() {
                 <CardContent>
                   <form onSubmit={handlePostPenugasan}>
                     <Stack spacing={2}>
-                      <FormControl fullWidth>
-                        <InputLabel>NO.ST</InputLabel>
-                        <Select label="No.ST" onChange={handleChangeST}>
-                          {allPenugasan.map((option) => (
-                            <MenuItem key={option.id} value={option.id}>
-                              {' '}
-                              {option.no}{' '}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
                       <TextField name="uraian" label="ID KKA" />
                       <TextField name="uraian" label="No.Ref KKA" />
                       <TextField name="uraian" label="No.Ref PKA" />
                       <TextField name="uraian" label="Judul Pengujian" />
                       <MuiFileInput
-                        name="file"
-                        placeholder="Pilih File"
-                        value={valueFile}
-                        onChange={handleChangeFile}
+                        multiple
+                        name="hasil_pengujian"
+                        placeholder="Pilih File Hasil Pengujian"
+                        value={valueHasilPengujian}
+                        onChange={handleChangePengujian}
+                      />
+                      <Typography variant="body2">
+                        *Only .jpg .png .Files,500kb max file size
+                      </Typography>
+                      {valueHasilPengujian.map((file) => (
+                        <ListItem key={file.name}>{file.name}</ListItem>
+                      ))}
+                      <MuiFileInput
+                        name="dokumen_bukti_dukung"
+                        placeholder="Dokumen Bukti Dukung"
+                        value={valueBuktiDukung}
+                        onChange={handleChangeBuktiDukung}
+                      />
+                      <TextField multiline name="catatan_anggota_tim" label="Catatan Anggota Tim" />
+                      <MuiFileInput
+                        name="kesimpulan_kka"
+                        placeholder="Kesimpulan KKA"
+                        value={valueKesimpulanKKA}
+                        onChange={handleChangeKesimpulanKKA}
                       />
                       <Grid container justifyContent="flex-end">
                         <Button variant="contained" type="submit">
-                          Submit
+                          Update
                         </Button>
                       </Grid>
                     </Stack>

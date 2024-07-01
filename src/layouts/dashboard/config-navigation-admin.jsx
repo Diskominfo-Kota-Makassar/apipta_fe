@@ -6,11 +6,16 @@ const icon = (name) => (
   <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
 );
 
-const navConfig = [
+const navConfigAdmin = [
   {
     title: 'dashboard',
     path: '/',
     icon: icon('ic_analytics'),
+  },
+  {
+    title: 'penugasan',
+    path: '/penugasan',
+    icon: icon('ic_penugasan'),
   },
   {
     title: 'permintaan',
@@ -44,4 +49,4 @@ const navConfig = [
   },
 ];
 
-export default navConfig;
+export default navConfigAdmin;

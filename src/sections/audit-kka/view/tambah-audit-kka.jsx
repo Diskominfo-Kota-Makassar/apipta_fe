@@ -3,7 +3,12 @@ import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@m
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
-import { getPenugasanFromAPI, postSubmitPenugasan, getUsersFromAPI } from 'src/utils/api';
+import {
+  getPenugasanFromAPI,
+  postSubmitPenugasan,
+  getUsersFromAPI,
+  postSubmitAuditKKA,
+} from 'src/utils/api';
 import { MuiFileInput } from 'mui-file-input';
 
 import Stack from '@mui/material/Stack';
@@ -36,6 +41,7 @@ export default function TambahAuditKKA() {
   const [valueFile, setValueFile] = useState(null);
 
   const [allPenugasan, setAllPenugasan] = useState([]);
+  const [noSuratST, setNoSuratST] = useState('');
   const [tglST, setTglST] = useState('');
   const [uraianST, setUraianST] = useState('');
 
@@ -82,6 +88,7 @@ export default function TambahAuditKKA() {
 
   const handleChangeST = (event) => {
     const penugasan = allPenugasan.find((option) => option.id === event.target.value);
+    setNoSuratST(penugasan.no);
     setTglST(penugasan.tgl);
     setUraianST(penugasan.uraian);
   };
@@ -91,10 +98,12 @@ export default function TambahAuditKKA() {
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    const res = await postSubmitPenugasan({
-      no: form.get('no'),
-      tgl: form.get('tgl'),
-      uraian: form.get('uraian'),
+    const res = await postSubmitAuditKKA({
+      no_penugasan: noSuratST,
+      no_ref_kka: form.get('no_ref_kka'),
+      no_ref_pka: form.get('no_ref_pka'),
+      judul: form.get('judul'),
+      tim_anggota: at,
     });
 
     console.log(res);
@@ -166,9 +175,9 @@ export default function TambahAuditKKA() {
                           ))}
                         </Select>
                       </FormControl>
-                      <TextField name="uraian" label="No.Ref KKA" />
-                      <TextField name="uraian" label="No.Ref PKA" />
-                      <TextField name="uraian" label="Judul Pengujian" />
+                      <TextField name="no_ref_kka" label="No.Ref KKA" />
+                      <TextField name="no_ref_pka" label="No.Ref PKA" />
+                      <TextField name="judul" label="Judul Pengujian" />
                       <FormControl fullWidth>
                         <InputLabel id="Pilih Anggota Tim">Pilih Anggota Tim</InputLabel>
                         <Select

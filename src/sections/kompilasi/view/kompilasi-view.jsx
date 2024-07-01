@@ -30,7 +30,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
-export default function AuditKKA() {
+export default function Kompilasi() {
   const notify = (comment) => toast(comment);
 
   const [page, setPage] = useState(0);
@@ -119,16 +119,17 @@ export default function AuditKKA() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">List Audit KKA</Typography>
+        <Typography variant="h4">TEMUAN HASIL AUDIT</Typography>
 
         <Button
           variant="contained"
-          onClick={() => router.push('/audit-kka/tambah-audit-kka')}
+          onClick={() => router.push('/kompilasi/tambah-temuan')}
           color="inherit"
           startIcon={<Iconify icon="eva:plus-fill" />}
         >
-          Tambah KKA
+          Tambah Temuan
         </Button>
+        <Button variant="contained"> Lihat Kompilasi Temuan Hasil Audit </Button>
       </Stack>
 
       <Card>
@@ -150,10 +151,11 @@ export default function AuditKKA() {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'no', label: 'NO' },
-                  { id: 'no_ref_kka', label: 'NO.REF KKA' },
-                  { id: 'no_ref_pka', label: 'NO.REF PKA' },
-                  { id: 'uraian_kka', label: 'Uraian KKA' },
-                  { id: 'judul', label: 'Keterangan' },
+                  { id: 'no_ref_kka', label: 'Kondisi' },
+                  { id: 'no_ref_pka', label: 'Kriteria' },
+                  { id: 'uraian_kka', label: 'Sebab' },
+                  { id: 'uraian_kka', label: 'Akibat' },
+                  { id: 'judul', label: 'ٌRekomendasi' },
                   { id: '', label: 'Aksi' },
                 ]}
               />

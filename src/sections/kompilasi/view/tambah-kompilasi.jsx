@@ -4,14 +4,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
 import {
-  baseURL,
   getPenugasanFromAPI,
   postSubmitPenugasan,
-  postUpdatePermintaan,
+  getUsersFromAPI,
+  postSubmitAuditKKA,
 } from 'src/utils/api';
-import { useRouter } from 'src/routes/hooks/use-router';
 import { MuiFileInput } from 'mui-file-input';
-import { useLocation } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -29,17 +27,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { all } from 'axios';
 
 // ----------------------------------------------------------------------
 
-export default function ValidasiPermintaan() {
+export default function TambahKompilasi() {
   const notify = (comment) => toast(comment);
-
-  const location = useLocation();
-  const allData = location.state || {};
-
-  const urlFile = allData.file;
 
   const [loading, setLoading] = useState(false);
 
@@ -49,8 +41,12 @@ export default function ValidasiPermintaan() {
   const [valueFile, setValueFile] = useState(null);
 
   const [allPenugasan, setAllPenugasan] = useState([]);
+  const [noSuratST, setNoSuratST] = useState('');
   const [tglST, setTglST] = useState('');
   const [uraianST, setUraianST] = useState('');
+
+  const [at, setAt] = useState([]);
+  const [atList, setAtList] = useState([]);
 
   const handleChangeFile = (newValue) => {
     setValueFile(newValue);
@@ -80,30 +76,46 @@ export default function ValidasiPermintaan() {
     },
   };
 
+  const handleChangeAt = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setAt(
+      // On autofill we get a stringified value.
+      typeof value === 'number' ? value.split(',') : value
+    );
+  };
+
   const handleChangeST = (event) => {
     const penugasan = allPenugasan.find((option) => option.id === event.target.value);
+    setNoSuratST(penugasan.no);
     setTglST(penugasan.tgl);
     setUraianST(penugasan.uraian);
   };
 
-  const handleUpdatePermintaan = async (event) => {
+  const handlePostPenugasan = async (event) => {
     event.preventDefault();
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    const res = await postUpdatePermintaan({
-      id: form.get('id'),
-      status: form.get('status'),
+    const res = await postSubmitAuditKKA({
+      no_penugasan: noSuratST,
+      no_ref_kka: form.get('no_ref_kka'),
+      no_ref_pka: form.get('no_ref_pka'),
+      judul: form.get('judul'),
+      tim_anggota: at,
     });
 
-    if (res.status === 200) {
+    console.log(res);
+
+    if (res.status === 201) {
       setLoading(false);
       // window.location.reload();
-      notify('Berhasil Validasi');
+      notify('Berhasil Menambahkan Penugasan');
       window.history.back();
     } else {
       setLoading(false);
-      notify('Gagal Validasi');
+      notify('Gagal Menambahkan Penugasan');
     }
   };
 
@@ -112,14 +124,25 @@ export default function ValidasiPermintaan() {
     setAllPenugasan(penugasan.data);
   };
 
+  const handleUsersFromAPI = useCallback(async () => {
+    const users = await getUsersFromAPI();
+    const usersObject = await users.data;
+    usersObject.forEach((user) => {
+      if (user.role_id === 3) {
+        setAtList((prevAtList) => [...prevAtList, user]);
+      }
+    });
+  }, []);
+
   useEffect(() => {
     handlePenugasanFromAPI();
-  }, []);
+    handleUsersFromAPI();
+  }, [handleUsersFromAPI]);
 
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Validasi Dokumen</Typography>
+        <Typography variant="h4">Tambah Temuan</Typography>
 
         <Button
           variant="contained"
@@ -139,38 +162,19 @@ export default function ValidasiPermintaan() {
             <Grid item sm={12} md={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <CardContent>
-                  <form>
+                  <form onSubmit={handlePostPenugasan}>
                     <Stack spacing={2}>
-                      <TextField name="no" value={allData.id} label="ID Permintaan" />
-                      <TextField name="uraian" value={allData.no_ref_kka} label="No.Ref KKA" />
-                      <TextField name="uraian" value={allData.no_ref_pka} label="No.Ref PKA" />
-                      <TextField name="uraian" value={allData.judul_doc} label="Judul Dokumen" />
-                      <TextField
-                        name="uraian"
-                        value={allData.uraian}
-                        label="Catatan/keterangan dokumen"
-                      />
-                      <TextField name="uraian" value={allData.tgl_penugasan} label="Tgl" />
-
-                      <Button
-                        variant="contained"
-                        onClick={() => window.open(`${baseURL}/file/${urlFile}`, '_blank')}
-                      >
-                        View
-                      </Button>
+                      <TextField name="no_ref_kka" label="Kondisi" />
+                      <TextField name="no_ref_pka" label="Sebab" />
+                      <TextField name="judul" label="Kriteria" />
+                      <TextField name="judul" label="Akibat" />
+                      <Grid container justifyContent="flex-end">
+                        <Button variant="contained" type="submit">
+                          Submit
+                        </Button>
+                      </Grid>
                     </Stack>
                   </form>
-                  <Grid container>
-                    <Grid item sm={12} md={12}>
-                      <form onSubmit={handleUpdatePermintaan}>
-                        <TextField type="hidden" name="id" value={allData.id} />
-                        <TextField type="hidden" name="status" value="1" />
-                        <Button fullWidth sx={{ mt: 5 }} variant="contained" type="submit">
-                          Validasi
-                        </Button>
-                      </form>
-                    </Grid>
-                  </Grid>
                 </CardContent>
               </LocalizationProvider>
             </Grid>

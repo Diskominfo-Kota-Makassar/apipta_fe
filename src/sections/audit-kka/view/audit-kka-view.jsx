@@ -152,8 +152,8 @@ export default function AuditKKA() {
                   { id: 'no', label: 'NO' },
                   { id: 'no_ref_kka', label: 'NO.REF KKA' },
                   { id: 'no_ref_pka', label: 'NO.REF PKA' },
-                  { id: 'uraian_kka', label: 'Uraian KKA' },
-                  { id: 'judul', label: 'Keterangan' },
+                  { id: 'judul', label: 'Uraian KKA' },
+                  { id: 'ket', label: 'Keterangan' },
                   { id: '', label: 'Aksi' },
                 ]}
               />
@@ -163,9 +163,10 @@ export default function AuditKKA() {
                   .map((row, index) => (
                     <UserTableRow
                       index={index + 1}
+                      id={row.id}
                       no_ref_kka={row.no_ref_kka}
                       no_ref_pka={row.no_ref_pka}
-                      judul={row.judul}
+                      uraian={row.judul}
                       notify={notify}
                       allData={row}
                     />

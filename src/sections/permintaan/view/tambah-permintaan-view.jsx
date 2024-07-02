@@ -6,6 +6,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import { getPenugasanFromAPI, postSubmitPermintaan } from 'src/utils/api';
 import { MuiFileInput } from 'mui-file-input';
 
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
+
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -27,6 +29,8 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 
 export default function TambahPermintaan() {
   const notify = (comment) => toast(comment);
+
+  const user = useLocalStorage('user');
 
   const [loading, setLoading] = useState(false);
 
@@ -104,15 +108,31 @@ export default function TambahPermintaan() {
     }
   };
 
-  const handlePenugasanFromAPI = async () => {
-    const penugasan = await getPenugasanFromAPI();
-    console.log(penugasan);
-    setAllPenugasan(penugasan.data);
-  };
+  const handlePenugasanFromAPI = useCallback(async () => {
+    try {
+      const penugasan = await getPenugasanFromAPI();
+
+      if (user[0].role_id === 1) {
+        setAllPenugasan(penugasan.data);
+        return;
+      }
+
+      if (user[0].surat_tugas !== '') {
+        const id_surat_dipilih = user[0].surat_tugas;
+        const penugasanTerpilih = penugasan.data.find((option) => option.id === id_surat_dipilih);
+        setAllPenugasan([penugasanTerpilih]);
+      } else {
+        setAllPenugasan([]);
+      }
+    } catch (error) {
+      console.error('Error fetching penugasan data:', error);
+      // Handle error appropriately
+    }
+  }, [user]);
 
   useEffect(() => {
     handlePenugasanFromAPI();
-  }, []);
+  }, [handlePenugasanFromAPI]);
 
   return (
     <Container>

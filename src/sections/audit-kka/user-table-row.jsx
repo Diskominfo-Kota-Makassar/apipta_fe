@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { useTheme } from '@mui/material/styles';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
+import { useNavigate } from 'react-router-dom';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
@@ -27,14 +29,17 @@ export default function UserTableRow({
   id,
   no_ref_kka,
   no_ref_pka,
-  judul,
+  uraian,
   notify,
   allData,
 }) {
   const theme = useTheme();
+  const user = useLocalStorage('user');
   const [loading, setLoading] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const router = useRouter();
 
@@ -77,6 +82,33 @@ export default function UserTableRow({
     setOpenDialog(false);
   };
 
+  console.log(user[0].role_id);
+
+  const handleSession = () => {
+    if (user[0].role_id === 3) {
+      return navigate('/audit-kka/anggota-tim', { state: allData });
+    }
+    if (user[0].role_id === 2) {
+      return navigate('/audit-kka/ketua-tim', { state: allData });
+    }
+    if (user[0].role_id === 4) {
+      return navigate('/audit-kka/wpj', { state: allData });
+    }
+    if (user[0].role_id === 5) {
+      return navigate('/audit-kka/obrik', { state: allData });
+    }
+    if (user[0].role_id === 6) {
+      return navigate('/audit-kka/bpkp', { state: allData });
+    }
+    if (user[0].role_id === 7) {
+      return navigate('/audit-kka/pj', { state: allData });
+    }
+    if (user[0].role_id === 8) {
+      return navigate('/audit-kka/dalnis', { state: allData });
+    }
+    return () => {};
+  };
+
   return (
     <>
       <TableRow hover tabIndex={-1}>
@@ -87,14 +119,10 @@ export default function UserTableRow({
 
         <TableCell>{no_ref_pka}</TableCell>
 
-        <TableCell>{judul}</TableCell>
+        <TableCell>{uraian}</TableCell>
 
         <TableCell>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => router.push('/audit-kka/anggota-tim')}
-          >
+          <Button variant="contained" color="success" onClick={handleSession}>
             LIHAT KKA
           </Button>
         </TableCell>
@@ -117,7 +145,7 @@ export default function UserTableRow({
         <DialogTitle id="alert-dialog-title">Konfirmasi Hapus</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Yakin ingin menghapus penugasan ini?
+            Yakin ingin menghapus kka?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -145,10 +173,10 @@ export default function UserTableRow({
 
 UserTableRow.propTypes = {
   index: PropTypes.any,
-  no_ref_kka: PropTypes.any,
   id: PropTypes.any,
+  no_ref_kka: PropTypes.any,
   no_ref_pka: PropTypes.any,
-  judul: PropTypes.any,
+  uraian: PropTypes.any,
   allData: PropTypes.any,
   notify: PropTypes.any,
 };

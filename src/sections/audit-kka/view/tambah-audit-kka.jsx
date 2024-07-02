@@ -3,12 +3,7 @@ import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@m
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
-import {
-  getPenugasanFromAPI,
-  postSubmitPenugasan,
-  getUsersFromAPI,
-  postSubmitAuditKKA,
-} from 'src/utils/api';
+import { getPenugasanFromAPI, getUsersFromAPI, postSubmitAuditKKAAwal } from 'src/utils/api';
 import { MuiFileInput } from 'mui-file-input';
 
 import Stack from '@mui/material/Stack';
@@ -98,7 +93,7 @@ export default function TambahAuditKKA() {
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    const res = await postSubmitAuditKKA({
+    const res = await postSubmitAuditKKAAwal({
       no_penugasan: noSuratST,
       no_ref_kka: form.get('no_ref_kka'),
       no_ref_pka: form.get('no_ref_pka'),
@@ -111,11 +106,11 @@ export default function TambahAuditKKA() {
     if (res.status === 201) {
       setLoading(false);
       // window.location.reload();
-      notify('Berhasil Menambahkan Penugasan');
+      notify('Berhasil Menambahkan kka');
       window.history.back();
     } else {
       setLoading(false);
-      notify('Gagal Menambahkan Penugasan');
+      notify('Gagal Menambahkan kka');
     }
   };
 

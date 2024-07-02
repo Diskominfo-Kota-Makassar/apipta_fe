@@ -137,11 +137,7 @@ export const postSubmitAuditKKA = async ({
   file_kesimpulan = File(),
   file_bukti_dukung = File(),
   hasil_pengujian = File(),
-  no_penugasan = '',
-  no_ref_kka = '',
-  no_ref_pka = '',
-  judul = '',
-  tim_anggota = '',
+  id_audit = '',
   tim_ketua = '',
   catatan_review = '',
   catatan_wpj = '',
@@ -153,11 +149,7 @@ export const postSubmitAuditKKA = async ({
         file_kesimpulan,
         file_bukti_dukung,
         hasil_pengujian,
-        no_penugasan,
-        no_ref_kka,
-        no_ref_pka,
-        judul,
-        tim_anggota,
+        id_audit,
         tim_ketua,
         catatan_review,
         catatan_wpj,
@@ -165,6 +157,35 @@ export const postSubmitAuditKKA = async ({
       {
         headers: {
           'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const postSubmitAuditKKAAwal = async ({
+  no_penugasan = '',
+  no_ref_kka = '',
+  no_ref_pka = '',
+  judul = '',
+  tim_anggota = '',
+}) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/audit_kka/awal`,
+      {
+        no_penugasan,
+        no_ref_kka,
+        no_ref_pka,
+        judul,
+        tim_anggota,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
         },
       }
     );
@@ -206,15 +227,6 @@ export const postSubmitPermintaan = async ({
   ket = '',
 }) => {
   try {
-    console.log(no);
-    console.log(tgl_penugasan);
-    console.log(uraian);
-    console.log(no_ref_kka);
-    console.log(no_ref_pka);
-    console.log(judul_doc);
-    console.log(ket);
-    console.log(file);
-    // Create a FormData object
     const formData = new FormData();
     formData.append('file', file);
     formData.append('no', no);
@@ -328,114 +340,6 @@ export const deleteAudit = async (id) => {
     });
     const result = response;
     return result;
-  } catch (error) {
-    return error;
-  }
-};
-export const postForm = async ({
-  jenis_layanan = '',
-  tanggal = '',
-  nama = '',
-  alamat = '',
-  nomorHp = '',
-  tujuan = '',
-  keterangan = '',
-  agama = '',
-  tmp_lahir = '',
-  tgl_lahir = '',
-  pekerjaan = '',
-  nm_ayah = '',
-  nm_ibu = '',
-  jkel = '',
-  pewaris = '',
-  tanggalMeninggal = '',
-  tempatMeninggal = '',
-  ahliWaris = '',
-  umur = '',
-  namaInstansiPengirim = '',
-  namaInstansiTujuan = '',
-  nomorSurat = '',
-  penanggungjawab = '',
-  perihal = '',
-  namaCalonIstri = '',
-  alamatCalonIstri = '',
-  tempatLahirCalonIstri = '',
-  tanggalLahirCalonIstri = '',
-  pekerjaanCalonIstri = '',
-  namaCalonSuami = '',
-  alamatCalonSuami = '',
-  tempatLahirCalonSuami = '',
-  tanggalLahirCalonSuami = '',
-  pekerjaanCalonSuami = '',
-  umurMeninggal = '',
-  NIB = '',
-  jenisUsaha = '',
-  alamatUsaha = '',
-}) => {
-  try {
-    const response = await axios.post(
-      `${baseURL}/form`,
-      {
-        jenis_layanan,
-        tanggal,
-        nama,
-        alamat,
-        nomorHp,
-        tujuan,
-        keterangan,
-        agama,
-        tmp_lahir,
-        tgl_lahir,
-        pekerjaan,
-        nm_ayah,
-        nm_ibu,
-        jkel,
-        pewaris,
-        tanggalMeninggal,
-        tempatMeninggal,
-        ahliWaris,
-        umur,
-        namaInstansiPengirim,
-        namaInstansiTujuan,
-        nomorSurat,
-        penanggungjawab,
-        perihal,
-        namaCalonIstri,
-        alamatCalonIstri,
-        tempatLahirCalonIstri,
-        tanggalLahirCalonIstri,
-        pekerjaanCalonIstri,
-        namaCalonSuami,
-        alamatCalonSuami,
-        tempatLahirCalonSuami,
-        tanggalLahirCalonSuami,
-        pekerjaanCalonSuami,
-        umurMeninggal,
-        NIB,
-        jenisUsaha,
-        alamatUsaha,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    const result = response;
-    return result;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const getAllPermohonan = async () => {
-  try {
-    const response = await axios.get(`${baseURL}/all/data`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response;
   } catch (error) {
     return error;
   }

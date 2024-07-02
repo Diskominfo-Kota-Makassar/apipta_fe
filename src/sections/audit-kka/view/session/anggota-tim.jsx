@@ -3,7 +3,12 @@ import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@m
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
-import { getPenugasanFromAPI, postSubmitPenugasan, getUsersFromAPI } from 'src/utils/api';
+import {
+  getPenugasanFromAPI,
+  postSubmitPenugasan,
+  getUsersFromAPI,
+  postSubmitAuditKKA,
+} from 'src/utils/api';
 import { MuiFileInput } from 'mui-file-input';
 
 import Stack from '@mui/material/Stack';
@@ -14,6 +19,8 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Unstable_Grid2';
+
+import { useLocation } from 'react-router-dom';
 
 import Iconify from 'src/components/iconify';
 import * as React from 'react';
@@ -44,6 +51,9 @@ export default function AnggotaTim() {
 
   const [at, setAt] = useState([]);
   const [atList, setAtList] = useState([]);
+
+  const location = useLocation();
+  const allData = location.state || {};
 
   const handleChangePengujian = (newValue) => {
     setvalueHasilPengujian([...valueHasilPengujian, ...newValue]);
@@ -94,10 +104,12 @@ export default function AnggotaTim() {
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    const res = await postSubmitPenugasan({
-      no: form.get('no'),
-      tgl: form.get('tgl'),
-      uraian: form.get('uraian'),
+    const res = postSubmitAuditKKA({
+      id_audit: form.get('id_audit'),
+      file_kesimpulan: valueKesimpulanKKA,
+      file_bukti_dukung: valueBuktiDukung,
+      hasil_pengujian: valueHasilPengujian,
+      catatan_review: form.get('catatan_review'),
     });
 
     console.log(res);
@@ -105,11 +117,11 @@ export default function AnggotaTim() {
     if (res.status === 201) {
       setLoading(false);
       // window.location.reload();
-      notify('Berhasil Menambahkan Penugasan');
+      notify('Berhasil Melakukan Update KKA');
       window.history.back();
     } else {
       setLoading(false);
-      notify('Gagal Menambahkan Penugasan');
+      notify('Gagal Melakukan Update KKA');
     }
   };
 
@@ -166,10 +178,11 @@ export default function AnggotaTim() {
                 <CardContent>
                   <form onSubmit={handlePostPenugasan}>
                     <Stack spacing={2}>
-                      <TextField name="uraian" label="ID KKA" />
-                      <TextField name="uraian" label="No.Ref KKA" />
-                      <TextField name="uraian" label="No.Ref PKA" />
-                      <TextField name="uraian" label="Judul Pengujian" />
+                      <TextField name="uraian" label="ID KKA" value={allData.id} />
+                      <TextField name="uraian" label="No.Ref KKA" value={allData.no_ref_kka} />
+                      <TextField name="uraian" label="No.Ref PKA" value={allData.no_ref_pka} />
+                      <TextField name="uraian" label="Judul Pengujian" value={allData.judul} />
+                      <TextField name="catatan_review" label="Catatan Anggota Tim" />
                       <MuiFileInput
                         multiple
                         name="hasil_pengujian"
@@ -185,14 +198,14 @@ export default function AnggotaTim() {
                       ))}
                       <MuiFileInput
                         name="dokumen_bukti_dukung"
-                        placeholder="Dokumen Bukti Dukung"
+                        placeholder="Pilih Dokumen Bukti Dukung"
                         value={valueBuktiDukung}
                         onChange={handleChangeBuktiDukung}
                       />
                       <TextField multiline name="catatan_anggota_tim" label="Catatan Anggota Tim" />
                       <MuiFileInput
                         name="kesimpulan_kka"
-                        placeholder="Kesimpulan KKA"
+                        placeholder="Pilih Kesimpulan KKA"
                         value={valueKesimpulanKKA}
                         onChange={handleChangeKesimpulanKKA}
                       />

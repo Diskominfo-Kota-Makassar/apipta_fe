@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
@@ -34,8 +34,6 @@ export default function PermohonanPage() {
   const notify = (comment) => toast(comment);
 
   const user = useLocalStorage('user');
-
-  const surat_tugas_terpilih = user[0].surat_tugas;
 
   const [page, setPage] = useState(0);
 
@@ -110,28 +108,47 @@ export default function PermohonanPage() {
 
   const router = useRouter();
 
-  const handlePenugasanFromAPI = async () => {
-    const penugasan = await getPenugasanFromAPI();
-    setAllPenugasan(penugasan.data);
-  };
+  const handlePenugasanFromAPI = useCallback(async () => {
+    try {
+      const penugasan = await getPenugasanFromAPI();
+
+      if (user[0].role_id === 1) {
+        setAllPenugasan(penugasan.data);
+        return;
+      }
+
+      if (user[0].surat_tugas !== '') {
+        const id_surat_dipilih = user[0].surat_tugas;
+        const penugasanTerpilih = penugasan.data.find((option) => option.id === id_surat_dipilih);
+        setAllPenugasan([penugasanTerpilih]);
+      } else {
+        setAllPenugasan([]);
+      }
+    } catch (error) {
+      console.error('Error fetching penugasan data:', error);
+      // Handle error appropriately
+    }
+  }, [user]);
 
   useEffect(() => {
     handlePenugasanFromAPI();
-  }, []);
+  }, [handlePenugasanFromAPI]);
 
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Penugasan</Typography>
 
-        <Button
-          variant="contained"
-          onClick={() => router.push('/penugasan/tambah-penugasan')}
-          color="inherit"
-          startIcon={<Iconify icon="eva:plus-fill" />}
-        >
-          Tambah Penugasan
-        </Button>
+        {user[0].role_id === 1 && (
+          <Button
+            variant="contained"
+            onClick={() => router.push('/penugasan/tambah-penugasan')}
+            color="inherit"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
+            Tambah Penugasan
+          </Button>
+        )}
       </Stack>
 
       <Card>

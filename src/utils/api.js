@@ -285,9 +285,7 @@ export const postSubmitAuditKKAAwal = async ({
   formData.append('no_ref_kka', no_ref_kka);
   formData.append('no_ref_pka', no_ref_pka);
   formData.append('judul', judul);
-  tim_anggota.forEach((file) => {
-    formData.append('tim_anggota', file);
-  });
+  formData.append('tim_anggota', tim_anggota);
   try {
     const response = await axios.post(
       `${baseURL}/audit_kka/awal`,
@@ -296,7 +294,7 @@ export const postSubmitAuditKKAAwal = async ({
       },
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
         },
       }
     );

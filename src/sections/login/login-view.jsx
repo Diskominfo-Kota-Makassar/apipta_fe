@@ -54,6 +54,11 @@ export default function LoginView() {
       notify('Pilih Role User Terlebih Dahulu');
       return;
     }
+    if (jabatan !== 1 && suratTugas === '') {
+      setLoading(false);
+      notify('Pilih Surat Tugas Terlebih Dahulu');
+      return;
+    }
 
     const res = await postLogin({
       role_id: jabatan,
@@ -62,12 +67,16 @@ export default function LoginView() {
       password: form.get('password'),
     });
 
+    console.log(res);
+
     if (res.status === 200) {
       setLoading(false);
       notify('Berhasil Login');
+
       await login({
-        username: form.get('username'),
-        role_id: jabatan,
+        username: res.data.data.username,
+        role_id: res.data.data.role_id,
+        user_id: res.data.data.id,
         surat_tugas: suratTugas,
       });
     } else {
@@ -78,6 +87,7 @@ export default function LoginView() {
 
   const handleChangeJabatan = (event) => {
     setJabatan(event.target.value);
+    console.log(jabatan);
   };
 
   const handlePenugasanFromAPI = async () => {
@@ -104,17 +114,19 @@ export default function LoginView() {
             ))}
           </Select>
         </FormControl>
-        <FormControl fullWidth>
-          <InputLabel>Pilih Surat Tugas</InputLabel>
-          <Select onChange={handleChangeST} label="Pilih Surat Tugas">
-            {allPenugasan.map((option) => (
-              <MenuItem key={option.id} value={option.id}>
-                {' '}
-                {option.no}{' '}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        {jabatan !== 1 && (
+          <FormControl fullWidth>
+            <InputLabel>Pilih Surat Tugas</InputLabel>
+            <Select onChange={handleChangeST} label="Pilih Surat Tugas">
+              {allPenugasan.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {' '}
+                  {option.no}{' '}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
         <TextField name="username" label="Username" />
 
         <TextField

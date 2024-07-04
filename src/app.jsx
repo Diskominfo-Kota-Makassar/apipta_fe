@@ -21,6 +21,7 @@ import PJ from './sections/audit-kka/view/session/pj';
 import TambahKompilasi from './sections/kompilasi/view/tambah-kompilasi';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
+export const ChatView = lazy(() => import('src/pages/chat'));
 export const PenugasanPage = lazy(() => import('src/pages/penugasan'));
 export const FormPenugasanPage = lazy(() => import('src/pages/form-penugasan'));
 export const FormPermintaanPage = lazy(() => import('src/pages/form-permintaan'));
@@ -204,6 +205,14 @@ export default function App() {
                 <ProtectedRoute>
                   {' '}
                   <FormTambahUser />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="chat"
+              element={
+                <ProtectedRoute>
+                  <ChatView />
                 </ProtectedRoute>
               }
             />

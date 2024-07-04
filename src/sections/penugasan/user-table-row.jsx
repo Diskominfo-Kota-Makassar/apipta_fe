@@ -60,7 +60,7 @@ export default function UserTableRow({
 
     if (res.status === 200) {
       setLoading(false);
-      window.location.reload();
+      // window.location.reload();
       notify('Berhasil Menghapus Penugasan');
     } else {
       setLoading(false);

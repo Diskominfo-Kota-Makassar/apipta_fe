@@ -41,8 +41,6 @@ export default function UserTableRow({
 
   const navigate = useNavigate();
 
-  const router = useRouter();
-
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   // const handleOpenMenu = (event) => {

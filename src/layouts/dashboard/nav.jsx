@@ -64,7 +64,7 @@ export default function Nav({ openNav, onCloseNav }) {
     </Box>
   );
 
-  const renderMenu = (
+  const renderChat = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {navConfig.map((item) => (
         <NavItem key={item.title} item={item} />
@@ -96,6 +96,7 @@ export default function Nav({ openNav, onCloseNav }) {
       {renderAccount}
       {/* {user[0].role_id === 1 ? renderMenuAdmin : renderMenu} */}
       {renderMenuAdmin}
+      <Box sx={{ mt: '100px' }}>{renderChat}</Box>
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   );

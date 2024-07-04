@@ -3,12 +3,7 @@ import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@m
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
-import {
-  getPenugasanFromAPI,
-  postSubmitPenugasan,
-  getUsersFromAPI,
-  postSubmitAuditKKA,
-} from 'src/utils/api';
+import { getUsersFromAPI, postSubmitAuditKKA } from 'src/utils/api';
 import { MuiFileInput } from 'mui-file-input';
 
 import Stack from '@mui/material/Stack';
@@ -24,12 +19,8 @@ import { useLocation } from 'react-router-dom';
 
 import Iconify from 'src/components/iconify';
 import * as React from 'react';
-import MenuItem from '@mui/material/MenuItem';
 import 'react-toastify/dist/ReactToastify.css';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
-import OutlinedInput from '@mui/material/OutlinedInput';
 
 // ----------------------------------------------------------------------
 
@@ -99,12 +90,18 @@ export default function AnggotaTim() {
     setUraianST(penugasan.uraian);
   };
 
-  const handlePostPenugasan = async (event) => {
+  const handlePostAuditKKA = async (event) => {
     event.preventDefault();
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    const res = postSubmitAuditKKA({
+    console.log(form.get('id_audit'));
+    console.log(valueKesimpulanKKA);
+    console.log(valueBuktiDukung);
+    console.log(valueHasilPengujian);
+    console.log(form.get('catatan_review'));
+
+    const res = await postSubmitAuditKKA({
       id_audit: form.get('id_audit'),
       file_kesimpulan: valueKesimpulanKKA,
       file_bukti_dukung: valueBuktiDukung,
@@ -133,11 +130,6 @@ export default function AnggotaTim() {
     setValueKesimpulanKKA(newValue);
   };
 
-  const handlePenugasanFromAPI = async () => {
-    const penugasan = await getPenugasanFromAPI();
-    setAllPenugasan(penugasan.data);
-  };
-
   const handleUsersFromAPI = useCallback(async () => {
     const users = await getUsersFromAPI();
     const usersObject = await users.data;
@@ -148,10 +140,7 @@ export default function AnggotaTim() {
     });
   }, []);
 
-  useEffect(() => {
-    handlePenugasanFromAPI();
-    handleUsersFromAPI();
-  }, [handleUsersFromAPI]);
+  useEffect(() => {}, []);
 
   return (
     <Container>
@@ -176,12 +165,12 @@ export default function AnggotaTim() {
             <Grid item sm={12} md={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <CardContent>
-                  <form onSubmit={handlePostPenugasan}>
+                  <form onSubmit={handlePostAuditKKA}>
                     <Stack spacing={2}>
-                      <TextField name="uraian" label="ID KKA" value={allData.id} />
-                      <TextField name="uraian" label="No.Ref KKA" value={allData.no_ref_kka} />
-                      <TextField name="uraian" label="No.Ref PKA" value={allData.no_ref_pka} />
-                      <TextField name="uraian" label="Judul Pengujian" value={allData.judul} />
+                      <TextField name="id_audit" label="ID KKA" value={allData.id} />
+                      <TextField name="kka" label="No.Ref KKA" value={allData.no_ref_kka} />
+                      <TextField name="pka" label="No.Ref PKA" value={allData.no_ref_pka} />
+                      <TextField name="judul" label="Judul Pengujian" value={allData.judul} />
                       <TextField name="catatan_review" label="Catatan Anggota Tim" />
                       <MuiFileInput
                         multiple
@@ -202,7 +191,6 @@ export default function AnggotaTim() {
                         value={valueBuktiDukung}
                         onChange={handleChangeBuktiDukung}
                       />
-                      <TextField multiline name="catatan_anggota_tim" label="Catatan Anggota Tim" />
                       <MuiFileInput
                         name="kesimpulan_kka"
                         placeholder="Pilih Kesimpulan KKA"

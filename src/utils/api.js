@@ -134,34 +134,141 @@ export const postSubmitPenugasan = async ({
   }
 };
 export const postSubmitAuditKKA = async ({
-  file_kesimpulan = File(),
-  file_bukti_dukung = File(),
-  hasil_pengujian = File(),
+  file_kesimpulan,
+  file_bukti_dukung,
+  hasil_pengujian = [],
   id_audit = '',
   tim_ketua = '',
   catatan_review = '',
-  catatan_wpj = '',
 }) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/audit_kka`,
-      {
-        file_kesimpulan,
-        file_bukti_dukung,
-        hasil_pengujian,
-        id_audit,
-        tim_ketua,
-        catatan_review,
-        catatan_wpj,
+    const formData = new FormData();
+    formData.append('file_kesimpulan', file_kesimpulan);
+    formData.append('file_bukti_dukung', file_bukti_dukung);
+
+    if (hasil_pengujian.length !== 0) {
+      console.log('null terbaca');
+      hasil_pengujian.forEach((file) => {
+        formData.append('hasil_pengujian', file);
+      });
+    }
+    formData.append('id_audit', id_audit);
+    formData.append('tim_ketua', tim_ketua);
+    formData.append('catatan_review', catatan_review);
+    const response = await axios.post(`${baseURL}/audit_kka`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
+    });
     const result = response;
     return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const putUpdateAuditKKA = async ({
+  id_audit = '',
+  tim_ketua = '',
+  dalnis = '',
+  wpj = '',
+  bpkp = '',
+  obrik = '',
+  pj = '',
+}) => {
+  try {
+    if (tim_ketua !== '') {
+      const response = await axios.put(
+        `${baseURL}/audit_kka/${id_audit}`,
+        {
+          tim_ketua,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const result = response;
+      return result;
+    }
+    if (dalnis !== '') {
+      const response = await axios.put(
+        `${baseURL}/audit_kka/${id_audit}`,
+        {
+          dalnis,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const result = response;
+      return result;
+    }
+    if (bpkp !== '') {
+      const response = await axios.put(
+        `${baseURL}/audit_kka/${id_audit}`,
+        {
+          bpkp,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const result = response;
+      return result;
+    }
+    if (obrik !== '') {
+      const response = await axios.put(
+        `${baseURL}/audit_kka/${id_audit}`,
+        {
+          obrik,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const result = response;
+      return result;
+    }
+    if (pj !== '') {
+      const response = await axios.put(
+        `${baseURL}/audit_kka/${id_audit}`,
+        {
+          pj,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const result = response;
+      return result;
+    }
+    if (wpj !== '') {
+      const response = await axios.put(
+        `${baseURL}/audit_kka/${id_audit}`,
+        {
+          catatan_wpj: wpj,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const result = response;
+      return result;
+    }
+    return null;
   } catch (error) {
     return error;
   }
@@ -171,21 +278,25 @@ export const postSubmitAuditKKAAwal = async ({
   no_ref_kka = '',
   no_ref_pka = '',
   judul = '',
-  tim_anggota = '',
+  tim_anggota = [],
 }) => {
+  const formData = new FormData();
+  formData.append('no_penugasan', no_penugasan);
+  formData.append('no_ref_kka', no_ref_kka);
+  formData.append('no_ref_pka', no_ref_pka);
+  formData.append('judul', judul);
+  tim_anggota.forEach((file) => {
+    formData.append('tim_anggota', file);
+  });
   try {
     const response = await axios.post(
       `${baseURL}/audit_kka/awal`,
       {
-        no_penugasan,
-        no_ref_kka,
-        no_ref_pka,
-        judul,
-        tim_anggota,
+        formData,
       },
       {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       }
     );
@@ -336,6 +447,24 @@ export const deleteAudit = async (id) => {
     const response = await axios.delete(`${baseURL}/audit_kka/${id}`, {
       headers: {
         'Content-Type': 'application/json',
+      },
+    });
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const handlePostFileAudit = async ({ file, user_id = '', penugasan_id = '' }) => {
+  try {
+    const formData = new FormData();
+    formData.append('user_id', user_id);
+    formData.append('penugasan_id', penugasan_id);
+    formData.append('file', file);
+    const response = await axios.post(`${baseURL}/audit_kka/user/file`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
     });
     const result = response;

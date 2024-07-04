@@ -4,10 +4,15 @@ import { useTheme } from '@mui/material/styles';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
+import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
 import IconButton from '@mui/material/IconButton';
+
 import {
+  TextField,
+  Stack,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -15,19 +20,23 @@ import {
   Button,
   DialogActions,
   CircularProgress,
+  TableBody,
+  TableContainer,
 } from '@mui/material';
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { deleteAudit } from 'src/utils/api';
+import { deleteKompilasi } from 'src/utils/api';
+
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
   index,
   id,
-  no_ref_kka,
-  no_ref_pka,
-  judul,
+  kondisi,
+  kriteria,
+  sebab,
+  akibat,
   notify,
   allData,
 }) {
@@ -55,26 +64,44 @@ export default function UserTableRow({
   const handleDeletePenugasan = async (event) => {
     setOpenDialog(false);
 
-    const res = await deleteAudit(id);
+    const res = await deleteKompilasi(id);
 
     if (res.status === 200) {
       setLoading(false);
       window.location.reload();
-      notify('Berhasil Menghapus Audit');
+      notify('Berhasil Menghapus Kompilasi');
     } else {
       setLoading(false);
-      notify('Gagal Menghapus Audit');
+      notify('Gagal Menghapus Kompilasi');
     }
   };
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [openDialogRekomendasi, setOpenDialogRekomendasi] = useState(false);
+  const [openDialogRencanaAksi, setOpenDialogRencanaAksi] = useState(false);
 
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
   };
 
+  const handleClickOpenDialogRekomendasi = () => {
+    setOpenDialogRekomendasi(true);
+  };
+
+  const handleClickOpenDialogRencanaAksi = () => {
+    setOpenDialogRencanaAksi(true);
+  };
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
+  };
+
+  const handleCloseDialogRekomendasi = () => {
+    setOpenDialogRekomendasi(false);
+  };
+
+  const handleCloseDialogRencanaAksi = () => {
+    setOpenDialogRencanaAksi(false);
   };
 
   return (
@@ -83,19 +110,15 @@ export default function UserTableRow({
         <TableCell />
 
         <TableCell>{index}</TableCell>
-        <TableCell>{no_ref_kka}</TableCell>
+        <TableCell>{kondisi}</TableCell>
 
-        <TableCell>{no_ref_pka}</TableCell>
+        <TableCell>{kriteria}</TableCell>
 
-        <TableCell>{judul}</TableCell>
-        <TableCell>{judul}</TableCell>
+        <TableCell>{sebab}</TableCell>
+        <TableCell>{akibat}</TableCell>
 
         <TableCell>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => router.push('/audit-kka/anggota-tim')}
-          >
+          <Button variant="contained" color="success" onClick={handleClickOpenDialogRekomendasi}>
             LIHAT
           </Button>
         </TableCell>
@@ -109,6 +132,7 @@ export default function UserTableRow({
           </IconButton>
         </TableCell>
       </TableRow>
+      {/* dialog kompilasi */}
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
@@ -118,7 +142,7 @@ export default function UserTableRow({
         <DialogTitle id="alert-dialog-title">Konfirmasi Hapus</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Yakin ingin menghapus penugasan ini?
+            Yakin ingin menghapus kompilasi ini?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -140,16 +164,115 @@ export default function UserTableRow({
           }}
         />
       )}
+      {/* Dialog Rekomendasi */}
+      <Dialog
+        open={openDialogRekomendasi}
+        onClose={handleCloseDialogRekomendasi}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Rekomendasi</DialogTitle>
+        <DialogContent>
+          <form>
+            <TextField name="rekomendasi" label="Rekomendasi" />
+            <Button sx={{ mt: 1, ml: 2 }} variant="contained" type="submit">
+              Simpan
+            </Button>
+          </form>
+          <TableContainer sx={{ mt: 2 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>No</TableCell>
+                  <TableCell>Rekomendasi</TableCell>
+                  <TableCell>Rencana Aksi</TableCell>
+                  <TableCell>Aksi</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>No</TableCell>
+                  <TableCell>Rekomendasi</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={handleClickOpenDialogRencanaAksi}
+                    >
+                      LIHAT
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    {' '}
+                    <IconButton onClick={handleClickOpenDialog}>
+                      <Iconify icon="material-symbols:delete-outline" />
+                    </IconButton>
+                    <IconButton onClick={handleOpen}>
+                      <Iconify icon="tabler:edit" />
+                    </IconButton>{' '}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
+      </Dialog>
+      {/* Dialog rencana aksi */}
+      <Dialog
+        open={openDialogRencanaAksi}
+        onClose={handleCloseDialogRencanaAksi}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Rencana Aksi</DialogTitle>
+        <DialogContent>
+          <form>
+            <TextField name="rencana_aksi" label="Rencana Aksi" />
+            <Button sx={{ mt: 1, ml: 2 }} variant="contained" type="submit">
+              Simpan
+            </Button>
+          </form>
+          <TableContainer sx={{ mt: 2 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>No</TableCell>
+                  <TableCell>Rencana Aksi</TableCell>
+                  <TableCell>Waktu</TableCell>
+                  <TableCell>Aksi</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>No</TableCell>
+                  <TableCell>Rekomendasi</TableCell>
+                  <TableCell>Waktu Pelaksanaan</TableCell>
+                  <TableCell>
+                    {' '}
+                    <IconButton onClick={handleClickOpenDialog}>
+                      <Iconify icon="material-symbols:delete-outline" />
+                    </IconButton>
+                    <IconButton onClick={handleOpen}>
+                      <Iconify icon="tabler:edit" />
+                    </IconButton>{' '}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
 
 UserTableRow.propTypes = {
   index: PropTypes.any,
-  no_ref_kka: PropTypes.any,
   id: PropTypes.any,
-  no_ref_pka: PropTypes.any,
-  judul: PropTypes.any,
+  kondisi: PropTypes.any,
+  kriteria: PropTypes.any,
+  sebab: PropTypes.any,
+  akibat: PropTypes.any,
   allData: PropTypes.any,
   notify: PropTypes.any,
 };

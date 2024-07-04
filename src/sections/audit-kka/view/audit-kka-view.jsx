@@ -21,13 +21,11 @@ import Scrollbar from 'src/components/scrollbar';
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 
-import { getAuditFromAPI } from 'src/utils/api';
-import { format } from 'date-fns';
+import { getAuditFromAPI, handlePostFileAudit } from 'src/utils/api';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
 import UserTableHead from '../user-table-head';
 import TableEmptyRows from '../table-empty-rows';
-import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
@@ -55,6 +53,8 @@ export default function AuditKKA() {
 
   const [valueDraftNaskah, setValueDraftNaskah] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
     if (id !== '') {
@@ -70,24 +70,6 @@ export default function AuditKKA() {
       return;
     }
     setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -117,6 +99,33 @@ export default function AuditKKA() {
   const notFound = !dataFiltered.length && !!filterName;
 
   const router = useRouter();
+
+  const handleSubmitFile = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    console.log(valueDraftNaskah);
+    console.log(user[0].user_id);
+    console.log(user[0].surat_tugas);
+
+    const res = await handlePostFileAudit({
+      file: valueDraftNaskah,
+      user_id: user[0].user_id,
+      penugasan_id: user[0].surat_tugas,
+    });
+
+    console.log(res);
+
+    if (res.status === 201) {
+      setLoading(false);
+      // window.location.reload();
+      notify('Berhasil Menambahkan File Draft');
+      window.history.back();
+    } else {
+      setLoading(false);
+      notify('Gagal Menambahkan File Draft');
+    }
+  };
 
   const handleAuditFromAPI = async () => {
     const audit = await getAuditFromAPI();
@@ -207,28 +216,37 @@ export default function AuditKKA() {
       </Card>
       {user[0].role_id === 2 && (
         <Card sx={{ mt: 3, p: 3 }}>
-          <MuiFileInput
-            sx={{ mr: 3 }}
-            name="draft_naskah"
-            placeholder="Draft Naskah"
-            value={valueDraftNaskah}
-            onChange={handleChangeDraftNaskah}
-          />
+          <form onSubmit={handleSubmitFile}>
+            <MuiFileInput
+              sx={{ mr: 3 }}
+              name="draft_naskah"
+              placeholder="Pilih File Draft Naskah"
+              value={valueDraftNaskah}
+              onChange={handleChangeDraftNaskah}
+            />
+            <Button sx={{ mt: 1 }} type="submit" variant="contained">
+              {' '}
+              Simpan{' '}
+            </Button>
+          </form>
+        </Card>
+      )}
+      {user[0].role_id === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
           <Button sx={{ mt: 1 }} type="submit" variant="contained">
             {' '}
-            Simpan{' '}
+            View File Draft Naskah{' '}
           </Button>
         </Card>
       )}
-      {user[0].role_id === 8 ||
-        (user[0].role_id === 4 && (
-          <Card sx={{ mt: 3, p: 3 }}>
-            <Button sx={{ mt: 1 }} type="submit" variant="contained">
-              {' '}
-              View File Draft Naskah{' '}
-            </Button>
-          </Card>
-        ))}
+      {user[0].role_id === 4 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button sx={{ mt: 1 }} type="submit" variant="contained">
+            {' '}
+            View File Draft Naskah{' '}
+          </Button>
+        </Card>
+      )}
     </Container>
   );
 }

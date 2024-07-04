@@ -1,15 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@mui/material';
+import { TextField, CircularProgress } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
-import {
-  getPenugasanFromAPI,
-  postSubmitPenugasan,
-  getUsersFromAPI,
-  postSubmitAuditKKA,
-} from 'src/utils/api';
-import { MuiFileInput } from 'mui-file-input';
+import { postSubmitKompilasi } from 'src/utils/api';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -22,11 +16,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 import Iconify from 'src/components/iconify';
 import * as React from 'react';
-import MenuItem from '@mui/material/MenuItem';
 import 'react-toastify/dist/ReactToastify.css';
-import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
-import OutlinedInput from '@mui/material/OutlinedInput';
 
 // ----------------------------------------------------------------------
 
@@ -76,34 +66,16 @@ export default function TambahKompilasi() {
     },
   };
 
-  const handleChangeAt = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setAt(
-      // On autofill we get a stringified value.
-      typeof value === 'number' ? value.split(',') : value
-    );
-  };
-
-  const handleChangeST = (event) => {
-    const penugasan = allPenugasan.find((option) => option.id === event.target.value);
-    setNoSuratST(penugasan.no);
-    setTglST(penugasan.tgl);
-    setUraianST(penugasan.uraian);
-  };
-
-  const handlePostPenugasan = async (event) => {
+  const handlePostKompilasi = async (event) => {
     event.preventDefault();
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    const res = await postSubmitAuditKKA({
-      no_penugasan: noSuratST,
-      no_ref_kka: form.get('no_ref_kka'),
-      no_ref_pka: form.get('no_ref_pka'),
-      judul: form.get('judul'),
-      tim_anggota: at,
+    const res = await postSubmitKompilasi({
+      kondisi: form.get('kondisi'),
+      kriteria: form.get('kriteria'),
+      sebab: form.get('sebab'),
+      akibat: form.get('akibat'),
     });
 
     console.log(res);
@@ -111,33 +83,15 @@ export default function TambahKompilasi() {
     if (res.status === 201) {
       setLoading(false);
       // window.location.reload();
-      notify('Berhasil Menambahkan Penugasan');
+      notify('Berhasil Menambahkan Kompilasi');
       window.history.back();
     } else {
       setLoading(false);
-      notify('Gagal Menambahkan Penugasan');
+      notify('Gagal Menambahkan Kompilasi');
     }
   };
 
-  const handlePenugasanFromAPI = async () => {
-    const penugasan = await getPenugasanFromAPI();
-    setAllPenugasan(penugasan.data);
-  };
-
-  const handleUsersFromAPI = useCallback(async () => {
-    const users = await getUsersFromAPI();
-    const usersObject = await users.data;
-    usersObject.forEach((user) => {
-      if (user.role_id === 3) {
-        setAtList((prevAtList) => [...prevAtList, user]);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    handlePenugasanFromAPI();
-    handleUsersFromAPI();
-  }, [handleUsersFromAPI]);
+  useEffect(() => {}, []);
 
   return (
     <Container>
@@ -162,12 +116,12 @@ export default function TambahKompilasi() {
             <Grid item sm={12} md={12}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <CardContent>
-                  <form onSubmit={handlePostPenugasan}>
+                  <form onSubmit={handlePostKompilasi}>
                     <Stack spacing={2}>
-                      <TextField name="no_ref_kka" label="Kondisi" />
-                      <TextField name="no_ref_pka" label="Sebab" />
-                      <TextField name="judul" label="Kriteria" />
-                      <TextField name="judul" label="Akibat" />
+                      <TextField name="kondisi" label="Kondisi" />
+                      <TextField name="sebab" label="Sebab" />
+                      <TextField name="kriteria" label="Kriteria" />
+                      <TextField name="akibat" label="Akibat" />
                       <Grid container justifyContent="flex-end">
                         <Button variant="contained" type="submit">
                           Submit

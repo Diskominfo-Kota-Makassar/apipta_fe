@@ -280,17 +280,15 @@ export const postSubmitAuditKKAAwal = async ({
   judul = '',
   tim_anggota = [],
 }) => {
-  const formData = new FormData();
-  formData.append('no_penugasan', no_penugasan);
-  formData.append('no_ref_kka', no_ref_kka);
-  formData.append('no_ref_pka', no_ref_pka);
-  formData.append('judul', judul);
-  formData.append('tim_anggota', tim_anggota);
   try {
     const response = await axios.post(
       `${baseURL}/audit_kka/awal`,
       {
-        formData,
+        no_penugasan,
+        no_ref_kka,
+        no_ref_pka,
+        judul,
+        tim_anggota,
       },
       {
         headers: {
@@ -463,6 +461,64 @@ export const handlePostFileAudit = async ({ file, user_id = '', penugasan_id = '
     const response = await axios.post(`${baseURL}/audit_kka/user/file`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
+      },
+    });
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+// Koompilasi
+
+export const postSubmitKompilasi = async ({
+  kondisi = '',
+  kriteria = '',
+  sebab = '',
+  akibat = '',
+}) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/kompilasi`,
+      {
+        kondisi,
+        kriteria,
+        sebab,
+        akibat,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getKompilasi = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/kompilasi`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.data;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteKompilasi = async (id) => {
+  try {
+    const response = await axios.delete(`${baseURL}/kompilasi/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
       },
     });
     const result = response;

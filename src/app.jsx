@@ -19,6 +19,7 @@ import BPKP from './sections/audit-kka/view/session/bpkp';
 import Obrik from './sections/audit-kka/view/session/obrik';
 import PJ from './sections/audit-kka/view/session/pj';
 import TambahKompilasi from './sections/kompilasi/view/tambah-kompilasi';
+import LihatKompilasi from './sections/kompilasi/view/lihat-kompilasi';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const ChatView = lazy(() => import('src/pages/chat'));
@@ -181,12 +182,20 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            {/* Form Permohonan Page */}
+
             <Route
               path="kompilasi/tambah-temuan"
               element={
                 <ProtectedRoute>
                   <TambahKompilasi />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="kompilasi/lihat-kompilasi"
+              element={
+                <ProtectedRoute>
+                  <LihatKompilasi />
                 </ProtectedRoute>
               }
             />

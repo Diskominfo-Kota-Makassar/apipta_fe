@@ -19,7 +19,7 @@ import Scrollbar from 'src/components/scrollbar';
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 
-import { getAuditFromAPI } from 'src/utils/api';
+import { getKompilasi } from 'src/utils/api';
 import { format } from 'date-fns';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -64,24 +64,6 @@ export default function Kompilasi() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -107,7 +89,7 @@ export default function Kompilasi() {
   const router = useRouter();
 
   const handleAuditFromAPI = async () => {
-    const audit = await getAuditFromAPI();
+    const audit = await getKompilasi();
     console.log(audit);
     setAllAudit(audit.data);
   };
@@ -123,13 +105,16 @@ export default function Kompilasi() {
 
         <Button
           variant="contained"
-          onClick={() => router.push('/kompilasi/tambah-temuan')}
+          onClick={() => router.push('/kompilasi/tambah')}
           color="inherit"
           startIcon={<Iconify icon="eva:plus-fill" />}
         >
           Tambah Temuan
         </Button>
-        <Button variant="contained"> Lihat Kompilasi Temuan Hasil Audit </Button>
+        <Button variant="contained" onClick={() => router.push('/kompilasi/lihat-kompilasi')}>
+          {' '}
+          Lihat Kompilasi Temuan Hasil Audit{' '}
+        </Button>
       </Stack>
 
       <Card>
@@ -151,11 +136,11 @@ export default function Kompilasi() {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'no', label: 'NO' },
-                  { id: 'no_ref_kka', label: 'Kondisi' },
-                  { id: 'no_ref_pka', label: 'Kriteria' },
-                  { id: 'uraian_kka', label: 'Sebab' },
-                  { id: 'uraian_kka', label: 'Akibat' },
-                  { id: 'judul', label: 'ٌRekomendasi' },
+                  { id: 'kondisi', label: 'Kondisi' },
+                  { id: 'kriteria', label: 'Kriteria' },
+                  { id: 'sebab', label: 'Sebab' },
+                  { id: 'akibat', label: 'Akibat' },
+                  { id: '', label: 'ٌRekomendasi' },
                   { id: '', label: 'Aksi' },
                 ]}
               />
@@ -165,9 +150,11 @@ export default function Kompilasi() {
                   .map((row, index) => (
                     <UserTableRow
                       index={index + 1}
-                      no_ref_kka={row.no_ref_kka}
-                      no_ref_pka={row.no_ref_pka}
-                      judul={row.judul}
+                      id={row.id}
+                      kondisi={row.kondisi}
+                      kriteria={row.kriteria}
+                      sebab={row.sebab}
+                      akibat={row.akibat}
                       notify={notify}
                       allData={row}
                     />

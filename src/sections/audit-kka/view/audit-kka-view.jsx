@@ -249,7 +249,7 @@ export default function AuditKKA() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
-      {user[0].role_id === 2 && valueDraftNaskahFromAPI[0].file === null && (
+      {user[0].role_id === 2 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handleSubmitFile}>
             <MuiFileInput
@@ -267,7 +267,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user[0].role_id === 2 && valueDraftNaskahFromAPI[0].file !== null && (
+      {user[0].role_id === 2 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -282,27 +282,25 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user[0].role_id === 2 &&
-        valueDraftNaskahFromAPI[0].file !== null &&
-        valueDraftNaskahFromAPI[1].file === null && (
-          <Card sx={{ mt: 3, p: 3 }}>
-            <form onSubmit={handleSubmitFile}>
-              <MuiFileInput
-                sx={{ mr: 3 }}
-                name="draft_naskah"
-                placeholder="Pilih File Draft Naskah (Revisi)"
-                value={valueDraftNaskah}
-                onChange={handleChangeDraftNaskah}
-              />
-              <Button sx={{ mt: 1 }} type="submit" variant="contained">
-                {' '}
-                Simpan{' '}
-              </Button>
-            </form>
-          </Card>
-        )}
+      {user[0].role_id === 2 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form onSubmit={handleSubmitFile}>
+            <MuiFileInput
+              sx={{ mr: 3 }}
+              name="draft_naskah"
+              placeholder="Pilih File Draft Naskah (Revisi)"
+              value={valueDraftNaskah}
+              onChange={handleChangeDraftNaskah}
+            />
+            <Button sx={{ mt: 1 }} type="submit" variant="contained">
+              {' '}
+              Simpan{' '}
+            </Button>
+          </form>
+        </Card>
+      )}
 
-      {user[0].role_id === 2 && valueDraftNaskahFromAPI[1].file !== null && (
+      {user[0].role_id === 2 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -317,7 +315,7 @@ export default function AuditKKA() {
         </Card>
       )}
       {/* session user bpkp */}
-      {user[0].role_id === 6 && valueDraftNaskahFromAPI[1].file !== null && (
+      {user[0].role_id === 6 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}

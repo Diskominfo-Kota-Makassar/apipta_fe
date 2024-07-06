@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
 import { baseURL, putUpdateAuditKKA } from 'src/utils/api';
 import { useLocation } from 'react-router-dom';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -23,6 +24,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function WPJ() {
   const notify = (comment) => toast(comment);
+  const user = useLocalStorage('user');
 
   const [loading, setLoading] = useState(false);
 
@@ -118,12 +120,17 @@ export default function WPJ() {
                         value={allData.tim_ketua}
                       />
                       <TextField multiline value={allData.dalnis} label="Catatan Review Dalnis" />
-                      <TextField multiline name="wpj" label="Catatan Review WPJ" />
-                      <Grid container justifyContent="flex-end">
-                        <Button variant="contained" type="submit">
-                          Update
-                        </Button>
-                      </Grid>
+                      <TextField multiline value={allData.catatan_wpj} label="Catatan Review WPJ" />
+                      {user[0].role === '4' && (
+                        <TextField multiline name="wpj" label="Catatan Review WPJ" />
+                      )}
+                      {user[0].role === '4' && (
+                        <Grid container justifyContent="flex-end">
+                          <Button variant="contained" type="submit">
+                            Update
+                          </Button>
+                        </Grid>
+                      )}
                     </Stack>
                   </form>
                 </CardContent>

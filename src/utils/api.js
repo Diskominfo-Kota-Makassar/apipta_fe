@@ -452,7 +452,40 @@ export const deleteAudit = async (id) => {
   }
 };
 
+export const getFileAuditFromAPI = async ({ id_surat_tugas = '' }) => {
+  try {
+    const response = await axios.get(`${baseURL}/audit_kka/user/file/${id_surat_tugas}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.data;
+
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const handlePostFileAudit = async ({ file, user_id = '', penugasan_id = '' }) => {
+  try {
+    const formData = new FormData();
+    formData.append('user_id', user_id);
+    formData.append('penugasan_id', penugasan_id);
+    formData.append('file', file);
+    const response = await axios.post(`${baseURL}/audit_kka/user/file`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const handlePostFileAuditBPKP = async ({ file, user_id = '', penugasan_id = '' }) => {
   try {
     const formData = new FormData();
     formData.append('user_id', user_id);
@@ -499,6 +532,46 @@ export const postSubmitKompilasi = async ({
     return error;
   }
 };
+export const postSubmitRekomendasi = async ({ id_kompilasi, masukan = '' }) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/rekomendasi`,
+      {
+        id_kompilasi,
+        masukan,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const postSubmitRencanaAksi = async ({ id_rekomendasi, masukan = '' }) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/aksi`,
+      {
+        id_rekomendasi,
+        masukan,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const getKompilasi = async () => {
   try {
@@ -508,6 +581,7 @@ export const getKompilasi = async () => {
       },
     });
     const result = await response.data;
+    console.log(result);
     return result;
   } catch (error) {
     return error;
@@ -517,6 +591,32 @@ export const getKompilasi = async () => {
 export const deleteKompilasi = async (id) => {
   try {
     const response = await axios.delete(`${baseURL}/kompilasi/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const deleteRekomendasi = async (id) => {
+  try {
+    const response = await axios.delete(`${baseURL}/rekomendasi/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const deleteAksi = async (id) => {
+  try {
+    const response = await axios.delete(`${baseURL}/aksi/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },

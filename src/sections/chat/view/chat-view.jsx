@@ -2,20 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import TableBody from '@mui/material/TableBody';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
-
-import { users } from 'src/_mock/user';
-
-import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
+import Button from '@mui/material/Button';
 
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
@@ -33,10 +24,21 @@ export default function ChatPage() {
   useEffect(() => {}, []);
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       <Typography variant="h4">Chat</Typography>
 
-      <Card />
+      <Grid container spacing={2}>
+        <Grid item xs={6} md={4}>
+          <Card sx={{ p: 3 }}>
+            <Button variant="contained" color="success">
+              New Message
+            </Button>
+          </Card>
+        </Grid>
+        <Grid item xs={6} md={8}>
+          <Card sx={{ p: 3 }}> Untuk chat </Card>
+        </Grid>
+      </Grid>
     </Container>
   );
 }

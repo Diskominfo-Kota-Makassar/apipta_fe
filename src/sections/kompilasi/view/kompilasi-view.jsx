@@ -90,7 +90,7 @@ export default function Kompilasi() {
 
   const handleAuditFromAPI = async () => {
     const audit = await getKompilasi();
-    console.log(audit);
+
     setAllAudit(audit.data);
   };
 

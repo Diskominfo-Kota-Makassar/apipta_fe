@@ -87,7 +87,12 @@ export default function UserTableRow({
       return navigate('/audit-kka/anggota-tim', { state: allData });
     }
     if (user[0].role_id === 2) {
-      return navigate('/audit-kka/ketua-tim', { state: allData });
+      if (allData.wpj === '') {
+        return navigate('/audit-kka/ketua-tim', { state: allData });
+      }
+      if (allData.wpj !== '') {
+        return navigate('/audit-kka/wpj', { state: allData });
+      }
     }
     if (user[0].role_id === 4) {
       return navigate('/audit-kka/wpj', { state: allData });

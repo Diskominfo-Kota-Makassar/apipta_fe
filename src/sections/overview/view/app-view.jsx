@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
+import { getPenugasanFromAPI } from 'src/utils/api';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -16,9 +17,35 @@ import AppWidgetSummary from '../app-widget-summary';
 // ----------------------------------------------------------------------
 
 export default function AppView() {
-  const userObject = useLocalStorage('user');
+  const user = useLocalStorage('user');
 
-  useEffect(() => {}, []);
+  const [allPenugasan, setAllPenugasan] = useState([]);
+
+  const handlePenugasanFromAPI = useCallback(async () => {
+    try {
+      const penugasan = await getPenugasanFromAPI();
+
+      if (user[0].role_id === 1) {
+        setAllPenugasan(penugasan.data);
+        return;
+      }
+
+      if (user[0].surat_tugas !== '') {
+        const id_surat_dipilih = user[0].surat_tugas;
+        const penugasanTerpilih = penugasan.data.find((option) => option.id === id_surat_dipilih);
+        setAllPenugasan([penugasanTerpilih]);
+      } else {
+        setAllPenugasan([]);
+      }
+    } catch (error) {
+      console.error('Error fetching penugasan data:', error);
+      // Handle error appropriately
+    }
+  }, [user]);
+
+  useEffect(() => {
+    handlePenugasanFromAPI();
+  });
 
   return (
     <Container maxWidth="xl">
@@ -30,7 +57,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="All Data"
-            total={0}
+            total={allPenugasan.length}
             color="success"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
           />
@@ -39,7 +66,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Data Hari Ini"
-            total={0}
+            total={allPenugasan.length}
             color="info"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
           />
@@ -48,7 +75,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Data Minggu Ini"
-            total={0}
+            total={allPenugasan.length}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
           />
@@ -57,7 +84,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Data Bulan Ini"
-            total={0}
+            total={allPenugasan.length}
             color="error"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
           />
@@ -92,14 +119,10 @@ export default function AppView() {
               </Grid>
 
               <BarChart
-                series={[
-                  { data: [35, 44, 24, 34] },
-                  { data: [51, 6, 49, 30] },
-                  { data: [15, 25, 30, 50] },
-                  { data: [60, 50, 15, 25] },
-                ]}
+                series={[{ data: [35, 44] }, { data: [51, 6] }, { data: [51, 6] }]}
                 height={290}
-                xAxis={[{ data: ['Q1', 'Q2', 'Q3', 'Q4'], scaleType: 'band' }]}
+                // xAxis={[{ data: ['Q1', 'Q2', 'Q3', 'Q4'], scaleType: 'band' }]}
+                xAxis={[{ data: ['Permintaan', 'Penugasan'], scaleType: 'band' }]}
                 margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
               />
             </Box>

@@ -26,7 +26,13 @@ import {
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { deleteKompilasi } from 'src/utils/api';
+import {
+  deleteKompilasi,
+  deleteRekomendasi,
+  deleteAksi,
+  postSubmitRekomendasi,
+  postSubmitRencanaAksi,
+} from 'src/utils/api';
 
 // ----------------------------------------------------------------------
 
@@ -49,9 +55,8 @@ export default function UserTableRow({
 
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-  // const handleOpenMenu = (event) => {
-  //   setOpen(event.currentTarget);
-  // };
+  const [idRekomendasi, setIdRekomendasi] = useState();
+  const [dataAksi, setDataAksi] = useState([]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -75,6 +80,34 @@ export default function UserTableRow({
       notify('Gagal Menghapus Kompilasi');
     }
   };
+  const handleDeleteRekomendasi = async (event) => {
+    setOpenDialog(false);
+
+    const res = await deleteRekomendasi(id);
+
+    if (res.status === 200) {
+      setLoading(false);
+      window.location.reload();
+      notify('Berhasil Menghapus Rekomendasi');
+    } else {
+      setLoading(false);
+      notify('Gagal Menghapus Rekomendasi');
+    }
+  };
+  const handleDeleteAksi = async (event) => {
+    setOpenDialog(false);
+
+    const res = await deleteAksi(id);
+
+    if (res.status === 200) {
+      setLoading(false);
+      window.location.reload();
+      notify('Berhasil Menghapus Aksi');
+    } else {
+      setLoading(false);
+      notify('Gagal Menghapus Aksi');
+    }
+  };
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogRekomendasi, setOpenDialogRekomendasi] = useState(false);
@@ -88,7 +121,10 @@ export default function UserTableRow({
     setOpenDialogRekomendasi(true);
   };
 
-  const handleClickOpenDialogRencanaAksi = () => {
+  const handleClickOpenDialogRencanaAksi = (data) => {
+    setDataAksi(data.aksis);
+    setIdRekomendasi(data.id);
+
     setOpenDialogRencanaAksi(true);
   };
 
@@ -102,6 +138,46 @@ export default function UserTableRow({
 
   const handleCloseDialogRencanaAksi = () => {
     setOpenDialogRencanaAksi(false);
+  };
+
+  const handleSubmitRekomendasi = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+
+    const res = await postSubmitRekomendasi({
+      id_kompilasi: id,
+      masukan: form.get('masukan'),
+    });
+
+    if (res.status === 201) {
+      setLoading(false);
+      window.location.reload();
+      notify('Berhasil Menambahkan rekomendasi');
+    } else {
+      setLoading(false);
+      notify('Gagal Menambahkan rekomendasi');
+    }
+  };
+  const handleSubmitRencanaAksi = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+
+    const res = await postSubmitRencanaAksi({
+      id_rekomendasi: form.get('id_rekomendasi'),
+      masukan: form.get('masukan'),
+    });
+
+    if (res.status === 201) {
+      setLoading(false);
+      window.location.reload();
+      notify('Berhasil Menambahkan rencana aksi');
+    } else {
+      setLoading(false);
+      window.location.reload();
+      notify('Gagal Menambahkan rencana aksi');
+    }
   };
 
   return (
@@ -173,8 +249,8 @@ export default function UserTableRow({
       >
         <DialogTitle id="alert-dialog-title">Rekomendasi</DialogTitle>
         <DialogContent>
-          <form>
-            <TextField name="rekomendasi" label="Rekomendasi" />
+          <form onSubmit={handleSubmitRekomendasi}>
+            <TextField name="masukan" label="Rekomendasi" />
             <Button sx={{ mt: 1, ml: 2 }} variant="contained" type="submit">
               Simpan
             </Button>
@@ -190,28 +266,30 @@ export default function UserTableRow({
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell>No</TableCell>
-                  <TableCell>Rekomendasi</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={handleClickOpenDialogRencanaAksi}
-                    >
-                      LIHAT
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    {' '}
-                    <IconButton onClick={handleClickOpenDialog}>
-                      <Iconify icon="material-symbols:delete-outline" />
-                    </IconButton>
-                    <IconButton onClick={handleOpen}>
-                      <Iconify icon="tabler:edit" />
-                    </IconButton>{' '}
-                  </TableCell>
-                </TableRow>
+                {allData.rekomendasis.map((data, i) => (
+                  <TableRow>
+                    <TableCell>{i + 1}</TableCell>
+                    <TableCell>{data.masukan}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={() => handleClickOpenDialogRencanaAksi(data)}
+                      >
+                        LIHAT
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      {' '}
+                      <IconButton onClick={handleClickOpenDialog}>
+                        <Iconify icon="material-symbols:delete-outline" />
+                      </IconButton>
+                      <IconButton onClick={handleOpen}>
+                        <Iconify icon="tabler:edit" />
+                      </IconButton>{' '}
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -226,8 +304,9 @@ export default function UserTableRow({
       >
         <DialogTitle id="alert-dialog-title">Rencana Aksi</DialogTitle>
         <DialogContent>
-          <form>
-            <TextField name="rencana_aksi" label="Rencana Aksi" />
+          <form onSubmit={handleSubmitRencanaAksi}>
+            <TextField type="hidden" value={idRekomendasi} name="id_rekomendasi" />
+            <TextField name="masukan" label="Rencana Aksi" />
             <Button sx={{ mt: 1, ml: 2 }} variant="contained" type="submit">
               Simpan
             </Button>
@@ -236,27 +315,29 @@ export default function UserTableRow({
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>No</TableCell>
+                  <TableCell>No.</TableCell>
                   <TableCell>Rencana Aksi</TableCell>
                   <TableCell>Waktu</TableCell>
                   <TableCell>Aksi</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell>No</TableCell>
-                  <TableCell>Rekomendasi</TableCell>
-                  <TableCell>Waktu Pelaksanaan</TableCell>
-                  <TableCell>
-                    {' '}
-                    <IconButton onClick={handleClickOpenDialog}>
-                      <Iconify icon="material-symbols:delete-outline" />
-                    </IconButton>
-                    <IconButton onClick={handleOpen}>
-                      <Iconify icon="tabler:edit" />
-                    </IconButton>{' '}
-                  </TableCell>
-                </TableRow>
+                {dataAksi.map((data, i) => (
+                  <TableRow>
+                    <TableCell>{i + 1}</TableCell>
+                    <TableCell>{data.masukan}</TableCell>
+                    <TableCell>Waktu Pelaksanaan</TableCell>
+                    <TableCell>
+                      {' '}
+                      <IconButton onClick={handleClickOpenDialog}>
+                        <Iconify icon="material-symbols:delete-outline" />
+                      </IconButton>
+                      <IconButton onClick={handleOpen}>
+                        <Iconify icon="tabler:edit" />
+                      </IconButton>{' '}
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { MuiFileInput } from 'mui-file-input';
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
@@ -19,9 +19,9 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 // import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
-import { getAuditFromAPI, handlePostFileAudit } from 'src/utils/api';
+import { getAuditFromAPI, handlePostFileAudit, getFileAuditFromAPI, baseURL } from 'src/utils/api';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
 import UserTableHead from '../user-table-head';
@@ -52,6 +52,15 @@ export default function AuditKKA() {
   const [allAudit, setAllAudit] = useState([]);
 
   const [valueDraftNaskah, setValueDraftNaskah] = useState(null);
+  const [valueDraftNaskahBPKP, setValueDraftNaskahBPKP] = useState(null);
+  const [valueDraftNaskahFromAPI, setValueDraftNaskahFromAPI] = useState([
+    {
+      file: null,
+    },
+    {
+      file: null,
+    },
+  ]);
 
   const [loading, setLoading] = useState(false);
 
@@ -84,6 +93,9 @@ export default function AuditKKA() {
   const handleChangeDraftNaskah = (newValue) => {
     setValueDraftNaskah(newValue);
   };
+  const handleChangeDraftNaskahBPKP = (newValue) => {
+    setValueDraftNaskahBPKP(newValue);
+  };
 
   const handleFilterByName = (event) => {
     setPage(0);
@@ -104,17 +116,32 @@ export default function AuditKKA() {
     event.preventDefault();
     setLoading(true);
 
-    console.log(valueDraftNaskah);
-    console.log(user[0].user_id);
-    console.log(user[0].surat_tugas);
-
     const res = await handlePostFileAudit({
       file: valueDraftNaskah,
       user_id: user[0].user_id,
       penugasan_id: user[0].surat_tugas,
     });
 
-    console.log(res);
+    if (res.status === 201) {
+      setLoading(false);
+      // window.location.reload();
+      notify('Berhasil Menambahkan File Draft');
+      window.history.back();
+    } else {
+      setLoading(false);
+      notify('Gagal Menambahkan File Draft');
+    }
+  };
+
+  const handleSubmitFileBPKP = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    const res = await handlePostFileAudit({
+      file: valueDraftNaskah,
+      user_id: user[0].user_id,
+      penugasan_id: user[0].surat_tugas,
+    });
 
     if (res.status === 201) {
       setLoading(false);
@@ -129,13 +156,21 @@ export default function AuditKKA() {
 
   const handleAuditFromAPI = async () => {
     const audit = await getAuditFromAPI();
-    console.log(audit);
+
     setAllAudit(audit.data);
   };
 
+  const handleFileAuditFromAPI = async () => {
+    // const st_id = user[0].surat_tugas;
+    const file = await getFileAuditFromAPI({ id_surat_tugas: user[0].surat_tugas });
+
+    setValueDraftNaskahFromAPI(file.data);
+  };
+
   useEffect(() => {
+    handleFileAuditFromAPI();
     handleAuditFromAPI();
-  }, []);
+  });
 
   return (
     <Container>
@@ -214,7 +249,7 @@ export default function AuditKKA() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
-      {user[0].role_id === 2 && (
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI[0].file === null && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handleSubmitFile}>
             <MuiFileInput
@@ -231,9 +266,99 @@ export default function AuditKKA() {
           </form>
         </Card>
       )}
+
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI[0].file !== null && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[0].file}`, '_blank')
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Draft Naskah{' '}
+          </Button>
+        </Card>
+      )}
+
+      {user[0].role_id === 2 &&
+        valueDraftNaskahFromAPI[0].file !== null &&
+        valueDraftNaskahFromAPI[1].file === null && (
+          <Card sx={{ mt: 3, p: 3 }}>
+            <form onSubmit={handleSubmitFile}>
+              <MuiFileInput
+                sx={{ mr: 3 }}
+                name="draft_naskah"
+                placeholder="Pilih File Draft Naskah (Revisi)"
+                value={valueDraftNaskah}
+                onChange={handleChangeDraftNaskah}
+              />
+              <Button sx={{ mt: 1 }} type="submit" variant="contained">
+                {' '}
+                Simpan{' '}
+              </Button>
+            </form>
+          </Card>
+        )}
+
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI[1].file !== null && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Draft Naskah (Revisi){' '}
+          </Button>
+        </Card>
+      )}
+      {/* session user bpkp */}
+      {user[0].role_id === 6 && valueDraftNaskahFromAPI[1].file !== null && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Draft Naskah (Revisi){' '}
+          </Button>
+        </Card>
+      )}
+
+      {user[0].role_id === 6 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form onSubmit={handleSubmitFileBPKP}>
+            <MuiFileInput
+              sx={{ mr: 3 }}
+              name="draft_naskah"
+              placeholder="Laporan QA BPKP"
+              value={valueDraftNaskahBPKP}
+              onChange={handleChangeDraftNaskahBPKP}
+            />
+            <Button sx={{ mt: 1 }} type="submit" variant="contained">
+              {' '}
+              Simpan{' '}
+            </Button>
+          </form>
+        </Card>
+      )}
+
       {user[0].role_id === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
-          <Button sx={{ mt: 1 }} type="submit" variant="contained">
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[0].file}`, '_blank')
+            }
+            variant="contained"
+          >
             {' '}
             View File Draft Naskah{' '}
           </Button>
@@ -241,7 +366,13 @@ export default function AuditKKA() {
       )}
       {user[0].role_id === 4 && (
         <Card sx={{ mt: 3, p: 3 }}>
-          <Button sx={{ mt: 1 }} type="submit" variant="contained">
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[0].file}`, '_blank')
+            }
+            variant="contained"
+          >
             {' '}
             View File Draft Naskah{' '}
           </Button>

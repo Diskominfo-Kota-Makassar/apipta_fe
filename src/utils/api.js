@@ -485,13 +485,13 @@ export const handlePostFileAudit = async ({ file, user_id = '', penugasan_id = '
   }
 };
 
-export const handlePostFileAuditBPKP = async ({ file, user_id = '', penugasan_id = '' }) => {
+export const handlePostFileAuditBPKP = async ({ file, id_audit = '', bpkp = '' }) => {
   try {
     const formData = new FormData();
-    formData.append('user_id', user_id);
-    formData.append('penugasan_id', penugasan_id);
+    formData.append('id_audit', id_audit);
+    formData.append('bpkp', bpkp);
     formData.append('file', file);
-    const response = await axios.post(`${baseURL}/audit_kka/user/file`, formData, {
+    const response = await axios.post(`${baseURL}/audit_kka/bpkp/file`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

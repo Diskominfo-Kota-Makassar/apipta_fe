@@ -80,14 +80,13 @@ export default function UserTableRow({
     setOpenDialog(false);
   };
 
-  console.log(user[0].role_id);
-
   const handleSession = () => {
+    console.log(allData);
     if (user[0].role_id === 3) {
       return navigate('/audit-kka/anggota-tim', { state: allData });
     }
     if (user[0].role_id === 2) {
-      if (allData.wpj === '') {
+      if (allData.catatan_wpj === null) {
         return navigate('/audit-kka/ketua-tim', { state: allData });
       }
       if (allData.wpj !== '') {

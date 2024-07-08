@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useRouter } from 'src/routes/hooks/use-router';
-import { useTheme } from '@mui/material/styles';
+
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
+import { useRouter } from 'src/routes/hooks/use-router';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';

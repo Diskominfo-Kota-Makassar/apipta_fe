@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useState, useEffect, useCallback } from 'react';
 import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -11,19 +12,16 @@ import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-
 import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Unstable_Grid2';
 
 import Iconify from 'src/components/iconify';
-import * as React from 'react';
+
 import MenuItem from '@mui/material/MenuItem';
+
 import 'react-toastify/dist/ReactToastify.css';
-import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
-import OutlinedInput from '@mui/material/OutlinedInput';
 
 // ----------------------------------------------------------------------
 
@@ -34,9 +32,6 @@ export default function TambahPermintaan() {
 
   const [loading, setLoading] = useState(false);
 
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-
   const [valueFile, setValueFile] = useState(null);
 
   const [allPenugasan, setAllPenugasan] = useState([]);
@@ -46,30 +41,6 @@ export default function TambahPermintaan() {
 
   const handleChangeFile = (newValue) => {
     setValueFile(newValue);
-  };
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
   };
 
   const handleChangeST = (event) => {
@@ -176,7 +147,7 @@ export default function TambahPermintaan() {
                       <TextField name="no_ref_kka" label="No.Ref KKA" />
                       <TextField name="no_ref_pka" label="No.Ref PKA" />
                       <TextField name="judul_doc" label="Judul Dokumen" />
-                      <TextField name="ket" label="Catatan/keterangan dokumen" />
+                      <TextField rows={4} multiline name="ket" label="Catatan/keterangan dokumen" />
                       <MuiFileInput
                         name="file"
                         placeholder="Pilih File"

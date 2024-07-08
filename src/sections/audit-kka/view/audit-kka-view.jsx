@@ -21,7 +21,13 @@ import Scrollbar from 'src/components/scrollbar';
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
-import { getAuditFromAPI, handlePostFileAudit, getFileAuditFromAPI, baseURL } from 'src/utils/api';
+import {
+  getAuditFromAPI,
+  handlePostFileAudit,
+  handlePostFileAuditBPKP,
+  getFileAuditFromAPI,
+  baseURL,
+} from 'src/utils/api';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
 import UserTableHead from '../user-table-head';
@@ -36,8 +42,6 @@ export default function AuditKKA() {
   const [page, setPage] = useState(0);
 
   const user = useLocalStorage('user');
-
-  console.log(user);
 
   const [order, setOrder] = useState('asc');
 
@@ -54,6 +58,9 @@ export default function AuditKKA() {
   const [valueDraftNaskah, setValueDraftNaskah] = useState(null);
   const [valueDraftNaskahBPKP, setValueDraftNaskahBPKP] = useState(null);
   const [valueDraftNaskahFromAPI, setValueDraftNaskahFromAPI] = useState([
+    {
+      file: null,
+    },
     {
       file: null,
     },
@@ -124,30 +131,8 @@ export default function AuditKKA() {
 
     if (res.status === 201) {
       setLoading(false);
-      // window.location.reload();
+      window.location.reload();
       notify('Berhasil Menambahkan File Draft');
-      window.history.back();
-    } else {
-      setLoading(false);
-      notify('Gagal Menambahkan File Draft');
-    }
-  };
-
-  const handleSubmitFileBPKP = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-
-    const res = await handlePostFileAudit({
-      file: valueDraftNaskah,
-      user_id: user[0].user_id,
-      penugasan_id: user[0].surat_tugas,
-    });
-
-    if (res.status === 201) {
-      setLoading(false);
-      // window.location.reload();
-      notify('Berhasil Menambahkan File Draft');
-      window.history.back();
     } else {
       setLoading(false);
       notify('Gagal Menambahkan File Draft');
@@ -163,6 +148,8 @@ export default function AuditKKA() {
   const handleFileAuditFromAPI = async () => {
     // const st_id = user[0].surat_tugas;
     const file = await getFileAuditFromAPI({ id_surat_tugas: user[0].surat_tugas });
+
+    console.log(file.data);
 
     setValueDraftNaskahFromAPI(file.data);
   };
@@ -249,7 +236,8 @@ export default function AuditKKA() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
-      {user[0].role_id === 2 && (
+
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI.length === 0 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handleSubmitFile}>
             <MuiFileInput
@@ -267,7 +255,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user[0].role_id === 2 && (
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI.length !== 0 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -282,7 +270,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user[0].role_id === 2 && (
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI.length === 1 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handleSubmitFile}>
             <MuiFileInput
@@ -300,45 +288,171 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user[0].role_id === 2 && (
+      {user[0].role_id === 2 &&
+        valueDraftNaskahFromAPI.length !== 0 &&
+        valueDraftNaskahFromAPI.length !== 1 && (
+          <Card sx={{ mt: 3, p: 3 }}>
+            <Button
+              sx={{ mt: 1 }}
+              onClick={() =>
+                window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+              }
+              variant="contained"
+            >
+              {' '}
+              View File Draft Naskah (Revisi){' '}
+            </Button>
+          </Card>
+        )}
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI.length === 2 && (
         <Card sx={{ mt: 3, p: 3 }}>
-          <Button
-            sx={{ mt: 1 }}
-            onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
-            }
-            variant="contained"
-          >
-            {' '}
-            View File Draft Naskah (Revisi){' '}
-          </Button>
+          <form onSubmit={handleSubmitFile}>
+            <MuiFileInput
+              sx={{ mr: 3 }}
+              name="draft_naskah"
+              placeholder="Pilih Naskah hasil audit"
+              value={valueDraftNaskah}
+              onChange={handleChangeDraftNaskah}
+            />
+            <Button sx={{ mt: 1 }} type="submit" variant="contained">
+              {' '}
+              Simpan{' '}
+            </Button>
+          </form>
         </Card>
       )}
+
+      {user[0].role_id === 2 &&
+        valueDraftNaskahFromAPI.length !== 0 &&
+        valueDraftNaskahFromAPI.length !== 1 &&
+        valueDraftNaskahFromAPI.length !== 2 && (
+          <Card sx={{ mt: 3, p: 3 }}>
+            <Button
+              sx={{ mt: 1 }}
+              onClick={() =>
+                window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+              }
+              variant="contained"
+            >
+              {' '}
+              View File Draft Naskah hasil audit
+            </Button>
+          </Card>
+        )}
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI.length === 3 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form onSubmit={handleSubmitFile}>
+            <MuiFileInput
+              sx={{ mr: 3 }}
+              name="draft_naskah"
+              placeholder="Draft laporan hasil audit"
+              value={valueDraftNaskah}
+              onChange={handleChangeDraftNaskah}
+            />
+            <Button sx={{ mt: 1 }} type="submit" variant="contained">
+              {' '}
+              Simpan{' '}
+            </Button>
+          </form>
+        </Card>
+      )}
+
+      {user[0].role_id === 2 &&
+        valueDraftNaskahFromAPI.length !== 0 &&
+        valueDraftNaskahFromAPI.length !== 1 &&
+        valueDraftNaskahFromAPI.length !== 2 &&
+        valueDraftNaskahFromAPI.length !== 3 && (
+          <Card sx={{ mt: 3, p: 3 }}>
+            <Button
+              sx={{ mt: 1 }}
+              onClick={() =>
+                window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+              }
+              variant="contained"
+            >
+              {' '}
+              View File Draft laporan hasil audit
+            </Button>
+          </Card>
+        )}
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI.length === 4 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form onSubmit={handleSubmitFile}>
+            <MuiFileInput
+              sx={{ mr: 3 }}
+              name="draft_naskah"
+              placeholder="Laporan hasil audit"
+              value={valueDraftNaskah}
+              onChange={handleChangeDraftNaskah}
+            />
+            <Button sx={{ mt: 1 }} type="submit" variant="contained">
+              {' '}
+              Simpan{' '}
+            </Button>
+          </form>
+        </Card>
+      )}
+
+      {user[0].role_id === 2 &&
+        valueDraftNaskahFromAPI.length !== 0 &&
+        valueDraftNaskahFromAPI.length !== 1 &&
+        valueDraftNaskahFromAPI.length !== 2 &&
+        valueDraftNaskahFromAPI.length !== 3 &&
+        valueDraftNaskahFromAPI.length !== 4 && (
+          <Card sx={{ mt: 3, p: 3 }}>
+            <Button
+              sx={{ mt: 1 }}
+              onClick={() =>
+                window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+              }
+              variant="contained"
+            >
+              {' '}
+              View File Laporan hasil audit
+            </Button>
+          </Card>
+        )}
+
       {/* session user bpkp */}
-      {user[0].role_id === 6 && (
+      {user[0].role_id === 6 && valueDraftNaskahFromAPI.length === 4 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[3].file}`, '_blank')
             }
             variant="contained"
           >
             {' '}
-            View File Draft Naskah (Revisi){' '}
+            View File laporan hasil
           </Button>
         </Card>
       )}
 
-      {user[0].role_id === 6 && (
+      {user[0].role_id === 6 && valueDraftNaskahFromAPI.length === 4 && (
         <Card sx={{ mt: 3, p: 3 }}>
-          <form onSubmit={handleSubmitFileBPKP}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[4].file}`, '_blank')
+            }
+            variant="contained"
+          >
+            {' '}
+            Laporan QA BPKP
+          </Button>
+        </Card>
+      )}
+
+      {user[0].role_id === 6 && valueDraftNaskahFromAPI.length !== 4 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form onSubmit={handleSubmitFile}>
             <MuiFileInput
               sx={{ mr: 3 }}
-              name="draft_naskah"
+              name="file"
               placeholder="Laporan QA BPKP"
-              value={valueDraftNaskahBPKP}
-              onChange={handleChangeDraftNaskahBPKP}
+              value={valueDraftNaskah}
+              onChange={handleChangeDraftNaskah}
             />
             <Button sx={{ mt: 1 }} type="submit" variant="contained">
               {' '}

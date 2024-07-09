@@ -38,14 +38,12 @@ export default function WPJ() {
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    console.log(form.get('catatan_review'));
+    console.log(form.get('catatan_wpj'));
 
     const res = await putUpdateAuditKKA({
       id_audit: form.get('id_audit'),
       catatan_wpj: form.get('catatan_wpj'),
     });
-
-    console.log(res);
 
     if (res.status === 200) {
       setLoading(false);

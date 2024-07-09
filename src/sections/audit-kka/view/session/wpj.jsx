@@ -134,16 +134,11 @@ export default function WPJ() {
                         value={allData.catatan_wpj}
                         label="Catatan Review WPJ"
                       />
-                      {user[0].role === '4' && (
-                        <TextField rows={4} multiline name="wpj" label="Catatan Review WPJ" />
-                      )}
-                      {user[0].role === '4' && (
-                        <Grid container justifyContent="flex-end">
-                          <Button variant="contained" type="submit">
-                            Update
-                          </Button>
-                        </Grid>
-                      )}
+                      <Grid container justifyContent="flex-end">
+                        <Button variant="contained" type="submit">
+                          Update
+                        </Button>
+                      </Grid>
                     </Stack>
                   </form>
                 </CardContent>

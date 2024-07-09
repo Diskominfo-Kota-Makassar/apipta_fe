@@ -39,6 +39,7 @@ export default function TambahPenugasan() {
   const [dalnis, setDalnis] = useState('');
   const [kt, setKt] = useState('');
   const [obrik, setObrik] = useState('');
+  const [obrikName, setObrikName] = useState('');
   const [at, setAt] = useState([]);
 
   const [pjList, setPjList] = useState([]);
@@ -72,6 +73,7 @@ export default function TambahPenugasan() {
   };
   const handleChangeObrik = (event) => {
     setObrik(event.target.value);
+    const selectedOption = obrikList.find((option) => option.id === event.target.value);
   };
   const handleChangeAt = (event) => {
     const {

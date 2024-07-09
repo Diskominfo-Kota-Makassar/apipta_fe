@@ -42,7 +42,7 @@ export default function WPJ() {
 
     const res = await putUpdateAuditKKA({
       id_audit: form.get('id_audit'),
-      wpj: form.get('wpj'),
+      catatan_wpj: form.get('catatan_wpj'),
     });
 
     console.log(res);
@@ -128,12 +128,7 @@ export default function WPJ() {
                         value={allData.dalnis}
                         label="Catatan Review Dalnis"
                       />
-                      <TextField
-                        multiline
-                        rows={4}
-                        value={allData.catatan_wpj}
-                        label="Catatan Review WPJ"
-                      />
+                      <TextField multiline rows={4} name="catatan_wpj" label="Catatan Review WPJ" />
                       <Grid container justifyContent="flex-end">
                         <Button variant="contained" type="submit">
                           Update

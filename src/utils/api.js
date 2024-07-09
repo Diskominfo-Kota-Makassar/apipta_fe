@@ -170,7 +170,7 @@ export const putUpdateAuditKKA = async ({
   id_audit = '',
   tim_ketua = '',
   dalnis = '',
-  wpj = '',
+  catatan_wpj = '',
   bpkp = '',
   obrik = '',
   pj = '',
@@ -252,11 +252,11 @@ export const putUpdateAuditKKA = async ({
       const result = response;
       return result;
     }
-    if (wpj !== '') {
+    if (catatan_wpj !== '') {
       const response = await axios.put(
         `${baseURL}/audit_kka/${id_audit}`,
         {
-          catatan_wpj: wpj,
+          catatan_wpj,
         },
         {
           headers: {

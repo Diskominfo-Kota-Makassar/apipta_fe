@@ -612,6 +612,66 @@ export default function AuditKKA() {
           </form>
         </Card>
       )}
+
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[3].file}`, '_blank')
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Naskah hasil audit
+          </Button>
+        </Card>
+      )}
+
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[4].file}`, '_blank')
+            }
+            variant="contained"
+          >
+            {' '}
+            View File surat tanggapan obrik
+          </Button>
+        </Card>
+      )}
+
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[5].file}`, '_blank')
+            }
+            variant="contained"
+          >
+            {' '}
+            View File draft laporan hasil audit
+          </Button>
+        </Card>
+      )}
+
+      {user[0].role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[6].file}`, '_blank')
+            }
+            variant="contained"
+          >
+            {' '}
+            View File laporan hasil audit (final)
+          </Button>
+        </Card>
+      )}
     </Container>
   );
 }

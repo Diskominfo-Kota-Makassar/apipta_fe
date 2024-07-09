@@ -21,7 +21,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // ----------------------------------------------------------------------
 
-export default function AnggotaTim2() {
+export default function KetuaTim2() {
   const notify = (comment) => toast(comment);
 
   const [loading, setLoading] = useState(false);
@@ -132,12 +132,6 @@ export default function AnggotaTim2() {
                         value={allData.catatan_wpj}
                         label="Catatan Review WPJ"
                       />
-                      <TextField multiline rows={4} name="bpkp" label="Catatan BPKP (Eksternal)" />
-                      <Grid container justifyContent="flex-end">
-                        <Button variant="contained" type="submit">
-                          Update
-                        </Button>
-                      </Grid>
                     </Stack>
                   </form>
                 </CardContent>

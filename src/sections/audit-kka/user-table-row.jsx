@@ -86,7 +86,15 @@ export default function UserTableRow({
       return navigate('/audit-kka/anggota-tim', { state: allData });
     }
     if (user[0].role_id === 2) {
-      return navigate('/audit-kka/ketua-tim', { state: allData });
+      if (allData.catatan_wpj === null || '') {
+        return navigate('/audit-kka/ketua-tim', { state: allData });
+      }
+      if (allData.catatan_wpj !== null && allData.bpkp === null) {
+        return navigate('/audit-kka/ketua-tim-review-1', { state: allData });
+      }
+      if (allData.bpkp !== null) {
+        return navigate('/audit-kka/ketua-tim-review-2', { state: allData });
+      }
     }
     if (user[0].role_id === 4) {
       return navigate('/audit-kka/wpj', { state: allData });

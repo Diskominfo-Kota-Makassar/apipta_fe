@@ -13,6 +13,8 @@ import ValidasiPermintaan from './sections/permintaan/view/validasi-permintaan';
 import TambahAuditKKA from './sections/audit-kka/view/tambah-audit-kka';
 import AnggotaTim from './sections/audit-kka/view/session/anggota-tim';
 import KetuaTim from './sections/audit-kka/view/session/ketua-tim';
+import KetuaTim2 from './sections/audit-kka/view/session/ketua-tim2';
+import KetuaTim3 from './sections/audit-kka/view/session/ketua-tim3';
 import Dalnis from './sections/audit-kka/view/session/dalnis';
 import WPJ from './sections/audit-kka/view/session/wpj';
 import BPKP from './sections/audit-kka/view/session/bpkp';
@@ -131,6 +133,22 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <KetuaTim />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka/ketua-tim-review-1"
+              element={
+                <ProtectedRoute>
+                  <KetuaTim2 />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka/ketua-tim-review-2"
+              element={
+                <ProtectedRoute>
+                  <KetuaTim3 />
                 </ProtectedRoute>
               }
             />

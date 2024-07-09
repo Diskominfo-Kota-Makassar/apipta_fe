@@ -95,12 +95,6 @@ export default function AnggotaTim() {
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    console.log(form.get('id_audit'));
-    console.log(valueKesimpulanKKA);
-    console.log(valueBuktiDukung);
-    console.log(valueHasilPengujian);
-    console.log(form.get('catatan_review'));
-
     const res = await postSubmitAuditKKA({
       id_audit: form.get('id_audit'),
       file_kesimpulan: valueKesimpulanKKA,
@@ -171,7 +165,12 @@ export default function AnggotaTim() {
                       <TextField name="kka" label="No.Ref KKA" value={allData.no_ref_kka} />
                       <TextField name="pka" label="No.Ref PKA" value={allData.no_ref_pka} />
                       <TextField name="judul" label="Judul Pengujian" value={allData.judul} />
-                      <TextField name="catatan_review" label="Catatan Anggota Tim" />
+                      <TextField
+                        multiline
+                        rows={4}
+                        name="catatan_review"
+                        label="Catatan Anggota Tim"
+                      />
                       <MuiFileInput
                         multiple
                         name="hasil_pengujian"

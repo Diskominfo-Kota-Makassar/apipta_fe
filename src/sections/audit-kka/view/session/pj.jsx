@@ -99,6 +99,7 @@ export default function PJ() {
                       </Button>
                       <TextField
                         multiline
+                        rows={4}
                         name="catatan_anggota_tim"
                         value={allData.catatan_review}
                         label="Catatan Anggota Tim"
@@ -113,14 +114,31 @@ export default function PJ() {
                         View Dokumen Kesimpulan KKA{' '}
                       </Button>
                       <TextField
+                        multiline
+                        rows={4}
                         name="catatan_review_ketua"
                         label="Catatan Review Ketua Tim"
                         value={allData.tim_ketua}
                       />
-                      <TextField multiline value={allData.dalnis} label="Catatan Review Dalnis" />
-                      <TextField multiline value={allData.catatan_wpj} label="Catatan Review WPJ" />
-                      <TextField multiline value={allData.bpkp} label="Catatan BPKP (Eksternal)" />
-                      <TextField multiline name="pj" label="Catatan Review PJ" />
+                      <TextField
+                        multiline
+                        rows={4}
+                        value={allData.dalnis}
+                        label="Catatan Review Dalnis"
+                      />
+                      <TextField
+                        multiline
+                        rows={4}
+                        value={allData.catatan_wpj}
+                        label="Catatan Review WPJ"
+                      />
+                      <TextField
+                        multiline
+                        rows={4}
+                        value={allData.bpkp}
+                        label="Catatan BPKP (Eksternal)"
+                      />
+                      <TextField multiline rows={4} name="pj" label="Catatan Review PJ" />
                       <Grid container justifyContent="flex-end">
                         <Button variant="contained" type="submit">
                           Update

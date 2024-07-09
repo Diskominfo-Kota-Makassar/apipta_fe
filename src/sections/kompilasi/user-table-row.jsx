@@ -250,7 +250,7 @@ export default function UserTableRow({
         <DialogTitle id="alert-dialog-title">Rekomendasi</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmitRekomendasi}>
-            <TextField name="masukan" label="Rekomendasi" />
+            <TextField multiline rows={4} name="masukan" label="Rekomendasi" />
             <Button sx={{ mt: 1, ml: 2 }} variant="contained" type="submit">
               Simpan
             </Button>
@@ -306,7 +306,7 @@ export default function UserTableRow({
         <DialogContent>
           <form onSubmit={handleSubmitRencanaAksi}>
             <TextField type="hidden" value={idRekomendasi} name="id_rekomendasi" />
-            <TextField name="masukan" label="Rencana Aksi" />
+            <TextField multiline rows={4} name="masukan" label="Rencana Aksi" />
             <Button sx={{ mt: 1, ml: 2 }} variant="contained" type="submit">
               Simpan
             </Button>

@@ -23,7 +23,7 @@ const navConfigAdmin = [
     icon: icon('ic_permintaan'),
   },
   {
-    title: 'audit KKA',
+    title: 'Pengujian',
     path: '/audit-kka',
     icon: icon('ic_audit_kka'),
   },

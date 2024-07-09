@@ -121,6 +121,7 @@ export default function KetuaTim() {
                       </Button>
                       <TextField
                         multiline
+                        rows={4}
                         name="catatan_anggota_tim"
                         value={allData.catatan_review}
                         label="Catatan Anggota Tim"
@@ -136,6 +137,7 @@ export default function KetuaTim() {
                       </Button>
                       <TextField
                         multiline
+                        rows={4}
                         name="catatan_review_ketua"
                         label="Catatan Review Ketua Tim"
                       />

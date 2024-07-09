@@ -38,9 +38,9 @@ export const getRolesFromAPI = async () => {
   }
 };
 
-export const getAuditFromAPI = async () => {
+export const getAuditFromAPI = async ({ id_penugasan = '' }) => {
   try {
-    const response = await axios.get(`${baseURL}/audit_kka`, {
+    const response = await axios.get(`${baseURL}/audit_kka/penugasan/${id_penugasan}`, {
       headers: {
         'Content-Type': 'application/json',
       },

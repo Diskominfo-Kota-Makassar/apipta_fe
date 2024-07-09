@@ -97,6 +97,7 @@ export default function Dalnis() {
                       </Button>
                       <TextField
                         multiline
+                        rows={4}
                         name="catatan_anggota_tim"
                         value={allData.catatan_review}
                         label="Catatan Anggota Tim"
@@ -112,11 +113,12 @@ export default function Dalnis() {
                       </Button>
                       <TextField
                         multiline
+                        rows={4}
                         name="catatan_review_ketua"
                         label="Catatan Review Ketua Tim"
                         value={allData.tim_ketua}
                       />
-                      <TextField multiline name="dalnis" label="Catatan Review Dalnis" />
+                      <TextField multiline rows={4} name="dalnis" label="Catatan Review Dalnis" />
                       <Grid container justifyContent="flex-end">
                         <Button variant="contained" type="submit">
                           Update

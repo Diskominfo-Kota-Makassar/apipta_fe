@@ -101,6 +101,7 @@ export default function WPJ() {
                       </Button>
                       <TextField
                         multiline
+                        rows={4}
                         name="catatan_anggota_tim"
                         value={allData.catatan_review}
                         label="Catatan Anggota Tim"
@@ -115,14 +116,26 @@ export default function WPJ() {
                         View Dokumen Kesimpulan KKA{' '}
                       </Button>
                       <TextField
+                        multiline
+                        rows={4}
                         name="catatan_review_ketua"
                         label="Catatan Review Ketua Tim"
                         value={allData.tim_ketua}
                       />
-                      <TextField multiline value={allData.dalnis} label="Catatan Review Dalnis" />
-                      <TextField multiline value={allData.catatan_wpj} label="Catatan Review WPJ" />
+                      <TextField
+                        multiline
+                        rows={4}
+                        value={allData.dalnis}
+                        label="Catatan Review Dalnis"
+                      />
+                      <TextField
+                        multiline
+                        rows={4}
+                        value={allData.catatan_wpj}
+                        label="Catatan Review WPJ"
+                      />
                       {user[0].role === '4' && (
-                        <TextField multiline name="wpj" label="Catatan Review WPJ" />
+                        <TextField rows={4} multiline name="wpj" label="Catatan Review WPJ" />
                       )}
                       {user[0].role === '4' && (
                         <Grid container justifyContent="flex-end">

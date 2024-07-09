@@ -118,10 +118,10 @@ export default function TambahKompilasi() {
                 <CardContent>
                   <form onSubmit={handlePostKompilasi}>
                     <Stack spacing={2}>
-                      <TextField name="kondisi" label="Kondisi" />
-                      <TextField name="sebab" label="Sebab" />
-                      <TextField name="kriteria" label="Kriteria" />
-                      <TextField name="akibat" label="Akibat" />
+                      <TextField multiline rows={4} name="kondisi" label="Kondisi" />
+                      <TextField multiline rows={4} name="sebab" label="Sebab" />
+                      <TextField multiline rows={4} name="kriteria" label="Kriteria" />
+                      <TextField multiline rows={4} name="akibat" label="Akibat" />
                       <Grid container justifyContent="flex-end">
                         <Button variant="contained" type="submit">
                           Submit

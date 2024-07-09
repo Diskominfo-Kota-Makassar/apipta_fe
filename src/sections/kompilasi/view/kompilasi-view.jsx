@@ -105,7 +105,7 @@ export default function Kompilasi() {
 
         <Button
           variant="contained"
-          onClick={() => router.push('/kompilasi/tambah')}
+          onClick={() => router.push('/kompilasi/tambah-temuan')}
           color="inherit"
           startIcon={<Iconify icon="eva:plus-fill" />}
         >

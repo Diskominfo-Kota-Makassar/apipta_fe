@@ -88,7 +88,7 @@ export default function Obrik() {
                       <TextField value={allData.no_ref_pka} label="No.Ref PKA" />
                       <TextField value={allData.judul} label="Judul Pengujian" />
 
-                      <TextField multiline name="obrik" label="Tanggapan Obrik" />
+                      <TextField multiline rows={4} name="obrik" label="Tanggapan Obrik" />
                       <Grid container justifyContent="flex-end">
                         <Button variant="contained" type="submit">
                           Update

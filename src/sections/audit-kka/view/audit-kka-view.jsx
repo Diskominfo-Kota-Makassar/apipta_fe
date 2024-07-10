@@ -160,7 +160,7 @@ export default function AuditKKA() {
 
   useEffect(() => {
     handleFileAuditFromAPI();
-    // handleAuditFromAPI();
+    handleAuditFromAPI();
   }, [handleAuditFromAPI, handleFileAuditFromAPI]);
 
   return (

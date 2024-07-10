@@ -373,15 +373,15 @@ export default function AuditKKA() {
 
       {/* session user bpkp */}
       {user.role_id === 6 &&
-        (valueDraftNaskahFromAPI.length === 1 ||
-          (valueDraftNaskahFromAPI.length !== 3 && (
-            <Card sx={{ mt: 3, p: 3 }}>
-              <Button sx={{ mt: 1 }} variant="contained">
-                {' '}
-                KT Belum mengupload naskah revisi
-              </Button>
-            </Card>
-          )))}
+        valueDraftNaskahFromAPI.length === 1 &&
+        valueDraftNaskahFromAPI.length !== 3 && (
+          <Card sx={{ mt: 3, p: 3 }}>
+            <Button sx={{ mt: 1 }} variant="contained">
+              {' '}
+              KT Belum mengupload naskah revisi
+            </Button>
+          </Card>
+        )}
 
       {user.role_id === 6 && valueDraftNaskahFromAPI.length !== 1 && (
         <Card sx={{ mt: 3, p: 3 }}>

@@ -39,6 +39,7 @@ import {
 export default function UserTableRow({
   index,
   id,
+  no_lhp,
   kondisi,
   kriteria,
   sebab,
@@ -56,6 +57,8 @@ export default function UserTableRow({
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   const [idRekomendasi, setIdRekomendasi] = useState();
+  const [idRekomendasiForDelete, setIdRekomendasiForDelete] = useState();
+  const [idAksiForDelete, setIdAksiForDelete] = useState();
   const [dataAksi, setDataAksi] = useState([]);
 
   const handleOpen = () => {
@@ -83,7 +86,9 @@ export default function UserTableRow({
   const handleDeleteRekomendasi = async (event) => {
     setOpenDialog(false);
 
-    const res = await deleteRekomendasi(id);
+    const res = await deleteRekomendasi(idRekomendasiForDelete);
+
+    console.log(res);
 
     if (res.status === 200) {
       setLoading(false);
@@ -97,7 +102,7 @@ export default function UserTableRow({
   const handleDeleteAksi = async (event) => {
     setOpenDialog(false);
 
-    const res = await deleteAksi(id);
+    const res = await deleteAksi(idAksiForDelete);
 
     if (res.status === 200) {
       setLoading(false);
@@ -112,6 +117,9 @@ export default function UserTableRow({
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogRekomendasi, setOpenDialogRekomendasi] = useState(false);
   const [openDialogRencanaAksi, setOpenDialogRencanaAksi] = useState(false);
+
+  const [openDialogDeleteRekomendasi, setOpenDialogDeleteRekomendasi] = useState(false);
+  const [openDialogDeleteAksi, setOpenDialogDeleteAksi] = useState(false);
 
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -138,6 +146,22 @@ export default function UserTableRow({
 
   const handleCloseDialogRencanaAksi = () => {
     setOpenDialogRencanaAksi(false);
+  };
+  const handleOpenDialogDeleteRekomendasi = (idRekomen) => {
+    setIdRekomendasiForDelete(idRekomen);
+    setOpenDialogDeleteRekomendasi(true);
+  };
+
+  const handleOpenDialogDeleteAksi = (idAksi) => {
+    setIdAksiForDelete(idAksi);
+    setOpenDialogDeleteAksi(true);
+  };
+  const handleCloseDialogDeleteRekomendasi = () => {
+    setOpenDialogDeleteRekomendasi(false);
+  };
+
+  const handleCloseDialogDeleteAksi = () => {
+    setOpenDialogDeleteAksi(false);
   };
 
   const handleSubmitRekomendasi = async (event) => {
@@ -186,6 +210,7 @@ export default function UserTableRow({
         <TableCell />
 
         <TableCell>{index}</TableCell>
+        <TableCell>{no_lhp}</TableCell>
         <TableCell>{kondisi}</TableCell>
 
         <TableCell>{kriteria}</TableCell>
@@ -228,6 +253,7 @@ export default function UserTableRow({
           </Button>
         </DialogActions>
       </Dialog>
+
       {loading && (
         <CircularProgress
           size={48}
@@ -281,7 +307,7 @@ export default function UserTableRow({
                     </TableCell>
                     <TableCell>
                       {' '}
-                      <IconButton onClick={handleClickOpenDialog}>
+                      <IconButton onClick={() => handleOpenDialogDeleteRekomendasi(data.id)}>
                         <Iconify icon="material-symbols:delete-outline" />
                       </IconButton>
                       <IconButton onClick={handleOpen}>
@@ -294,6 +320,26 @@ export default function UserTableRow({
             </Table>
           </TableContainer>
         </DialogContent>
+      </Dialog>
+      {/* dialog delete rekomendasi */}
+      <Dialog
+        open={openDialogDeleteRekomendasi}
+        onClose={handleCloseDialogDeleteRekomendasi}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Konfirmasi Hapus</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Yakin ingin menghapus rekomendasi ini?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogDeleteRekomendasi}>Batal</Button>
+          <Button onClick={handleDeleteRekomendasi} autoFocus>
+            Setuju
+          </Button>
+        </DialogActions>
       </Dialog>
       {/* Dialog rencana aksi */}
       <Dialog
@@ -316,6 +362,7 @@ export default function UserTableRow({
               <TableHead>
                 <TableRow>
                   <TableCell>No.</TableCell>
+
                   <TableCell>Rencana Aksi</TableCell>
                   <TableCell>Waktu</TableCell>
                   <TableCell>Aksi</TableCell>
@@ -329,7 +376,7 @@ export default function UserTableRow({
                     <TableCell>Waktu Pelaksanaan</TableCell>
                     <TableCell>
                       {' '}
-                      <IconButton onClick={handleClickOpenDialog}>
+                      <IconButton onClick={() => handleOpenDialogDeleteAksi(data.id)}>
                         <Iconify icon="material-symbols:delete-outline" />
                       </IconButton>
                       <IconButton onClick={handleOpen}>
@@ -343,6 +390,26 @@ export default function UserTableRow({
           </TableContainer>
         </DialogContent>
       </Dialog>
+      {/* dialog aksi */}
+      <Dialog
+        open={openDialogDeleteAksi}
+        onClose={handleCloseDialogDeleteAksi}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Konfirmasi Hapus</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Yakin ingin menghapus aksi ini?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogDeleteAksi}>Batal</Button>
+          <Button onClick={handleDeleteAksi} autoFocus>
+            Setuju
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
@@ -350,6 +417,7 @@ export default function UserTableRow({
 UserTableRow.propTypes = {
   index: PropTypes.any,
   id: PropTypes.any,
+  no_lhp: PropTypes.any,
   kondisi: PropTypes.any,
   kriteria: PropTypes.any,
   sebab: PropTypes.any,

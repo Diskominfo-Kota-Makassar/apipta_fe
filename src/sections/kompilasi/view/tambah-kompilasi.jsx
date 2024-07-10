@@ -72,6 +72,7 @@ export default function TambahKompilasi() {
     const form = new FormData(event.currentTarget);
 
     const res = await postSubmitKompilasi({
+      no_lhp: form.get('no_lhp'),
       kondisi: form.get('kondisi'),
       kriteria: form.get('kriteria'),
       sebab: form.get('sebab'),
@@ -82,7 +83,7 @@ export default function TambahKompilasi() {
 
     if (res.status === 201) {
       setLoading(false);
-      // window.location.reload();
+
       notify('Berhasil Menambahkan Kompilasi');
       window.history.back();
     } else {
@@ -118,6 +119,7 @@ export default function TambahKompilasi() {
                 <CardContent>
                   <form onSubmit={handlePostKompilasi}>
                     <Stack spacing={2}>
+                      <TextField multiline rows={4} name="no_lhp" label="No. LHP" />
                       <TextField multiline rows={4} name="kondisi" label="Kondisi" />
                       <TextField multiline rows={4} name="sebab" label="Sebab" />
                       <TextField multiline rows={4} name="kriteria" label="Kriteria" />

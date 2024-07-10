@@ -511,6 +511,7 @@ export const postSubmitKompilasi = async ({
   kriteria = '',
   sebab = '',
   akibat = '',
+  no_lhp = '',
 }) => {
   try {
     const response = await axios.post(
@@ -520,6 +521,7 @@ export const postSubmitKompilasi = async ({
         kriteria,
         sebab,
         akibat,
+        no_lhp,
       },
       {
         headers: {
@@ -604,7 +606,7 @@ export const deleteKompilasi = async (id) => {
 };
 export const deleteRekomendasi = async (id) => {
   try {
-    const response = await axios.delete(`${baseURL}/rekomendasi/${id}`, {
+    const response = await axios.delete(`${baseURL}/kompilasi/rekomendasi/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -617,7 +619,7 @@ export const deleteRekomendasi = async (id) => {
 };
 export const deleteAksi = async (id) => {
   try {
-    const response = await axios.delete(`${baseURL}/aksi/${id}`, {
+    const response = await axios.delete(`${baseURL}/kompilasi/aksi/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },

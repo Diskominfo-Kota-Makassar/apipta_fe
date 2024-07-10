@@ -136,12 +136,13 @@ export default function Kompilasi() {
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'no', label: 'NO' },
+                  { id: 'no_lhp', label: 'NO. LHP' },
                   { id: 'kondisi', label: 'Kondisi' },
                   { id: 'kriteria', label: 'Kriteria' },
                   { id: 'sebab', label: 'Sebab' },
                   { id: 'akibat', label: 'Akibat' },
-                  { id: '', label: 'ٌRekomendasi' },
-                  { id: '', label: 'Aksi' },
+                  { id: 'rekomendasi', label: 'ٌRekomendasi' },
+                  { id: 'aksi', label: 'Aksi' },
                 ]}
               />
               <TableBody>
@@ -151,6 +152,7 @@ export default function Kompilasi() {
                     <UserTableRow
                       index={index + 1}
                       id={row.id}
+                      no_lhp={row.no_lhp}
                       kondisi={row.kondisi}
                       kriteria={row.kriteria}
                       sebab={row.sebab}

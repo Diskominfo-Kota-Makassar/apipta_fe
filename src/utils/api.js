@@ -2,6 +2,7 @@ import axios from 'axios';
 
 // const baseURL = 'http://localhost:3200/api';
 export const baseURL = 'https://apipta.makassarkota.go.id/api';
+export const fileBaseURL = 'https://opendata.makassarkota.go.id/storage';
 
 export const postLogin = async ({ surat_tugas = '', username = '', password = '', role_id }) => {
   try {

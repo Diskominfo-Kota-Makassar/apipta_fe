@@ -27,6 +27,7 @@ import {
   handlePostFileAuditBPKP,
   getFileAuditFromAPI,
   baseURL,
+  fileBaseURL,
 } from 'src/utils/api';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -264,7 +265,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[0].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -280,7 +284,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[0].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -297,7 +304,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[0].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -330,7 +340,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[0].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -345,7 +358,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[1].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -372,7 +388,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[1].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -389,7 +408,10 @@ export default function AuditKKA() {
             <Button
               sx={{ mt: 1 }}
               onClick={() =>
-                window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[2].file}`, '_blank')
+                window.open(
+                  `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[2].file}`,
+                  '_blank'
+                )
               }
               variant="contained"
             >
@@ -424,7 +446,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[1].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -439,7 +464,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[2].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[2].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -473,7 +501,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[1].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[1].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -488,7 +519,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[2].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[2].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -503,7 +537,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[3].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -531,7 +568,10 @@ export default function AuditKKA() {
             <Button
               sx={{ mt: 1 }}
               onClick={() =>
-                window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[3].file}`, '_blank')
+                window.open(
+                  `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                  '_blank'
+                )
               }
               variant="contained"
             >
@@ -568,7 +608,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[3].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -583,7 +626,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[4].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -600,7 +646,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[3].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -615,7 +664,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[4].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -650,7 +702,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[3].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -665,7 +720,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[4].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -680,7 +738,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[5].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[5].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -697,7 +758,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[3].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -712,7 +776,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[4].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -727,7 +794,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[5].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[5].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -764,7 +834,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[3].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -779,7 +852,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[4].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -794,7 +870,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[5].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[5].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >
@@ -809,7 +888,10 @@ export default function AuditKKA() {
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
-              window.open(`${baseURL}/file/${valueDraftNaskahFromAPI[6].file}`, '_blank')
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[6].file}`,
+                '_blank'
+              )
             }
             variant="contained"
           >

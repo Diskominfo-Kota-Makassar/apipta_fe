@@ -3,7 +3,7 @@ import { TextField, CircularProgress } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
-import { baseURL, putUpdateAuditKKA } from 'src/utils/api';
+import { fileBaseURL, putUpdateAuditKKA } from 'src/utils/api';
 import { useLocation } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
@@ -89,7 +89,10 @@ export default function Dalnis() {
                       <Button
                         variant="contained"
                         onClick={() =>
-                          window.open(`${baseURL}/file/${allData.file_bukti_dukung}`, '_blank')
+                          window.open(
+                            `${fileBaseURL}/file/inspektorat/${allData.file_bukti_dukung}`,
+                            '_blank'
+                          )
                         }
                       >
                         {' '}
@@ -105,7 +108,10 @@ export default function Dalnis() {
                       <Button
                         variant="contained"
                         onClick={() =>
-                          window.open(`${baseURL}/file/${allData.file_kesimpulan}`, '_blank')
+                          window.open(
+                            `${fileBaseURL}/file/inspektorat/${allData.file_kesimpulan}`,
+                            '_blank'
+                          )
                         }
                       >
                         {' '}

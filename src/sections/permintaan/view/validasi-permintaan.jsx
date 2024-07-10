@@ -3,12 +3,7 @@ import { TextField, CircularProgress, Select, FormControl, InputLabel } from '@m
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
-import {
-  baseURL,
-  getPenugasanFromAPI,
-  postSubmitPenugasan,
-  postUpdatePermintaan,
-} from 'src/utils/api';
+import { fileBaseURL, postUpdatePermintaan } from 'src/utils/api';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { MuiFileInput } from 'mui-file-input';
 import { useLocation } from 'react-router-dom';
@@ -109,7 +104,9 @@ export default function ValidasiPermintaan() {
 
                       <Button
                         variant="contained"
-                        onClick={() => window.open(`${baseURL}/file/${urlFile}`, '_blank')}
+                        onClick={() =>
+                          window.open(`${fileBaseURL}/file/inspektorat/${urlFile}`, '_blank')
+                        }
                       >
                         View
                       </Button>

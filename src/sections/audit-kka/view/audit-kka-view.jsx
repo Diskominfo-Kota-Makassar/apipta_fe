@@ -139,25 +139,27 @@ export default function AuditKKA() {
     }
   };
 
-  const handleAuditFromAPI = async () => {
+  const handleAuditFromAPI = useCallback(async () => {
     const audit = await getAuditFromAPI({ id_penugasan: user[0].surat_tugas });
 
     if (audit.data !== null) {
       setAllAudit(audit.data);
     }
-  };
+  }, [user]);
 
-  const handleFileAuditFromAPI = async () => {
+  const handleFileAuditFromAPI = useCallback(async () => {
     // const st_id = user[0].surat_tugas;
     const file = await getFileAuditFromAPI({ id_surat_tugas: user[0].surat_tugas });
 
+    console.log('file', file.data);
+
     setValueDraftNaskahFromAPI(file.data);
-  };
+  }, [user]);
 
   useEffect(() => {
     handleFileAuditFromAPI();
     handleAuditFromAPI();
-  });
+  }, [handleAuditFromAPI, handleFileAuditFromAPI]);
 
   return (
     <Container>
@@ -304,7 +306,7 @@ export default function AuditKKA() {
       )}
 
       {/* session user bpkp */}
-      {user[0].role_id === 6 && valueDraftNaskahFromAPI.length === 3 && (
+      {user[0].role_id === 6 && valueDraftNaskahFromAPI.length !== 1 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -319,7 +321,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user[0].role_id === 6 && valueDraftNaskahFromAPI.length === 3 && (
+      {user[0].role_id === 6 && valueDraftNaskahFromAPI.length !== 2 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -351,6 +353,7 @@ export default function AuditKKA() {
           </form>
         </Card>
       )}
+
       {/* end session bpkp */}
 
       {user[0].role_id === 2 && valueDraftNaskahFromAPI.length === 3 && (

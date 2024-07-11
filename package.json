@@ -50,7 +50,8 @@
     "react-toastify": "^10.0.5",
     "simplebar-react": "^3.2.4",
     "styled-components": "^6.1.11",
-    "vite-plugin-pwa": "^0.20.0"
+    "vite-plugin-pwa": "^0.20.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vitejs/plugin-react-swc": "^3.4.0",

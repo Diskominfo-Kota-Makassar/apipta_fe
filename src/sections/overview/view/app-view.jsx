@@ -17,7 +17,7 @@ import AppWidgetSummary from '../app-widget-summary';
 // ----------------------------------------------------------------------
 
 export default function AppView() {
-  const user = useLocalStorage('user');
+  const [user, setUser] = useLocalStorage('user');
 
   const [allPenugasan, setAllPenugasan] = useState([]);
 

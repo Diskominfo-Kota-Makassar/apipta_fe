@@ -1,27 +1,25 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { set, sub } from 'date-fns';
 import { faker } from '@faker-js/faker';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Badge from '@mui/material/Badge';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
-import Tooltip from '@mui/material/Tooltip';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 
 import { fToNow } from 'src/utils/format-time';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
+
+import { getNotifWithUser } from 'src/utils/api';
 
 // ----------------------------------------------------------------------
 
@@ -80,6 +78,10 @@ export default function NotificationsPopover() {
 
   const [open, setOpen] = useState(null);
 
+  const [user, setUser] = useLocalStorage('user');
+
+  const [notif, setNotif] = useState([]);
+
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -96,6 +98,18 @@ export default function NotificationsPopover() {
       }))
     );
   };
+
+  const handleNotifFromAPI = useCallback(async () => {
+    const notifAPI = await getNotifWithUser({ user_id: user.user_id });
+
+    console.log(notifAPI.data);
+
+    setNotif(notifAPI.data);
+  }, [user]);
+
+  useEffect(() => {
+    handleNotifFromAPI();
+  }, [handleNotifFromAPI]);
 
   return (
     <>
@@ -120,20 +134,20 @@ export default function NotificationsPopover() {
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', py: 2, px: 2.5 }}>
-          <Box sx={{ flexGrow: 1 }}>
+          {/* <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               You have {totalUnRead} unread messages
             </Typography>
-          </Box>
+          </Box> */}
 
-          {totalUnRead > 0 && (
+          {/* {totalUnRead > 0 && (
             <Tooltip title=" Mark all as read">
               <IconButton color="primary" onClick={handleMarkAllAsRead}>
                 <Iconify icon="eva:done-all-fill" />
               </IconButton>
             </Tooltip>
-          )}
+          )} */}
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -141,18 +155,18 @@ export default function NotificationsPopover() {
         <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
           <List
             disablePadding
-            subheader={
-              <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                New
-              </ListSubheader>
-            }
+            // subheader={
+            //   <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
+            //     New
+            //   </ListSubheader>
+            // }
           >
             {notifications.slice(0, 2).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
           </List>
 
-          <List
+          {/* <List
             disablePadding
             subheader={
               <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
@@ -163,16 +177,16 @@ export default function NotificationsPopover() {
             {notifications.slice(2, 5).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
-          </List>
+          </List> */}
         </Scrollbar>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
 
-        <Box sx={{ p: 1 }}>
+        {/* <Box sx={{ p: 1 }}>
           <Button fullWidth disableRipple>
             View All
           </Button>
-        </Box>
+        </Box> */}
       </Popover>
     </>
   );
@@ -206,9 +220,9 @@ function NotificationItem({ notification }) {
         }),
       }}
     >
-      <ListItemAvatar>
+      {/* <ListItemAvatar>
         <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
-      </ListItemAvatar>
+      </ListItemAvatar> */}
       <ListItemText
         primary={title}
         secondary={

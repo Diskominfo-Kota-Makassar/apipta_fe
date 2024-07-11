@@ -13,24 +13,80 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
-import IconButton from '@mui/material/IconButton';
-
-import Iconify from 'src/components/iconify';
-
+import * as XLSX from 'xlsx';
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
-import { getPenugasanFromAPI } from 'src/utils/api';
-
-import { emptyRows, applyFilter, getComparator } from '../utils';
+import { getKompilasi } from 'src/utils/api';
 
 // ----------------------------------------------------------------------
 
 export default function LihatKompilasi() {
   const notify = (comment) => toast(comment);
 
-  const user = useLocalStorage('user');
-  useEffect(() => {}, []);
+  const [user, setUser] = useLocalStorage('user');
+  const [allkompilasi, setAllKompilasi] = useState([]);
+  const [rekomendasis, setRekomendasis] = useState([]);
+
+  const handleAuditFromAPI = async () => {
+    const kompilasi = await getKompilasi();
+    console.log(kompilasi.data);
+    setAllKompilasi(kompilasi.data);
+  };
+
+  const exportToExcel = (jsonData, fileName) => {
+    const worksheet = XLSX.utils.json_to_sheet(jsonData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+  };
+
+  const preprocessData = (data) => {
+    const result = [];
+
+    // Headers
+    const headers = [
+      'Kondisi',
+      'Kriteria',
+      'Sebab',
+      'Akibat',
+      'No LHP',
+      'Rekomendasi Masukan',
+      'Aksi Masukan',
+      'Tgl Pembuatan',
+    ];
+    result.push(headers);
+
+    // Flatten each item
+    data.forEach((item) => {
+      item.rekomendasis.forEach((rekomendasi) => {
+        rekomendasi.aksis.forEach((aksi) => {
+          const row = [
+            item.kondisi,
+            item.kriteria,
+            item.sebab,
+            item.akibat,
+            item.no_lhp,
+            rekomendasi.masukan,
+            aksi.masukan,
+            item.createdAt,
+          ];
+          result.push(row);
+        });
+      });
+    });
+
+    return result;
+  };
+
+  const handleExport = () => {
+    const preprocessedData = preprocessData(allkompilasi);
+    exportToExcel(preprocessedData, 'Kompilasi-Audit');
+  };
+
+  useEffect(() => {
+    handleAuditFromAPI();
+  }, []);
 
   return (
     <Container>
@@ -40,6 +96,7 @@ export default function LihatKompilasi() {
         <Button
           variant="contained"
           color="inherit"
+          onClick={handleExport}
           // startIcon={<Iconify icon="eva:plus-fill" />}
         >
           Donwload XLSX
@@ -58,7 +115,47 @@ export default function LihatKompilasi() {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow />
+            {allkompilasi.map((kompilasi, index) => (
+              <TableRow
+                sx={{
+                  borderBottom: '2px solid #E9E9E9',
+                }}
+                key={kompilasi.id}
+              >
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{kompilasi.kondisi}</TableCell>
+                <TableCell>{kompilasi.kriteria}</TableCell>
+                <TableCell>{kompilasi.sebab}</TableCell>
+                <TableCell>{kompilasi.akibat}</TableCell>
+                <TableCell>
+                  {kompilasi.rekomendasis.map((rekomendasi, i) => (
+                    <TableRow
+                      sx={{
+                        borderBottom: '2px solid #E9E9E9',
+                      }}
+                      key={i}
+                    >
+                      <TableCell>{rekomendasi.masukan}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableCell>
+                <TableCell>
+                  {kompilasi.rekomendasis.map((rekomendasi, i) => (
+                    <TableRow
+                      sx={{
+                        borderBottom: '2px solid #E9E9E9',
+                      }}
+                      key={i}
+                    >
+                      {rekomendasi.aksis.map((aksi, it) => (
+                        <TableRow key={it}> {aksi.masukan} </TableRow>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableCell>
+                <TableCell>{kompilasi.createdAt}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

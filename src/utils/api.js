@@ -630,3 +630,17 @@ export const deleteAksi = async (id) => {
     return error;
   }
 };
+
+export const getNotifWithUser = async ({ user_id }) => {
+  try {
+    const response = await axios.get(`${baseURL}/notif/by/user/${user_id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.data;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};

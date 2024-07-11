@@ -416,18 +416,18 @@ export default function AuditKKA() {
               variant="contained"
             >
               {' '}
-              Laporan QA BPKP
+              Surat Tugas BPKP
             </Button>
           </Card>
         )}
 
-      {user.role_id === 6 && valueDraftNaskahFromAPI.length === 2 && (
+      {user.role_id === 6 && valueDraftNaskahFromAPI.length === 3 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handleSubmitFile}>
             <MuiFileInput
               sx={{ mr: 3 }}
               name="file"
-              placeholder="Laporan QA BPKP"
+              placeholder="Surat Tugas BPKP"
               value={valueDraftNaskah}
               onChange={handleChangeDraftNaskah}
             />
@@ -439,9 +439,48 @@ export default function AuditKKA() {
         </Card>
       )}
 
+      {user.role_id === 6 && valueDraftNaskahFromAPI.length === 3 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form onSubmit={handleSubmitFile}>
+            <MuiFileInput
+              sx={{ mr: 3 }}
+              name="file"
+              placeholder="Berita Acara QA BPKP"
+              value={valueDraftNaskah}
+              onChange={handleChangeDraftNaskah}
+            />
+            <Button sx={{ mt: 1 }} type="submit" variant="contained">
+              {' '}
+              Simpan{' '}
+            </Button>
+          </form>
+        </Card>
+      )}
+
+      {user.role_id === 6 &&
+        valueDraftNaskahFromAPI.length !== 3 &&
+        valueDraftNaskahFromAPI.length !== 2 &&
+        valueDraftNaskahFromAPI.length !== 1 && (
+          <Card sx={{ mt: 3, p: 3 }}>
+            <Button
+              sx={{ mt: 1 }}
+              onClick={() =>
+                window.open(
+                  `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[2].file}`,
+                  '_blank'
+                )
+              }
+              variant="contained"
+            >
+              {' '}
+              Surat Tugas BPKP
+            </Button>
+          </Card>
+        )}
+
       {/* end session bpkp */}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 3 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 4 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -459,13 +498,13 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 3 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 4 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[2].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
                 '_blank'
               )
             }
@@ -477,7 +516,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 3 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 4 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handleSubmitFile}>
             <MuiFileInput
@@ -496,7 +535,7 @@ export default function AuditKKA() {
       )}
 
       {/* after bpkp upload */}
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 4 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 5 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -514,13 +553,13 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 4 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 5 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[2].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
                 '_blank'
               )
             }
@@ -532,13 +571,13 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 4 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 5 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
                 '_blank'
               )
             }
@@ -552,7 +591,7 @@ export default function AuditKKA() {
 
       {/* session obrik */}
 
-      {user.role_id === 5 && valueDraftNaskahFromAPI.length === 3 && (
+      {user.role_id === 5 && valueDraftNaskahFromAPI.length === 4 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button sx={{ mt: 1 }} variant="contained">
             {' '}
@@ -562,14 +601,15 @@ export default function AuditKKA() {
       )}
 
       {user.role_id === 5 &&
-        valueDraftNaskahFromAPI.length === 4 &&
+        valueDraftNaskahFromAPI.length === 5 &&
+        valueDraftNaskahFromAPI.length !== 4 &&
         valueDraftNaskahFromAPI.length !== 3 && (
           <Card sx={{ mt: 3, p: 3 }}>
             <Button
               sx={{ mt: 1 }}
               onClick={() =>
                 window.open(
-                  `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                  `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
                   '_blank'
                 )
               }
@@ -582,7 +622,8 @@ export default function AuditKKA() {
         )}
 
       {user.role_id === 5 &&
-        valueDraftNaskahFromAPI.length === 4 &&
+        valueDraftNaskahFromAPI.length === 5 &&
+        valueDraftNaskahFromAPI.length !== 4 &&
         valueDraftNaskahFromAPI.length !== 3 && (
           <Card sx={{ mt: 3, p: 3 }}>
             <form onSubmit={handleSubmitFile}>
@@ -603,13 +644,13 @@ export default function AuditKKA() {
 
       {/* after obrik upload */}
 
-      {user.role_id === 5 && valueDraftNaskahFromAPI.length !== 4 && (
+      {user.role_id === 5 && valueDraftNaskahFromAPI.length !== 5 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
                 '_blank'
               )
             }
@@ -621,13 +662,13 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 5 && valueDraftNaskahFromAPI.length !== 4 && (
+      {user.role_id === 5 && valueDraftNaskahFromAPI.length !== 5 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[5].file}`,
                 '_blank'
               )
             }
@@ -641,25 +682,7 @@ export default function AuditKKA() {
 
       {/* end obrik session */}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 5 && (
-        <Card sx={{ mt: 3, p: 3 }}>
-          <Button
-            sx={{ mt: 1 }}
-            onClick={() =>
-              window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
-                '_blank'
-              )
-            }
-            variant="contained"
-          >
-            {' '}
-            View File Naskah hasil audit
-          </Button>
-        </Card>
-      )}
-
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 5 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 6 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -672,12 +695,30 @@ export default function AuditKKA() {
             variant="contained"
           >
             {' '}
+            View File Naskah hasil audit
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 6 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[5].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
             View File surat tanggapan obrik
           </Button>
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 5 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 6 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handleSubmitFile}>
             <MuiFileInput
@@ -697,25 +738,7 @@ export default function AuditKKA() {
 
       {/* after kt upload file */}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 6 && (
-        <Card sx={{ mt: 3, p: 3 }}>
-          <Button
-            sx={{ mt: 1 }}
-            onClick={() =>
-              window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
-                '_blank'
-              )
-            }
-            variant="contained"
-          >
-            {' '}
-            View File Naskah hasil audit
-          </Button>
-        </Card>
-      )}
-
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 6 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -728,18 +751,36 @@ export default function AuditKKA() {
             variant="contained"
           >
             {' '}
-            View File surat tanggapan obrik
+            View File Naskah hasil audit
           </Button>
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 6 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
                 `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[5].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File surat tanggapan obrik
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[6].file}`,
                 '_blank'
               )
             }
@@ -753,25 +794,7 @@ export default function AuditKKA() {
 
       {/* session pj */}
 
-      {user.role_id === 7 && valueDraftNaskahFromAPI.length !== 5 && (
-        <Card sx={{ mt: 3, p: 3 }}>
-          <Button
-            sx={{ mt: 1 }}
-            onClick={() =>
-              window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
-                '_blank'
-              )
-            }
-            variant="contained"
-          >
-            {' '}
-            View File Naskah hasil audit
-          </Button>
-        </Card>
-      )}
-
-      {user.role_id === 7 && valueDraftNaskahFromAPI.length !== 5 && (
+      {user.role_id === 7 && valueDraftNaskahFromAPI.length !== 6 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -784,18 +807,36 @@ export default function AuditKKA() {
             variant="contained"
           >
             {' '}
-            View File surat tanggapan obrik
+            View File Naskah hasil audit
           </Button>
         </Card>
       )}
 
-      {user.role_id === 7 && valueDraftNaskahFromAPI.length !== 5 && (
+      {user.role_id === 7 && valueDraftNaskahFromAPI.length !== 6 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
                 `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[5].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File surat tanggapan obrik
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 7 && valueDraftNaskahFromAPI.length !== 6 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[6].file}`,
                 '_blank'
               )
             }
@@ -809,7 +850,7 @@ export default function AuditKKA() {
 
       {/* end session pj */}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 6 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handleSubmitFile}>
             <MuiFileInput
@@ -829,25 +870,7 @@ export default function AuditKKA() {
 
       {/* after kt upload file final */}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
-        <Card sx={{ mt: 3, p: 3 }}>
-          <Button
-            sx={{ mt: 1 }}
-            onClick={() =>
-              window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
-                '_blank'
-              )
-            }
-            variant="contained"
-          >
-            {' '}
-            View File Naskah hasil audit
-          </Button>
-        </Card>
-      )}
-
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -860,12 +883,12 @@ export default function AuditKKA() {
             variant="contained"
           >
             {' '}
-            View File surat tanggapan obrik
+            View File Naskah hasil audit
           </Button>
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -878,18 +901,36 @@ export default function AuditKKA() {
             variant="contained"
           >
             {' '}
-            View File draft laporan hasil audit
+            View File surat tanggapan obrik
           </Button>
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
                 `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[6].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File draft laporan hasil audit
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[7].file}`,
                 '_blank'
               )
             }

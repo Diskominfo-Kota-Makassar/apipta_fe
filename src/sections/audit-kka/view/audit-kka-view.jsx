@@ -421,7 +421,27 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 6 && valueDraftNaskahFromAPI.length === 2 && (
+      {user.role_id === 6 &&
+        valueDraftNaskahFromAPI.length !== 2 &&
+        valueDraftNaskahFromAPI.length !== 1 && (
+          <Card sx={{ mt: 3, p: 3 }}>
+            <Button
+              sx={{ mt: 1 }}
+              onClick={() =>
+                window.open(
+                  `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[2].file}`,
+                  '_blank'
+                )
+              }
+              variant="contained"
+            >
+              {' '}
+              Surat Tugas BPKP
+            </Button>
+          </Card>
+        )}
+
+      {user.role_id === 6 && valueDraftNaskahFromAPI.length === 3 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handleSubmitFile}>
             <MuiFileInput

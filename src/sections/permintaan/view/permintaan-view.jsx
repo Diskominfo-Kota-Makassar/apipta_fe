@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -19,7 +20,7 @@ import Scrollbar from 'src/components/scrollbar';
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 
-import { getPermintaanFromAPI } from 'src/utils/api';
+import { getPermintaanFromAPI, getPenugasanFromAPI } from 'src/utils/api';
 import { format } from 'date-fns';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -42,6 +43,11 @@ export default function PermintaanPage() {
   const [orderBy, setOrderBy] = useState('nama');
 
   const [filterName, setFilterName] = useState('');
+
+  const [user, setUser] = useLocalStorage('user');
+  const suratTugasTerpilih = user.surat_tugas;
+
+  const [noST, setNoST] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -106,15 +112,31 @@ export default function PermintaanPage() {
 
   const router = useRouter();
 
-  const handlePermintaanFromAPI = async () => {
+  const handlePermintaanFromAPI = useCallback(async () => {
     const permintaan = await getPermintaanFromAPI();
-    console.log(permintaan);
-    setAllPermintaan(permintaan.data);
-  };
+
+    console.log(permintaan.data);
+    console.log(noST);
+
+    const prm = permintaan.data.filter((p) => p.no === noST);
+    setAllPermintaan(prm);
+  }, [noST]);
+
+  const handlePenugasanFromAPI = useCallback(async () => {
+    try {
+      const penugasan = await getPenugasanFromAPI();
+      const no_tugas = penugasan.data.find((pgs) => pgs.id === suratTugasTerpilih);
+      setNoST(no_tugas.no);
+    } catch (error) {
+      console.error('Error fetching penugasan data:', error);
+      // Handle error appropriately
+    }
+  }, [suratTugasTerpilih]);
 
   useEffect(() => {
+    handlePenugasanFromAPI();
     handlePermintaanFromAPI();
-  }, []);
+  }, [handlePermintaanFromAPI, handlePenugasanFromAPI]);
 
   return (
     <Container>

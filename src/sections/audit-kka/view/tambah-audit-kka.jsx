@@ -88,6 +88,11 @@ export default function TambahAuditKKA() {
     setUraianST(penugasan.uraian);
   };
 
+  const getUserNameById = (id) => {
+    const user = atList.find((usr) => usr.id === id);
+    return user ? user.nama : '';
+  };
+
   const handlePostPenugasan = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -182,7 +187,7 @@ export default function TambahAuditKKA() {
                           value={at}
                           onChange={handleChangeAt}
                           input={<OutlinedInput label="Pilih Anggota Tim" />}
-                          renderValue={(selected) => selected.join(', ')}
+                          renderValue={(selected) => selected.map(getUserNameById).join(', ')}
                           MenuProps={MenuProps}
                         >
                           {atList.map((user) => (

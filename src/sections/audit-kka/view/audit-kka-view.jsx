@@ -143,12 +143,14 @@ export default function AuditKKA() {
   };
 
   const handleAuditFromAPI = useCallback(async () => {
-    const audit = await getAuditFromAPI({ id_penugasan: user.surat_tugas });
+    const audit = await getAuditFromAPI({ id_penugasan: suratTugasTerpilih });
+
+    console.log(suratTugasTerpilih);
 
     if (audit.data !== null) {
       setAllAudit(audit.data);
     }
-  }, [user]);
+  }, [suratTugasTerpilih]);
 
   const handleFileAuditFromAPI = useCallback(async () => {
     // const st_id = user.surat_tugas;
@@ -401,6 +403,42 @@ export default function AuditKKA() {
         </Card>
       )}
 
+      {user.role_id === 6 && valueDraftNaskahFromAPI.length === 2 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form onSubmit={handleSubmitFile}>
+            <MuiFileInput
+              sx={{ mr: 3 }}
+              name="file"
+              placeholder="Surat Tugas BPKP"
+              value={valueDraftNaskah}
+              onChange={handleChangeDraftNaskah}
+            />
+            <Button sx={{ mt: 1 }} type="submit" variant="contained">
+              {' '}
+              Simpan{' '}
+            </Button>
+          </form>
+        </Card>
+      )}
+
+      {user.role_id === 6 && valueDraftNaskahFromAPI.length === 2 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form onSubmit={handleSubmitFile}>
+            <MuiFileInput
+              sx={{ mr: 3 }}
+              name="file"
+              placeholder="Berita Acara QA BPKP"
+              value={valueDraftNaskah}
+              onChange={handleChangeDraftNaskah}
+            />
+            <Button sx={{ mt: 1 }} type="submit" variant="contained">
+              {' '}
+              Simpan{' '}
+            </Button>
+          </form>
+        </Card>
+      )}
+
       {user.role_id === 6 &&
         valueDraftNaskahFromAPI.length !== 2 &&
         valueDraftNaskahFromAPI.length !== 1 && (
@@ -421,44 +459,7 @@ export default function AuditKKA() {
           </Card>
         )}
 
-      {user.role_id === 6 && valueDraftNaskahFromAPI.length === 3 && (
-        <Card sx={{ mt: 3, p: 3 }}>
-          <form onSubmit={handleSubmitFile}>
-            <MuiFileInput
-              sx={{ mr: 3 }}
-              name="file"
-              placeholder="Surat Tugas BPKP"
-              value={valueDraftNaskah}
-              onChange={handleChangeDraftNaskah}
-            />
-            <Button sx={{ mt: 1 }} type="submit" variant="contained">
-              {' '}
-              Simpan{' '}
-            </Button>
-          </form>
-        </Card>
-      )}
-
-      {user.role_id === 6 && valueDraftNaskahFromAPI.length === 3 && (
-        <Card sx={{ mt: 3, p: 3 }}>
-          <form onSubmit={handleSubmitFile}>
-            <MuiFileInput
-              sx={{ mr: 3 }}
-              name="file"
-              placeholder="Berita Acara QA BPKP"
-              value={valueDraftNaskah}
-              onChange={handleChangeDraftNaskah}
-            />
-            <Button sx={{ mt: 1 }} type="submit" variant="contained">
-              {' '}
-              Simpan{' '}
-            </Button>
-          </form>
-        </Card>
-      )}
-
       {user.role_id === 6 &&
-        valueDraftNaskahFromAPI.length !== 3 &&
         valueDraftNaskahFromAPI.length !== 2 &&
         valueDraftNaskahFromAPI.length !== 1 && (
           <Card sx={{ mt: 3, p: 3 }}>
@@ -473,7 +474,7 @@ export default function AuditKKA() {
               variant="contained"
             >
               {' '}
-              Surat Tugas BPKP
+              Berita acara QA bpkp
             </Button>
           </Card>
         )}

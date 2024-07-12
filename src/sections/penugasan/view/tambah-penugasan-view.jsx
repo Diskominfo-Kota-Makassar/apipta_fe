@@ -79,11 +79,15 @@ export default function TambahPenugasan() {
     const {
       target: { value },
     } = event;
+
     setAt(
       // On autofill we get a stringified value.
       typeof value === 'number' ? value.split(',') : value
     );
   };
+
+  const getNamesByIds = (data, ids) =>
+    data.filter((user) => ids.includes(user.id)).map((user) => user.nama);
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -161,6 +165,11 @@ export default function TambahPenugasan() {
       }
     });
   }, []);
+
+  const getUserNameById = (id) => {
+    const user = atList.find((usr) => usr.id === id);
+    return user ? user.nama : '';
+  };
 
   useEffect(() => {
     handleUsersFromAPI();
@@ -249,7 +258,7 @@ export default function TambahPenugasan() {
                           value={at}
                           onChange={handleChangeAt}
                           input={<OutlinedInput label="Pilih Anggota Tim" />}
-                          renderValue={(selected) => selected.join(', ')}
+                          renderValue={(selected) => selected.map(getUserNameById).join(', ')}
                           MenuProps={MenuProps}
                         >
                           {atList.map((user) => (

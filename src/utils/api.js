@@ -646,3 +646,51 @@ export const getNotifWithUser = async ({ user_id }) => {
     return error;
   }
 };
+
+export const getChat = async ({ pengirimEmail = '' }) => {
+  try {
+    const response = await axios.get(`${baseURL}/chats/${pengirimEmail}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.data;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const postChat = async ({
+  no = '',
+  penugasan_id = '',
+  tim_id = '',
+  penerima = '',
+  pengirim = '',
+  judul = '',
+  isi = '',
+}) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/aksi`,
+      {
+        no,
+        penugasan_id,
+        tim_id,
+        penerima,
+        pengirim,
+        judul,
+        isi,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};

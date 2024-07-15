@@ -192,7 +192,12 @@ export default function LoginView() {
         }}
       /> */}
 
-      <Stack direction="row" alignItems="center" justifyContent="center" sx={{ height: 1 }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ height: 1, px: 10, py: 10 }}
+      >
         <Box sx={{ mr: 8 }}>
           <img src="/assets/images/logo-makassar.png" alt="login" />
         </Box>

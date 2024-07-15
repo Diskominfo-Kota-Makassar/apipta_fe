@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import Box from '@mui/material/Box';
@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import { account } from 'src/_mock/account';
 
 import { useAuth } from 'src/routes/hooks/useAuth';
+import { getNotifWithUser } from 'src/utils/api';
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +39,9 @@ export default function AccountPopover() {
 
   const { logout } = useAuth();
 
-  const user = useLocalStorage('user', null);
+  const [user, setUser] = useLocalStorage('user', null);
+  console.log(user);
+  const userLogin = user.user_id;
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -50,6 +53,16 @@ export default function AccountPopover() {
   const handleLogout = () => {
     logout();
   };
+
+  const handleNotifFromAPI = useCallback(async () => {
+    const users = await getNotifWithUser({ user_id: userLogin });
+    console.log(users.data);
+    // setUsersList(users.data);
+  }, [userLogin]);
+
+  useEffect(() => {
+    handleNotifFromAPI();
+  }, [handleNotifFromAPI]);
 
   return (
     <>
@@ -93,12 +106,12 @@ export default function AccountPopover() {
           },
         }}
       >
-        <Box sx={{ my: 1.5, px: 2 }}>
+        {/* <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
             {user[0] === null ? '' : user[0].username}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap />
-        </Box>
+        </Box> */}
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 

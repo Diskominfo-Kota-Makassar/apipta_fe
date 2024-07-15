@@ -178,21 +178,24 @@ export default function LoginView() {
     <Box
       sx={{
         ...bgGradient({
-          color: alpha(theme.palette.background.default, 0.9),
-          imgUrl: '/assets/background/bg-red-tech.svg',
+          color: alpha(theme.palette.background.default, 0.2),
+          imgUrl: '/assets/background/Backgroundapip.png',
         }),
         height: 1,
       }}
     >
-      <Logo
+      {/* <Logo
         sx={{
           position: 'fixed',
           top: { xs: 16, md: 24 },
           left: { xs: 16, md: 24 },
         }}
-      />
+      /> */}
 
-      <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
+      <Stack direction="row" alignItems="center" justifyContent="center" sx={{ height: 1 }}>
+        <Box sx={{ mr: 8 }}>
+          <img src="/assets/images/logo-makassar.png" alt="login" />
+        </Box>
         <Card
           sx={{
             p: 5,

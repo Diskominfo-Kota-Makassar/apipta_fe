@@ -254,6 +254,7 @@ export default function App() {
             />
           </Route>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/logout" element={<LoginPage />} />
         </Routes>
       </AuthProvider>
     </ThemeProvider>

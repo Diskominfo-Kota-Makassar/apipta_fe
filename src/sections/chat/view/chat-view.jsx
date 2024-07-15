@@ -6,8 +6,10 @@ import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
@@ -22,11 +24,16 @@ export default function ChatPage() {
 
   const [user, setUser] = useLocalStorage('user');
 
-  const [userList, setUserList] = useState([]);
+  const [penerima, setPenerima] = useState('');
+  const [usersList, setUsersList] = useState([]);
+
+  const handleChangeUser = (event) => {
+    setPenerima(event.target.value);
+  };
 
   const handleUsersFromAPI = useCallback(async () => {
     const users = await getUsersFromAPI();
-    const usersObject = await users.data;
+    setUsersList(users.data);
   }, []);
 
   useEffect(() => {
@@ -40,9 +47,17 @@ export default function ChatPage() {
       <Grid container spacing={2}>
         <Grid item xs={6} md={4}>
           <Card sx={{ p: 3 }}>
-            <Button variant="contained" color="success">
-              Pilih User
-            </Button>
+            <FormControl fullWidth>
+              <InputLabel>Pilih User</InputLabel>
+              <Select value={penerima} label="Pilih User" onChange={handleChangeUser}>
+                {usersList.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {' '}
+                    {option.nama}{' '}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Card>
         </Grid>
         <Grid item xs={6} md={8}>

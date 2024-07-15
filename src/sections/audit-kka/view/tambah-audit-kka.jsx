@@ -4,7 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
 import { getPenugasanFromAPI, getUsersFromAPI, postSubmitAuditKKAAwal } from 'src/utils/api';
-import { MuiFileInput } from 'mui-file-input';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -29,6 +29,8 @@ export default function TambahAuditKKA() {
   const notify = (comment) => toast(comment);
 
   const [loading, setLoading] = useState(false);
+
+  const user = useLocalStorage('user');
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -89,8 +91,8 @@ export default function TambahAuditKKA() {
   };
 
   const getUserNameById = (id) => {
-    const user = atList.find((usr) => usr.id === id);
-    return user ? user.nama : '';
+    const userI = atList.find((usr) => usr.id === id);
+    return userI ? userI.nama : '';
   };
 
   const handlePostPenugasan = async (event) => {
@@ -103,6 +105,7 @@ export default function TambahAuditKKA() {
       no_ref_kka: form.get('no_ref_kka'),
       no_ref_pka: form.get('no_ref_pka'),
       judul: form.get('judul'),
+      rincian_pengujian: form.get('rincian_pengujian'),
       tim_anggota: at,
     });
 
@@ -119,17 +122,34 @@ export default function TambahAuditKKA() {
     }
   };
 
-  const handlePenugasanFromAPI = async () => {
-    const penugasan = await getPenugasanFromAPI();
-    setAllPenugasan(penugasan.data);
-  };
+  const handlePenugasanFromAPI = useCallback(async () => {
+    try {
+      const penugasan = await getPenugasanFromAPI();
+
+      if (user[0].role_id === 1) {
+        setAllPenugasan(penugasan.data);
+        return;
+      }
+
+      if (user[0].surat_tugas !== '') {
+        const id_surat_dipilih = user[0].surat_tugas;
+        const penugasanTerpilih = penugasan.data.find((option) => option.id === id_surat_dipilih);
+        setAllPenugasan([penugasanTerpilih]);
+      } else {
+        setAllPenugasan([]);
+      }
+    } catch (error) {
+      console.error('Error fetching penugasan data:', error);
+      // Handle error appropriately
+    }
+  }, [user]);
 
   const handleUsersFromAPI = useCallback(async () => {
     const users = await getUsersFromAPI();
     const usersObject = await users.data;
-    usersObject.forEach((user) => {
-      if (user.role_id === 3) {
-        setAtList((prevAtList) => [...prevAtList, user]);
+    usersObject.forEach((usero) => {
+      if (usero.role_id === 3) {
+        setAtList((prevAtList) => [...prevAtList, usero]);
       }
     });
   }, []);
@@ -137,7 +157,7 @@ export default function TambahAuditKKA() {
   useEffect(() => {
     handlePenugasanFromAPI();
     handleUsersFromAPI();
-  }, [handleUsersFromAPI]);
+  }, [handleUsersFromAPI, handlePenugasanFromAPI]);
 
   return (
     <Container>
@@ -178,6 +198,12 @@ export default function TambahAuditKKA() {
                       <TextField name="no_ref_kka" label="No.Ref KKA" />
                       <TextField name="no_ref_pka" label="No.Ref PKA" />
                       <TextField name="judul" label="Judul Pengujian" />
+                      <TextField
+                        multiline
+                        rows={4}
+                        name="rincian_pengujian"
+                        label="Rincian Pengujian"
+                      />
                       <FormControl fullWidth>
                         <InputLabel id="Pilih Anggota Tim">Pilih Anggota Tim</InputLabel>
                         <Select
@@ -190,10 +216,10 @@ export default function TambahAuditKKA() {
                           renderValue={(selected) => selected.map(getUserNameById).join(', ')}
                           MenuProps={MenuProps}
                         >
-                          {atList.map((user) => (
-                            <MenuItem key={user.id} value={user.id}>
-                              <Checkbox checked={at.indexOf(user.id) > -1} />
-                              <ListItemText primary={user.nama} />
+                          {atList.map((userL) => (
+                            <MenuItem key={userL.id} value={userL.id}>
+                              <Checkbox checked={at.indexOf(userL.id) > -1} />
+                              <ListItemText primary={userL.nama} />
                             </MenuItem>
                           ))}
                         </Select>

@@ -279,6 +279,7 @@ export const postSubmitAuditKKAAwal = async ({
   no_ref_kka = '',
   no_ref_pka = '',
   judul = '',
+  rincian_pengujian = '',
   tim_anggota = [],
 }) => {
   try {
@@ -289,6 +290,7 @@ export const postSubmitAuditKKAAwal = async ({
         no_ref_kka,
         no_ref_pka,
         judul,
+        rincian_pengujian,
         tim_anggota,
       },
       {

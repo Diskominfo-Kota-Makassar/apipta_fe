@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
-import { getPenugasanFromAPI } from 'src/utils/api';
+import { getUsersFromAPI } from 'src/utils/api';
 
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
@@ -20,8 +20,18 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 export default function ChatPage() {
   const notify = (comment) => toast(comment);
 
-  const user = useLocalStorage('user');
-  useEffect(() => {}, []);
+  const [user, setUser] = useLocalStorage('user');
+
+  const [userList, setUserList] = useState([]);
+
+  const handleUsersFromAPI = useCallback(async () => {
+    const users = await getUsersFromAPI();
+    const usersObject = await users.data;
+  }, []);
+
+  useEffect(() => {
+    handleUsersFromAPI();
+  }, [handleUsersFromAPI]);
 
   return (
     <Container maxWidth="xl">
@@ -31,7 +41,7 @@ export default function ChatPage() {
         <Grid item xs={6} md={4}>
           <Card sx={{ p: 3 }}>
             <Button variant="contained" color="success">
-              New Message
+              Pilih User
             </Button>
           </Card>
         </Grid>

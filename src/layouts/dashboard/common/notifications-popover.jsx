@@ -74,13 +74,14 @@ const NOTIFICATIONS = [
 export default function NotificationsPopover() {
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
 
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+  // const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
 
   const [open, setOpen] = useState(null);
 
   const [user, setUser] = useLocalStorage('user');
 
   const [notif, setNotif] = useState([]);
+  const totalUnRead = notif.length;
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -102,7 +103,9 @@ export default function NotificationsPopover() {
   const handleNotifFromAPI = useCallback(async () => {
     const notifAPI = await getNotifWithUser({ user_id: user.user_id });
 
-    console.log(notifAPI.data);
+    console.log(user.user_id);
+
+    console.log(notifAPI);
 
     setNotif(notifAPI.data);
   }, [user]);
@@ -161,7 +164,7 @@ export default function NotificationsPopover() {
             //   </ListSubheader>
             // }
           >
-            {notifications.slice(0, 2).map((notification) => (
+            {notif.slice(0, 2).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
           </List>
@@ -198,16 +201,16 @@ NotificationItem.propTypes = {
   notification: PropTypes.shape({
     createdAt: PropTypes.instanceOf(Date),
     id: PropTypes.string,
+    penugasan: PropTypes.any,
     isUnRead: PropTypes.bool,
-    title: PropTypes.string,
-    description: PropTypes.string,
-    type: PropTypes.string,
-    avatar: PropTypes.any,
+    users_pembuat: PropTypes.any,
   }),
 };
 
 function NotificationItem({ notification }) {
-  const { avatar, title } = renderContent(notification);
+  const { avatar } = renderContent(notification);
+
+  console.log(notification);
 
   return (
     <ListItemButton
@@ -224,7 +227,7 @@ function NotificationItem({ notification }) {
         <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
       </ListItemAvatar> */}
       <ListItemText
-        primary={title}
+        primary={`${notification.users_pembuat.nama} menugaskan anda pada No ST ${notification.penugasan.no}`} // ${notification.penugasan.no}
         secondary={
           <Typography
             variant="caption"

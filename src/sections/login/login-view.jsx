@@ -10,6 +10,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 import { bgGradient } from 'src/theme/css';
 import { useAuth } from 'src/routes/hooks/useAuth';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { MenuItem, Select, InputLabel, FormControl, CircularProgress } from '@mui/material';
 
@@ -25,6 +26,7 @@ import { getRolesFromAPI, getPenugasanFromAPI, postLogin } from 'src/utils/api';
 export default function LoginView() {
   const notify = (comment) => toast(comment);
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
@@ -108,8 +110,7 @@ export default function LoginView() {
           >
             {jabatanList.map((option) => (
               <MenuItem key={option.id} value={option.id}>
-                {' '}
-                {option.name}{' '}
+                {option.name}
               </MenuItem>
             ))}
           </Select>
@@ -120,8 +121,7 @@ export default function LoginView() {
             <Select onChange={handleChangeST} label="Pilih Surat Tugas">
               {allPenugasan.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
-                  {' '}
-                  {option.no}{' '}
+                  {option.no}
                 </MenuItem>
               ))}
             </Select>
@@ -184,23 +184,17 @@ export default function LoginView() {
         height: 1,
       }}
     >
-      {/* <Logo
-        sx={{
-          position: 'fixed',
-          top: { xs: 16, md: 24 },
-          left: { xs: 16, md: 24 },
-        }}
-      /> */}
-
       <Stack
-        direction="row"
+        direction={isMobile ? 'column' : 'row'}
         alignItems="center"
         justifyContent="center"
-        sx={{ height: 1, px: 10, py: 10 }}
+        sx={{ height: 1, px: 3, py: 5 }}
       >
-        <Box sx={{ mr: 8 }}>
-          <img src="/assets/images/logo-makassar.png" alt="login" />
-        </Box>
+        {!isMobile && (
+          <Box sx={{ mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 8 }}>
+            <img src="/assets/images/logo-makassar.png" alt="login" style={{ maxWidth: '100%' }} />
+          </Box>
+        )}
         <Card
           sx={{
             p: 5,
@@ -208,55 +202,20 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          {/* <Typography>Login</Typography> */}
-          <Typography sx={{ mb: 5 }} variant="h4">
-            APLIKASI APIP TA
-          </Typography>
-
-          {/* <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Don’t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-              Get started
-            </Link>
-          </Typography> */}
-
-          {/* <Stack direction="row" spacing={2}>
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:google-fill" color="#DF3E30" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:facebook-fill" color="#1877F2" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:twitter-fill" color="#1C9CEA" />
-            </Button>
-          </Stack> */}
-
-          {/* <Divider sx={{ my: 3 }}> */}
-          {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              OR
-            </Typography> */}
-          {/* </Divider> */}
+          {isMobile && (
+            <Box sx={{ mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 8 }}>
+              <img
+                src="/assets/images/logo-makassar.png"
+                alt="login"
+                style={{ maxWidth: '100%' }}
+              />
+            </Box>
+          )}
+          {!isMobile && (
+            <Typography sx={{ mb: 5 }} variant="h4">
+              APLIKASI APIP TA
+            </Typography>
+          )}
 
           {renderForm}
         </Card>

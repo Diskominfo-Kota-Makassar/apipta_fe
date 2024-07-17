@@ -101,7 +101,7 @@ export default function NotificationsPopover() {
   };
 
   const handleNotifFromAPI = useCallback(async () => {
-    const notifAPI = await getNotifWithUser({ user_id: user.user_id });
+    const notifAPI = await getNotifWithUser({ user_id: user !== null && user.user_id });
 
     console.log(user.user_id);
 

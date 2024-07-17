@@ -30,7 +30,7 @@ export default function TambahAuditKKA() {
 
   const [loading, setLoading] = useState(false);
 
-  const user = useLocalStorage('user');
+  const [user, setUser] = useLocalStorage('user');
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);

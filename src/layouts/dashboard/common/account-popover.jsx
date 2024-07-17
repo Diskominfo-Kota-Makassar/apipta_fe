@@ -40,8 +40,7 @@ export default function AccountPopover() {
   const { logout } = useAuth();
 
   const [user, setUser] = useLocalStorage('user', null);
-  console.log(user);
-  const userLogin = user.user_id;
+  const userLogin = user !== null && user.user_id;
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -56,7 +55,6 @@ export default function AccountPopover() {
 
   const handleNotifFromAPI = useCallback(async () => {
     const users = await getNotifWithUser({ user_id: userLogin });
-    console.log(users.data);
     // setUsersList(users.data);
   }, [userLogin]);
 

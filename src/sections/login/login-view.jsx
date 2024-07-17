@@ -103,7 +103,7 @@ export default function LoginView() {
         <FormControl fullWidth>
           <InputLabel>Pilih Role User</InputLabel>
           <Select
-            labelId="jabatan"
+            id="jabatan"
             value={jabatan}
             label="Pilih Role User"
             onChange={handleChangeJabatan}

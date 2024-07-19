@@ -109,7 +109,7 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box>
         <Logo sx={{ mt: 3, ml: 4 }} />
       </Box>
-      {console.log(user)}
+
       {renderAccount}
       {user.role_id === 1 && renderMenuAdmin}
       {user.role_id === 5 && renderMenuBpkp}

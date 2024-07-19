@@ -59,7 +59,7 @@ export const postSubmitUser = async ({
   password = '',
   role_id,
   entitas = '',
-  masa_berlaku,
+  masa_berlaku = '',
   email = '',
   nip = '',
   golongan = '',

@@ -6,7 +6,7 @@ const icon = (name) => (
   <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
 );
 
-const navConfig = [
+const navConfigBPKP = [
   {
     title: 'dashboard',
     path: '/',
@@ -27,11 +27,7 @@ const navConfig = [
     path: '/audit-kka',
     icon: icon('ic_audit_kka'),
   },
-  {
-    title: 'kompilasi',
-    path: '/kompilasi',
-    icon: icon('ic_kompilasi'),
-  },
+
   {
     title: 'simakda',
     path: '/simakda',
@@ -44,4 +40,4 @@ const navConfig = [
   },
 ];
 
-export default navConfig;
+export default navConfigBPKP;

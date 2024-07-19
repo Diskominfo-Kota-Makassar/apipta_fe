@@ -23,12 +23,14 @@ import Scrollbar from 'src/components/scrollbar';
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
 import navConfigAdmin from './config-navigation-admin';
+import navConfigBPKP from './config-navigation-bpkp';
+import navConfigChat from './config-navigation-chat';
 
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
-  const user = useLocalStorage('user');
+  const [user, setUser] = useLocalStorage('user');
 
   const upLg = useResponsive('up', 'lg');
 
@@ -55,7 +57,7 @@ export default function Nav({ openNav, onCloseNav }) {
       {/* <Avatar src={account.photoURL} alt="photoURL" /> */}
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{user[0] && user[0].username}</Typography>
+        <Typography variant="subtitle2">{user && user.username}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {account.role}
@@ -66,7 +68,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const renderChat = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {navConfig.map((item) => (
+      {navConfigChat.map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
     </Stack>
@@ -74,6 +76,20 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderMenuAdmin = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {navConfigAdmin.map((item) => (
+        <NavItem key={item.title} item={item} />
+      ))}
+    </Stack>
+  );
+  const renderMenuBpkp = (
+    <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
+      {navConfigBPKP.map((item) => (
+        <NavItem key={item.title} item={item} />
+      ))}
+    </Stack>
+  );
+  const renderMenu = (
+    <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
+      {navConfig.map((item) => (
         <NavItem key={item.title} item={item} />
       ))}
     </Stack>
@@ -93,9 +109,12 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box>
         <Logo sx={{ mt: 3, ml: 4 }} />
       </Box>
+      {console.log(user)}
       {renderAccount}
-      {/* {user[0].role_id === 1 ? renderMenuAdmin : renderMenu} */}
-      {renderMenuAdmin}
+      {user.role_id === 1 && renderMenuAdmin}
+      {user.role_id === 5 && renderMenuBpkp}
+      {user.role_id === 3 && renderMenuBpkp}
+      {user.role_id !== 1 && user.role_id !== 5 && user.role_id !== 3 && renderMenu}
       <Box sx={{ mt: '100px' }}>{renderChat}</Box>
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>

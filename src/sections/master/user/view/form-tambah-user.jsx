@@ -17,20 +17,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import Iconify from 'src/components/iconify';
 import * as React from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Grow from '@mui/material/Grow';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import Select from '@mui/material/Select';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 
@@ -87,6 +78,7 @@ export default function FormTambahUser() {
     event.preventDefault();
     setLoading(true);
     const form = new FormData(event.currentTarget);
+    const now = new Date();
 
     const res = await postSubmitUser({
       nama: form.get('nama'),
@@ -94,7 +86,7 @@ export default function FormTambahUser() {
       password: form.get('password'),
       role_id: jabatan,
       entitas,
-      masa_berlaku: form.get('masa_berlaku'),
+      masa_berlaku: now,
       email: form.get('email'),
       nip: form.get('nip'),
       golongan,
@@ -135,7 +127,6 @@ export default function FormTambahUser() {
               <MenuItem value="Entitas C">Entitas C</MenuItem>
             </Select>
           </FormControl>
-          <DatePicker label="Masa Berlaku" name="masa_berlaku" />
           <TextField name="email" label="Email" />
           <TextField name="nip" label="NIP" />
           <FormControl fullWidth>

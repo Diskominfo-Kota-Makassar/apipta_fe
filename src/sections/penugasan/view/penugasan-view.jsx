@@ -33,7 +33,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 export default function PermohonanPage() {
   const notify = (comment) => toast(comment);
 
-  const user = useLocalStorage('user');
+  const [user, setUser] = useLocalStorage('user');
 
   const [page, setPage] = useState(0);
 
@@ -112,13 +112,13 @@ export default function PermohonanPage() {
     try {
       const penugasan = await getPenugasanFromAPI();
 
-      if (user[0].role_id === 1) {
+      if (user.role_id === 1) {
         setAllPenugasan(penugasan.data);
         return;
       }
 
-      if (user[0].surat_tugas !== '') {
-        const id_surat_dipilih = user[0].surat_tugas;
+      if (user.surat_tugas !== '') {
+        const id_surat_dipilih = user.surat_tugas;
         const penugasanTerpilih = penugasan.data.find((option) => option.id === id_surat_dipilih);
         setAllPenugasan([penugasanTerpilih]);
       } else {
@@ -139,7 +139,7 @@ export default function PermohonanPage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Penugasan</Typography>
 
-        {user[0].role_id === 1 && (
+        {user.role_id === 1 && (
           <Button
             variant="contained"
             onClick={() => router.push('/penugasan/tambah-penugasan')}

@@ -31,6 +31,18 @@ jobs:
           cache-from: type=registry,ref=barongko/inspektorat_apipta_fe:cache
           cache-to: type=inline
 
+      - name: SSH and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }} # Store the SSH password as a secret
+          port: 22 # Or your custom SSH port
+          script: |
+            cd /home/satudata/docker
+            docker rm -f fe_apipta
+            docker-compose -f apipta.yml pull
+            docker-compose -f apipta.yml up -d
       # - name: SSH and Deploy
       #   uses: appleboy/ssh-action@master
       #   with:

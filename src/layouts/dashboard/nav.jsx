@@ -32,8 +32,6 @@ export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
   const [user, setUser] = useLocalStorage('user');
 
-  console.log(user);
-
   const upLg = useResponsive('up', 'lg');
 
   useEffect(() => {
@@ -112,11 +110,15 @@ export default function Nav({ openNav, onCloseNav }) {
         <Logo sx={{ mt: 3, ml: 4 }} />
       </Box>
       {renderAccount}
+      {user !== null && (
+        <>
+          {user.role_id === 1 && renderMenuAdmin}
+          {user.role_id === 5 && renderMenuBpkp}
+          {user.role_id === 3 && renderMenuBpkp}
+          {user.role_id !== 1 && user.role_id !== 5 && user.role_id !== 3 && renderMenu}
+        </>
+      )}
 
-      {user.role_id === 1 && renderMenuAdmin}
-      {user.role_id === 5 && renderMenuBpkp}
-      {user.role_id === 3 && renderMenuBpkp}
-      {user.role_id !== 1 && user.role_id !== 5 && user.role_id !== 3 && renderMenu}
       <Box sx={{ mt: '100px' }}>{renderChat}</Box>
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>

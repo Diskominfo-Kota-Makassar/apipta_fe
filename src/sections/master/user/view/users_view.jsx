@@ -158,7 +158,6 @@ export default function UsersView() {
                   { id: 'nama', label: 'Nama' },
                   { id: 'username', label: 'Username' },
                   { id: 'entitas', label: 'Entitas' },
-                  { id: 'masa_berlaku', label: 'Masa berlaku' },
                   { id: 'email', label: 'Email' },
                   { id: 'nip', label: 'NIP' },
                   { id: 'catatan', label: 'Catatan', align: 'center' },

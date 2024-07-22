@@ -32,6 +32,8 @@ export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
   const [user, setUser] = useLocalStorage('user');
 
+  console.log(user);
+
   const upLg = useResponsive('up', 'lg');
 
   useEffect(() => {
@@ -109,8 +111,8 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box>
         <Logo sx={{ mt: 3, ml: 4 }} />
       </Box>
-
       {renderAccount}
+
       {user.role_id === 1 && renderMenuAdmin}
       {user.role_id === 5 && renderMenuBpkp}
       {user.role_id === 3 && renderMenuBpkp}

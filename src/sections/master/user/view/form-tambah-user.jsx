@@ -31,6 +31,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 import { renderBooleanCell } from '@mui/x-data-grid';
 
+import entitasList from './entitas.json';
+import golonganList from './golongan.json';
+
 // ----------------------------------------------------------------------
 
 export default function FormTambahUser() {
@@ -122,9 +125,12 @@ export default function FormTambahUser() {
               label="Entitas"
               onChange={handleChangeEntitas}
             >
-              <MenuItem value="Entitas A">Entitas A</MenuItem>
-              <MenuItem value="Entitas B">Entitas B</MenuItem>
-              <MenuItem value="Entitas C">Entitas C</MenuItem>
+              {entitasList.data.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {' '}
+                  {option.nama_entitas}{' '}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <TextField name="email" label="Email" />
@@ -137,9 +143,12 @@ export default function FormTambahUser() {
               label="Golongan"
               onChange={handleChangeGolongan}
             >
-              <MenuItem value="Golongan A">Golongan A</MenuItem>
-              <MenuItem value="Golongan B">Golongan B</MenuItem>
-              <MenuItem value="Golongan C">Golongan C</MenuItem>
+              {golonganList.data.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {' '}
+                  {option.golongan}{' '}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl fullWidth>

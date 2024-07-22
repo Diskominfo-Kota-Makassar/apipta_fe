@@ -1,0 +1,89 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "pangkat": "Juru Muda",
+      "golongan": "I.a"
+    },
+    {
+      "id": "2",
+      "pangkat": "Juru Muda Tingkat I",
+      "golongan": "I.b"
+    },
+    {
+      "id": "3",
+      "pangkat": "Juru",
+      "golongan": "I.c"
+    },
+    {
+      "id": "4",
+      "pangkat": "Juru Tingkat I",
+      "golongan": "I.d"
+    },
+    {
+      "id": "5",
+      "pangkat": "Pengatur Muda",
+      "golongan": "II.a"
+    },
+    {
+      "id": "6",
+      "pangkat": "Pengatur Muda Tingkat I",
+      "golongan": "II.b"
+    },
+    {
+      "id": "7",
+      "pangkat": "Pengatur",
+      "golongan": "II.c"
+    },
+    {
+      "id": "8",
+      "pangkat": "Pengatur Tingkat I",
+      "golongan": "II.d"
+    },
+    {
+      "id": "9",
+      "pangkat": "Penata Muda",
+      "golongan": "III.a"
+    },
+    {
+      "id": "10",
+      "pangkat": "Penata Muda Tingkat I",
+      "golongan": "III.b"
+    },
+    {
+      "id": "11",
+      "pangkat": "Penata",
+      "golongan": "III.c"
+    },
+    {
+      "id": "12",
+      "pangkat": "Penata Tingkat I",
+      "golongan": "III.d"
+    },
+    {
+      "id": "13",
+      "pangkat": "Pembina",
+      "golongan": "IV.a"
+    },
+    {
+      "id": "14",
+      "pangkat": "Pembina Tingkat I",
+      "golongan": "IV.b"
+    },
+    {
+      "id": "15",
+      "pangkat": "Pembina Muda",
+      "golongan": "IV.c"
+    },
+    {
+      "id": "16",
+      "pangkat": "Pembina Madya",
+      "golongan": "IV.d"
+    },
+    {
+      "id": "17",
+      "pangkat": "Pembuna Utama",
+      "golongan": "IV.e"
+    }
+  ]
+}

@@ -126,7 +126,7 @@ export default function FormTambahUser() {
               onChange={handleChangeEntitas}
             >
               {entitasList.data.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
+                <MenuItem key={option.id} value={option.nama_entitas}>
                   {' '}
                   {option.nama_entitas}{' '}
                 </MenuItem>
@@ -144,7 +144,7 @@ export default function FormTambahUser() {
               onChange={handleChangeGolongan}
             >
               {golonganList.data.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
+                <MenuItem key={option.id} value={option.golongan}>
                   {' '}
                   {option.golongan}{' '}
                 </MenuItem>

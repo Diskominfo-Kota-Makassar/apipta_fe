@@ -654,7 +654,7 @@ export const getChat = async ({ pengirimEmail = '' }) => {
         'Content-Type': 'application/json',
       },
     });
-    const result = await response.data;
+    const result = await response;
     return result;
   } catch (error) {
     return error;
@@ -672,7 +672,7 @@ export const postChat = async ({
 }) => {
   try {
     const response = await axios.post(
-      `${baseURL}/aksi`,
+      `${baseURL}/chats`,
       {
         no,
         penugasan_id,

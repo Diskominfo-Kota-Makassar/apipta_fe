@@ -145,18 +145,23 @@ export default function AuditKKA() {
   const handleAuditFromAPI = useCallback(async () => {
     const audit = await getAuditFromAPI({ id_penugasan: suratTugasTerpilih });
 
-    console.log(suratTugasTerpilih);
+    // console.log('audit ter assign');
+    // console.log(audit);
+
+    // console.log('user', user.user_id);
+    const newAudit = audit.data.filter((item) => item.tim_anggota.includes(user.user_id));
+    // console.log(newAudit);
 
     if (audit.data !== null) {
-      setAllAudit(audit.data);
+      setAllAudit(newAudit);
     }
-  }, [suratTugasTerpilih]);
+  }, [suratTugasTerpilih, user]);
 
   const handleFileAuditFromAPI = useCallback(async () => {
     // const st_id = user.surat_tugas;
     const file = await getFileAuditFromAPI({ id_surat_tugas: suratTugasTerpilih });
 
-    console.log('file', file.data);
+    // console.log('file', file.data);
 
     setValueDraftNaskahFromAPI(file.data);
   }, [suratTugasTerpilih]);

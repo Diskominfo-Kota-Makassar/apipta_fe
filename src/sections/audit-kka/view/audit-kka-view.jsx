@@ -149,11 +149,14 @@ export default function AuditKKA() {
     // console.log(audit);
 
     // console.log('user', user.user_id);
-    const newAudit = audit.data.filter((item) => item.tim_anggota.includes(user.user_id));
-    // console.log(newAudit);
-
-    if (audit.data !== null) {
+    if (audit.data !== null && user.role_id === 3) {
+      const newAudit = audit.data.filter((item) => item.tim_anggota.includes(user.user_id));
       setAllAudit(newAudit);
+    }
+
+    // console.log(newAudit);
+    if (audit.data !== null && user.role_id !== 3) {
+      setAllAudit(audit.data);
     }
   }, [suratTugasTerpilih, user]);
 

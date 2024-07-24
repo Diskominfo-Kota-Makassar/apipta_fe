@@ -69,7 +69,11 @@ export default function LoginView() {
       password: form.get('password'),
     });
 
-    console.log(res);
+    // if (res.role_id === 200 && jabatan !== res.role_id) {
+    //   setLoading(false);
+    //   notify('Role User Tidak Sesuai');
+    //   return;
+    // }
 
     if (res.status === 200) {
       setLoading(false);
@@ -83,7 +87,7 @@ export default function LoginView() {
       });
     } else {
       setLoading(false);
-      notify('Username atau password yang kamu masukkan salah');
+      notify('Username atau password atau role yang kamu masukkan salah');
     }
   };
 

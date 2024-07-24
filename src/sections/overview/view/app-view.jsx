@@ -25,13 +25,13 @@ export default function AppView() {
     try {
       const penugasan = await getPenugasanFromAPI();
 
-      if (user[0].role_id === 1) {
+      if (user.role_id === 1) {
         setAllPenugasan(penugasan.data);
         return;
       }
 
-      if (user[0].surat_tugas !== '') {
-        const id_surat_dipilih = user[0].surat_tugas;
+      if (user.surat_tugas !== '') {
+        const id_surat_dipilih = user.surat_tugas;
         const penugasanTerpilih = penugasan.data.find((option) => option.id === id_surat_dipilih);
         setAllPenugasan([penugasanTerpilih]);
       } else {

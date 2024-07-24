@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'src/routes/hooks/use-router';
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 import { red } from '@mui/material/colors';
 
@@ -20,30 +19,42 @@ import CardActions from '@mui/material/CardActions';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 
 import Iconify from 'src/components/iconify/iconify';
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
-import { getUsersFromAPI } from 'src/utils/api';
-
-import { emptyRows, applyFilter, getComparator } from '../utils';
+import { getChat, getUsersFromAPI, postChat } from 'src/utils/api';
 
 // ----------------------------------------------------------------------
 
 export default function ChatPage() {
   const notify = (comment) => toast(comment);
 
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useLocalStorage('user');
 
   const [penerima, setPenerima] = useState('');
+  const [penerimaEmail, setPenerimaEmail] = useState('');
+  const [pengirim, setPengirim] = useState('');
   const [namaPenerima, setNamaPenerima] = useState('');
   const [usersList, setUsersList] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [messagesMe, setMessagesMe] = useState([]);
 
   const handleChangeUser = (event) => {
     setPenerima(event.target.value);
     const us = usersList.find((option) => option.id === event.target.value);
     setNamaPenerima(us.nama);
+    setPenerimaEmail(us.email);
+    const sender = usersList.find((option) => option.id === user.user_id);
+    setPengirim(sender.email);
+
+    handleGetChatFromAPI();
   };
 
   const handleUsersFromAPI = useCallback(async () => {
@@ -51,9 +62,64 @@ export default function ChatPage() {
     setUsersList(users.data);
   }, []);
 
+  const handlePostChat = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+
+    const res = await postChat({
+      no: '1',
+      penugasan_id: user.surat_tugas,
+      tim_id: '1',
+      penerima: penerimaEmail,
+      pengirim,
+      judul: 'judul',
+      isi: form.get('isi'),
+    });
+
+    handleGetChatFromAPI();
+    handleGetChatFromMe();
+  };
+
+  const handleGetChatFromAPI = useCallback(async () => {
+    const chat = await getChat({ pengirimEmail: penerimaEmail });
+
+    const chatData = chat.data;
+
+    if (chatData !== undefined) {
+      setMessages(chatData);
+    }
+
+    if (chatData === undefined) {
+      setMessages([]);
+    }
+  }, [penerimaEmail]);
+
+  const handleGetChatFromMe = useCallback(async () => {
+    const chat = await getChat({ pengirimEmail: pengirim });
+
+    const chatData = chat.data;
+
+    if (chatData !== undefined) {
+      setMessagesMe(chatData);
+    }
+
+    if (chatData === undefined) {
+      setMessagesMe([]);
+    }
+  }, [pengirim]);
+
+  const combinedData = [...messages, ...messagesMe];
+
+  const sortedCombinedData = combinedData.sort(
+    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+  );
+
   useEffect(() => {
     handleUsersFromAPI();
-  }, [handleUsersFromAPI]);
+    handleGetChatFromMe();
+    handleGetChatFromAPI();
+  }, [handleUsersFromAPI, handleGetChatFromAPI, handleGetChatFromMe]);
 
   return (
     <Container maxWidth="xl">
@@ -84,10 +150,10 @@ export default function ChatPage() {
                 </Avatar>
               }
               title={namaPenerima}
-              subheader="September 14, 2016"
+              subheader=" ---, --- , 2024"
             />
             <CardContent>
-              <Box
+              {/* <Box
                 height={400}
                 // my={4}
                 // display="flex"
@@ -95,9 +161,31 @@ export default function ChatPage() {
                 gap={4}
                 p={2}
                 // sx={{ border: '2px solid grey' }}
-              >
-                isi chat
-              </Box>
+              > */}
+              <List sx={{ position: 'relative', overflow: 'auto' }}>
+                {sortedCombinedData.map((message, index) => (
+                  <ListItem key={index}>
+                    <Paper
+                      elevation={3}
+                      sx={{
+                        flex: 1,
+                        overflow: 'auto',
+                        padding: 2,
+                        backgroundColor: '#fff',
+                      }}
+                    >
+                      <ListItemText
+                        primary={message.isi}
+                        secondary={message.pengirim}
+                        sx={{
+                          textAlign: message.pengirim === pengirim ? 'right' : 'left',
+                        }}
+                      />
+                    </Paper>
+                  </ListItem>
+                ))}
+              </List>
+              {/* </Box> */}
             </CardContent>
             <CardActions disableSpacing>
               <Box
@@ -106,12 +194,18 @@ export default function ChatPage() {
                   maxWidth: '100%',
                 }}
               >
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <TextField fullWidth placeholder="Ketika pesan disini" />
-                  <Button variant="contained" endIcon={<Iconify icon="eva:send-fill" />}>
-                    Send
-                  </Button>
-                </Stack>
+                <form onSubmit={handlePostChat}>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <TextField fullWidth name="isi" placeholder="Ketik pesan disini" />
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      endIcon={<Iconify icon="eva:send-fill" />}
+                    >
+                      Send
+                    </Button>
+                  </Stack>
+                </form>
               </Box>
             </CardActions>
           </Card>

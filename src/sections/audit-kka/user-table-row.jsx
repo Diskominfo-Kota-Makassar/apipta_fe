@@ -4,6 +4,8 @@ import { useTheme } from '@mui/material/styles';
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 import { useNavigate } from 'react-router-dom';
 
+import { MuiFileInput } from 'mui-file-input';
+
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
 import TableRow from '@mui/material/TableRow';
@@ -17,6 +19,12 @@ import {
   Button,
   DialogActions,
   CircularProgress,
+  Stack,
+  TextField,
+  ListItem,
+  Grid,
+  Typography,
+  CardContent,
 } from '@mui/material';
 
 // import Label from 'src/components/label';
@@ -71,13 +79,20 @@ export default function UserTableRow({
   };
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [openDialogEdit, setOpenDialogEdit] = useState(false);
 
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
   };
+  const handleOpenDialogEdit = () => {
+    setOpenDialogEdit(true);
+  };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+  };
+  const handleCloseDialogEdit = () => {
+    setOpenDialogEdit(false);
   };
 
   const handleSession = () => {
@@ -136,7 +151,7 @@ export default function UserTableRow({
           <IconButton onClick={handleClickOpenDialog}>
             <Iconify icon="material-symbols:delete-outline" />
           </IconButton>
-          <IconButton onClick={handleOpen}>
+          <IconButton onClick={handleOpenDialogEdit}>
             <Iconify icon="tabler:edit" />
           </IconButton>
         </TableCell>
@@ -157,6 +172,61 @@ export default function UserTableRow({
           <Button onClick={handleCloseDialog}>Batal</Button>
           <Button onClick={handleDeletePenugasan} autoFocus>
             Setuju
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openDialogEdit}
+        onClose={handleCloseDialogEdit}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Edit Form</DialogTitle>
+        <DialogContent>
+          <CardContent>
+            <form>
+              <Stack spacing={2}>
+                <TextField name="id_audit" label="ID KKA" value={allData.id} />
+                <TextField name="kka" label="No.Ref KKA" value={allData.no_ref_kka} />
+                <TextField name="pka" label="No.Ref PKA" value={allData.no_ref_pka} />
+                <TextField name="judul" label="Judul Pengujian" value={allData.judul} />
+                <TextField multiline rows={4} name="catatan_review" label="Catatan Anggota Tim" />
+                <MuiFileInput
+                  multiple
+                  name="hasil_pengujian"
+                  placeholder="Pilih File Hasil Pengujian"
+                  // value={valueHasilPengujian}
+                  // onChange={handleChangePengujian}
+                />
+                <Typography variant="body2">*Only .jpg .png .Files,500kb max file size</Typography>
+                {/* {valueHasilPengujian.map((file) => (
+                <ListItem key={file.name}>{file.name}</ListItem>
+              ))} */}
+                <MuiFileInput
+                  name="dokumen_bukti_dukung"
+                  placeholder="Pilih Dokumen Bukti Dukung"
+                  // value={valueBuktiDukung}
+                  // onChange={handleChangeBuktiDukung}
+                />
+                <MuiFileInput
+                  name="kesimpulan_kka"
+                  placeholder="Pilih Kesimpulan KKA"
+                  // value={valueKesimpulanKKA}
+                  // onChange={handleChangeKesimpulanKKA}
+                />
+                <Grid container justifyContent="flex-end">
+                  <Button variant="contained" type="submit">
+                    Update
+                  </Button>
+                </Grid>
+              </Stack>
+            </form>
+          </CardContent>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogEdit}>Batal</Button>
+          <Button onClick={handleCloseDialogEdit} autoFocus>
+            Update
           </Button>
         </DialogActions>
       </Dialog>

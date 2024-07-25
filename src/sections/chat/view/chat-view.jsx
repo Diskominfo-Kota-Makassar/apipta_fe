@@ -100,14 +100,16 @@ export default function ChatPage() {
 
     const chatData = chat.data;
 
+    const newChatData = chatData.filter((item) => item.penerima.includes(penerimaEmail));
+
     if (chatData !== undefined) {
-      setMessagesMe(chatData);
+      setMessagesMe(newChatData);
     }
 
     if (chatData === undefined) {
       setMessagesMe([]);
     }
-  }, [pengirim]);
+  }, [pengirim, penerimaEmail]);
 
   const combinedData = [...messages, ...messagesMe];
 

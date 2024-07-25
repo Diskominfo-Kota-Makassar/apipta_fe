@@ -23,6 +23,8 @@ import Paper from '@mui/material/Paper';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import { lighten } from '@mui/system';
+import { CircularProgress } from '@mui/material';
 
 import Iconify from 'src/components/iconify/iconify';
 // import 'react-toastify/dist/ReactToastify.css';
@@ -63,8 +65,9 @@ export default function ChatPage() {
   }, []);
 
   const handlePostChat = async (event) => {
-    event.preventDefault();
     setLoading(true);
+    event.preventDefault();
+
     const form = new FormData(event.currentTarget);
 
     const res = await postChat({
@@ -76,6 +79,8 @@ export default function ChatPage() {
       judul: 'judul',
       isi: form.get('isi'),
     });
+
+    setLoading(false);
 
     handleGetChatFromAPI();
     handleGetChatFromMe();
@@ -146,63 +151,89 @@ export default function ChatPage() {
         <Grid item xs={6} md={8}>
           <Card sx={{ p: 3 }}>
             <CardHeader
-              avatar={
-                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  R
-                </Avatar>
-              }
+              avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" />}
               title={namaPenerima}
-              subheader=" ---, --- , 2024"
+              subheader={penerimaEmail}
             />
             <CardContent>
-              {/* <Box
-                height={400}
-                // my={4}
-                // display="flex"
-                alignItems="center"
-                gap={4}
-                p={2}
-                // sx={{ border: '2px solid grey' }}
-              > */}
-              <List sx={{ position: 'relative', overflow: 'auto' }}>
-                {sortedCombinedData.map((message, index) => (
-                  <ListItem key={index}>
-                    <Paper
-                      elevation={3}
-                      sx={{
-                        flex: 1,
-                        overflow: 'auto',
-                        padding: 2,
-                        backgroundColor: '#fff',
-                      }}
-                    >
-                      <ListItemText
-                        primary={message.isi}
-                        secondary={message.pengirim}
+              <Box
+                sx={{
+                  height: '600px', // Set the desired height
+                  overflowY: 'auto',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  padding: '8px',
+                  marginBottom: '16px',
+                }}
+              >
+                <List sx={{ position: 'relative', overflow: 'auto' }}>
+                  {sortedCombinedData.map((message, index) => (
+                    <ListItem key={index}>
+                      <Paper
+                        elevation={3}
                         sx={{
-                          textAlign: message.pengirim === pengirim ? 'right' : 'left',
+                          flex: 1,
+                          overflow: 'auto',
+                          padding: 2,
+                          marginLeft: message.pengirim === pengirim ? '40%' : '0px',
+                          marginRight: message.pengirim === pengirim ? '0px' : '40%',
+                          backgroundColor:
+                            message.pengirim === pengirim
+                              ? lighten('#439860', 0.2)
+                              : lighten('#820C0F', 0.2),
                         }}
-                      />
-                    </Paper>
-                  </ListItem>
-                ))}
-              </List>
-              {/* </Box> */}
+                      >
+                        <ListItemText
+                          primary={message.isi}
+                          secondary={message.pengirim}
+                          sx={{
+                            textAlign: message.pengirim === pengirim ? 'right' : 'left',
+                            color: 'white',
+                            '& .MuiListItemText-secondary': {
+                              color: '#000000', // Set your desired secondary color here
+                            },
+                          }}
+                        />
+                      </Paper>
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
             </CardContent>
             <CardActions disableSpacing>
               <Box
                 sx={{
                   width: '80%',
                   maxWidth: '100%',
+                  marginLeft: 'auto',
                 }}
               >
                 <form onSubmit={handlePostChat}>
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <TextField fullWidth name="isi" placeholder="Ketik pesan disini" />
+                    <TextField
+                      multiline
+                      rows={3}
+                      fullWidth
+                      name="isi"
+                      placeholder="Ketik pesan disini"
+                    />
+                    {loading && (
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          transform: 'translate(-50%, -50%)',
+                        }}
+                      >
+                        <CircularProgress />
+                      </Box>
+                    )}
                     <Button
                       variant="contained"
                       type="submit"
                       endIcon={<Iconify icon="eva:send-fill" />}
+                      disabled={loading}
                     >
                       Send
                     </Button>

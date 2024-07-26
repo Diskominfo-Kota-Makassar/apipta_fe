@@ -190,6 +190,7 @@ export default function UserTableRow({
                 <TextField value={allData.no_ref_kka} label="No.Ref KKA" />
                 <TextField value={allData.no_ref_pka} label="No.Ref PKA" />
                 <TextField value={allData.judul} label="Judul Pengujian" />
+                <TextField value={allData.rincian_pengujian} label="Rincian Pengujian" />
                 <Typography variant="button" sx={{ marginBottom: 2 }}>
                   List File hasil pengujian
                 </Typography>

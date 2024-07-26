@@ -1,0 +1,213 @@
+{
+  "diagnostics": {
+    "status": true,
+    "kode": 200,
+    "message": ""
+  },
+  "data": [
+    {
+      "kd_skpd": "1.01.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Pendidikan"
+    },
+    {
+      "kd_skpd": "1.02.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Kesehatan"
+    },
+    {
+      "kd_skpd": "1.03.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Pekerjaan Umum"
+    },
+    {
+      "kd_skpd": "1.03.0.00.0.00.02.0000",
+      "nm_skpd": "Dinas Penataan Ruang"
+    },
+    {
+      "kd_skpd": "1.04.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Perumahan Dan Kawasan Permukiman"
+    },
+    {
+      "kd_skpd": "1.05.0.00.0.00.01.0000",
+      "nm_skpd": "Satuan Polisi Pamong Praja"
+    },
+    {
+      "kd_skpd": "1.05.0.00.0.00.02.0000",
+      "nm_skpd": "Dinas Pemadam Kebakaran"
+    },
+    {
+      "kd_skpd": "1.05.0.00.0.00.03.0000",
+      "nm_skpd": "Badan Penanggulangan Bencana Daerah"
+    },
+    {
+      "kd_skpd": "1.06.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Sosial"
+    },
+    {
+      "kd_skpd": "2.07.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Ketenagakerjaan"
+    },
+    {
+      "kd_skpd": "2.08.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Pemberdayaan Perempuan dan Perlindungan Anak"
+    },
+    {
+      "kd_skpd": "2.09.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Ketahanan Pangan"
+    },
+    {
+      "kd_skpd": "2.10.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Pertanahan"
+    },
+    {
+      "kd_skpd": "2.11.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Lingkungan Hidup"
+    },
+    {
+      "kd_skpd": "2.12.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Kependudukan dan Pencatatan Sipil"
+    },
+    {
+      "kd_skpd": "2.14.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Pengendalian Penduduk dan Keluarga Berencana"
+    },
+    {
+      "kd_skpd": "2.15.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Perhubungan"
+    },
+    {
+      "kd_skpd": "2.16.2.20.2.21.01.0000",
+      "nm_skpd": "Dinas Komunikasi dan Informatika"
+    },
+    {
+      "kd_skpd": "2.17.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Koperasi, Usaha Kecil dan Menengah"
+    },
+    {
+      "kd_skpd": "2.18.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu"
+    },
+    {
+      "kd_skpd": "2.19.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Pemuda dan Olahraga"
+    },
+    {
+      "kd_skpd": "2.22.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Kebudayaan"
+    },
+    {
+      "kd_skpd": "2.23.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Perpustakaan"
+    },
+    {
+      "kd_skpd": "2.24.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Kearsipan"
+    },
+    {
+      "kd_skpd": "3.25.3.27.0.00.01.0000",
+      "nm_skpd": "Dinas Perikanan dan Pertanian"
+    },
+    {
+      "kd_skpd": "3.26.0.00.0.00.01.0000",
+      "nm_skpd": "Dinas Pariwisata"
+    },
+    {
+      "kd_skpd": "3.30.3.31.0.00.01.0000",
+      "nm_skpd": "Dinas Perdagangan Dan Perindustrian"
+    },
+    {
+      "kd_skpd": "4.01.2.13.0.00.01.0000",
+      "nm_skpd": "Sekretariat Daerah"
+    },
+    {
+      "kd_skpd": "4.02.0.00.0.00.01.0000",
+      "nm_skpd": "Sekretariat DPRD"
+    },
+    {
+      "kd_skpd": "5.01.0.00.0.00.01.0000",
+      "nm_skpd": "Badan Perencanaan Pembangunan Daerah"
+    },
+    {
+      "kd_skpd": "5.02.0.00.0.00.02.0000",
+      "nm_skpd": "Badan Pengelolaan Keuangan dan Aset Daerah"
+    },
+    {
+      "kd_skpd": "5.02.0.00.0.00.03.0000",
+      "nm_skpd": "Badan Pendapatan Daerah"
+    },
+    {
+      "kd_skpd": "5.03.5.04.0.00.01.0000",
+      "nm_skpd": "Badan Kepegawaian dan Pengembangan Sumber Daya Manusia Daerah"
+    },
+    {
+      "kd_skpd": "5.05.0.00.0.00.02.0000",
+      "nm_skpd": "Badan Penelitian dan Pengembangan Daerah"
+    },
+    {
+      "kd_skpd": "6.01.0.00.0.00.03.0000",
+      "nm_skpd": "Inspektorat Daerah"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.01.0000",
+      "nm_skpd": "Kecamatan Biringkanaya"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.02.0000",
+      "nm_skpd": "Kecamatan Bontoala"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.03.0000",
+      "nm_skpd": "Kecamatan Makassar"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.04.0000",
+      "nm_skpd": "Kecamatan Mamajang"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.05.0000",
+      "nm_skpd": "Kecamatan Manggala"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.06.0000",
+      "nm_skpd": "Kecamatan Mariso"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.07.0000",
+      "nm_skpd": "Kecamatan Panakkukang"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.08.0000",
+      "nm_skpd": "Kecamatan Rappocini"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.09.0000",
+      "nm_skpd": "Kecamatan Tallo"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.10.0000",
+      "nm_skpd": "Kecamatan Tamalanrea"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.11.0000",
+      "nm_skpd": "Kecamatan Tamalate"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.12.0000",
+      "nm_skpd": "Kecamatan Ujung Pandang"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.13.0000",
+      "nm_skpd": "Kecamatan Ujung Tanah"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.14.0000",
+      "nm_skpd": "Kecamatan Wajo"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.15.0000",
+      "nm_skpd": "Kecamatan Kepulauan Sangkarrang"
+    },
+    {
+      "kd_skpd": "8.01.0.00.0.00.01.0000",
+      "nm_skpd": "Badan Kesatuan Bangsa dan Politik"
+    }
+  ]
+}

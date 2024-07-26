@@ -178,11 +178,10 @@ export default function AnggotaTim() {
                         value={valueHasilPengujian}
                         onChange={handleChangePengujian}
                       />
-                      <Typography variant="body2">
-                        *Only .jpg .png .Files,500kb max file size
-                      </Typography>
                       {valueHasilPengujian.map((file) => (
-                        <ListItem key={file.name}>{file.name}</ListItem>
+                        <ListItem sx={{ display: 'list-item' }} key={file.name}>
+                          {file.name}
+                        </ListItem>
                       ))}
                       <MuiFileInput
                         name="dokumen_bukti_dukung"

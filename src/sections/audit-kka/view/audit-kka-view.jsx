@@ -145,16 +145,13 @@ export default function AuditKKA() {
   const handleAuditFromAPI = useCallback(async () => {
     const audit = await getAuditFromAPI({ id_penugasan: suratTugasTerpilih });
 
-    // console.log('audit ter assign');
-    // console.log(audit);
+    console.log(audit.data);
 
-    // console.log('user', user.user_id);
     if (audit.data !== null && user.role_id === 3) {
       const newAudit = audit.data.filter((item) => item.tim_anggota.includes(user.user_id));
       setAllAudit(newAudit);
     }
 
-    // console.log(newAudit);
     if (audit.data !== null && user.role_id !== 3) {
       setAllAudit(audit.data);
     }

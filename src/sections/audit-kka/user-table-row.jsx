@@ -29,7 +29,7 @@ import {
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { deleteAudit } from 'src/utils/api';
+import { deleteAudit, fileBaseURL } from 'src/utils/api';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
@@ -143,7 +143,7 @@ export default function UserTableRow({
 
         <TableCell>
           <Button variant="contained" color="success" onClick={handleSession}>
-            LIHAT KKA
+            EDIT KKA
           </Button>
         </TableCell>
 
@@ -152,7 +152,7 @@ export default function UserTableRow({
             <Iconify icon="material-symbols:delete-outline" />
           </IconButton>
           <IconButton onClick={handleOpenDialogEdit}>
-            <Iconify icon="tabler:edit" />
+            <Iconify icon="tabler:eye" />
           </IconButton>
         </TableCell>
       </TableRow>
@@ -181,52 +181,112 @@ export default function UserTableRow({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Edit Form</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Detail Pengujian</DialogTitle>
         <DialogContent>
           <CardContent>
             <form>
               <Stack spacing={2}>
-                <TextField name="id_audit" label="ID KKA" value={allData.id} />
-                <TextField name="kka" label="No.Ref KKA" value={allData.no_ref_kka} />
-                <TextField name="pka" label="No.Ref PKA" value={allData.no_ref_pka} />
-                <TextField name="judul" label="Judul Pengujian" value={allData.judul} />
-                <TextField multiline rows={4} name="catatan_review" label="Catatan Anggota Tim" />
-                <MuiFileInput
-                  multiple
-                  name="hasil_pengujian"
-                  placeholder="Pilih File Hasil Pengujian"
-                  // value={valueHasilPengujian}
-                  // onChange={handleChangePengujian}
+                <TextField name="id_audit" value={allData.id} label="ID KKA" />
+                <TextField value={allData.no_ref_kka} label="No.Ref KKA" />
+                <TextField value={allData.no_ref_pka} label="No.Ref PKA" />
+                <TextField value={allData.judul} label="Judul Pengujian" />
+                <Typography variant="button" sx={{ marginBottom: 2 }}>
+                  List File hasil pengujian
+                </Typography>
+                {allData.hasil_pengujian !== null &&
+                  allData.hasil_pengujian.map((fileName, i) => (
+                    <Button
+                      key={i}
+                      variant="outlined"
+                      onClick={() =>
+                        window.open(`${fileBaseURL}/file/inspektorat/${fileName}`, '_blank')
+                      }
+                      sx={{ marginBottom: 1 }}
+                    >
+                      Lihat {fileName}
+                    </Button>
+                  ))}
+                <Button
+                  variant="contained"
+                  disabled={allData.file_bukti_dukung === null}
+                  onClick={
+                    allData.file_bukti_dukung !== null &&
+                    (() =>
+                      window.open(
+                        `${fileBaseURL}/file/inspektorat/${allData.file_bukti_dukung}`,
+                        '_blank'
+                      ))
+                  }
+                >
+                  {' '}
+                  {allData.file_bukti_dukung !== null
+                    ? 'Lihat Dokumen Bukti Dukung Audit'
+                    : 'File Bukti Dukung Belum di Upload'}
+                </Button>
+                <TextField
+                  multiline
+                  rows={4}
+                  name="catatan_anggota_tim"
+                  value={
+                    allData.catatan_review !== null
+                      ? allData.catatan_review
+                      : 'Belum diisi anggota tim'
+                  }
+                  label="Catatan Anggota Tim"
                 />
-                <Typography variant="body2">*Only .jpg .png .Files,500kb max file size</Typography>
-                {/* {valueHasilPengujian.map((file) => (
-                <ListItem key={file.name}>{file.name}</ListItem>
-              ))} */}
-                <MuiFileInput
-                  name="dokumen_bukti_dukung"
-                  placeholder="Pilih Dokumen Bukti Dukung"
-                  // value={valueBuktiDukung}
-                  // onChange={handleChangeBuktiDukung}
+                <Button
+                  variant="contained"
+                  disabled={allData.file_bukti_dukung === null}
+                  onClick={() =>
+                    window.open(
+                      `${fileBaseURL}/file/inspektorat/${allData.file_kesimpulan}`,
+                      '_blank'
+                    )
+                  }
+                >
+                  {allData.file_kesimpulan !== null
+                    ? 'Lihat File Kesimpulan'
+                    : 'File Kesimpulan Belum di Upload'}
+                </Button>
+                <TextField
+                  multiline
+                  rows={4}
+                  name="catatan_review_ketua"
+                  label="Catatan Review Ketua Tim"
+                  value={allData.tim_ketua !== null ? allData.tim_ketua : 'Belum di isi ketua tim'}
                 />
-                <MuiFileInput
-                  name="kesimpulan_kka"
-                  placeholder="Pilih Kesimpulan KKA"
-                  // value={valueKesimpulanKKA}
-                  // onChange={handleChangeKesimpulanKKA}
+                <TextField
+                  multiline
+                  rows={4}
+                  value={allData.dalnis !== null ? allData.dalnis : 'Belum di isi dalnis'}
+                  label="Catatan Review Dalnis"
                 />
-                <Grid container justifyContent="flex-end">
-                  <Button variant="contained" type="submit">
-                    Update
-                  </Button>
-                </Grid>
+                <TextField
+                  multiline
+                  rows={4}
+                  value={allData.catatan_wpj !== null ? allData.catatan_wpj : 'Belum di isi WPJ'}
+                  label="Catatan Review WPJ"
+                />
+                <TextField
+                  multiline
+                  rows={4}
+                  value={allData.bpkp !== null ? allData.bpkp : 'Belum di isi BPKP (Eksternal)'}
+                  label="Catatan BPKP (Eksternal)"
+                />
+                <TextField
+                  multiline
+                  rows={4}
+                  name="pj"
+                  value={allData.pj !== null ? allData.pj : 'Belum di isi PJ'}
+                  label="Catatan Review PJ"
+                />
               </Stack>
             </form>
           </CardContent>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialogEdit}>Batal</Button>
-          <Button onClick={handleCloseDialogEdit} autoFocus>
-            Update
+          <Button variant="contained" onClick={handleCloseDialogEdit}>
+            Keluar
           </Button>
         </DialogActions>
       </Dialog>

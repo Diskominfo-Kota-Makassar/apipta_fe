@@ -165,6 +165,7 @@ export default function AnggotaTim() {
                       <TextField name="kka" label="No.Ref KKA" value={allData.no_ref_kka} />
                       <TextField name="pka" label="No.Ref PKA" value={allData.no_ref_pka} />
                       <TextField name="judul" label="Judul Pengujian" value={allData.judul} />
+                      <TextField value={allData.rincian_pengujian} label="Rincian Pengujian" />
                       <TextField
                         multiline
                         rows={4}

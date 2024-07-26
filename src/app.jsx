@@ -23,6 +23,7 @@ import Obrik from './sections/audit-kka/view/session/obrik';
 import PJ from './sections/audit-kka/view/session/pj';
 import TambahKompilasi from './sections/kompilasi/view/tambah-kompilasi';
 import LihatKompilasi from './sections/kompilasi/view/lihat-kompilasi';
+import { SimakdaView } from './sections/simakda/view';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const ChatView = lazy(() => import('src/pages/chat'));
@@ -241,6 +242,15 @@ export default function App() {
                 <ProtectedRoute>
                   {' '}
                   <FormTambahUser />
+                </ProtectedRoute>
+              }
+            />
+            {/* simakda */}
+            <Route
+              path="simakda"
+              element={
+                <ProtectedRoute>
+                  <SimakdaView />
                 </ProtectedRoute>
               }
             />

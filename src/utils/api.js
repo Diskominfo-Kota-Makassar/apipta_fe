@@ -694,3 +694,44 @@ export const postChat = async ({
     return error;
   }
 };
+
+export const getSimakda = async ({ skpd_id, tanggal }) => {
+  try {
+    const tokenSimakda =
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiYXBpcCIsImVtYWlsIjoiYXBpIiwidHlwZSI6InJlYWxpc2FzaSIsInVzZXJfdHlwZSI6ImNsaWVudCIsImV4cF9kYXRlIjoiMjAyNS0xMi0zMSJ9.VqG0icbA4tToorsLBnBmJWfCrF0p0B8PIi3WsrnmR6U';
+    const response = await axios.get(
+      `https://simakda.makassarkota.go.id/2024/api/realisasi?kd_skpd=${skpd_id}&tanggal=${tanggal}
+`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${tokenSimakda}`,
+        },
+      }
+    );
+
+    console.log(response);
+    const result = await response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const getSKPDSimakda = async ({ skpd_id, tanggal }) => {
+  try {
+    const tokenSimakda =
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiYXBpcCIsImVtYWlsIjoiYXBpIiwidHlwZSI6InJlYWxpc2FzaSIsInVzZXJfdHlwZSI6ImNsaWVudCIsImV4cF9kYXRlIjoiMjAyNS0xMi0zMSJ9.VqG0icbA4tToorsLBnBmJWfCrF0p0B8PIi3WsrnmR6U';
+    const response = await axios.get(`https://simakda.makassarkota.go.id/2024/api/get_skpd`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${tokenSimakda}`,
+      },
+    });
+
+    console.log(response);
+    const result = await response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};

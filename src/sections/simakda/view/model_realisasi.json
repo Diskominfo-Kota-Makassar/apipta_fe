@@ -1,0 +1,49 @@
+{
+  "diagnostics": {
+    "status": true,
+    "kode": 200,
+    "message": ""
+  },
+  "data": [
+    {
+      "kd_skpd": "7.01.0.00.0.00.01.0000",
+      "nm_skpd": "Kecamatan Biringkanaya",
+      "kd_sub_kegiatan": "7.01.03.2.02.0002",
+      "nm_sub_kegiatan": "Pembangunan Sarana dan Prasarana Kelurahan",
+      "kd_rek": "5.2.02.05.02.0007",
+      "nm_rek": "Belanja Modal Alat Pemadam Kebakaran",
+      "anggaran": "34925800.00",
+      "realasasi": "0.00"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.01.0000",
+      "nm_skpd": "Kecamatan Biringkanaya",
+      "kd_sub_kegiatan": "7.01.03.2.02.0002",
+      "nm_sub_kegiatan": "Pembangunan Sarana dan Prasarana Kelurahan",
+      "kd_rek": "5.2.03.01.01.0001",
+      "nm_rek": "Belanja Modal Bangunan Gedung Kantor",
+      "anggaran": "892585500.00",
+      "realasasi": "0.00"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.01.0000",
+      "nm_skpd": "Kecamatan Biringkanaya",
+      "kd_sub_kegiatan": "7.01.03.2.02.0002",
+      "nm_sub_kegiatan": "Pembangunan Sarana dan Prasarana Kelurahan",
+      "kd_rek": "5.2.04.01.01.0004",
+      "nm_rek": "Belanja Modal Jalan Kota",
+      "anggaran": "2334348900.00",
+      "realasasi": "0.00"
+    },
+    {
+      "kd_skpd": "7.01.0.00.0.00.01.0000",
+      "nm_skpd": "Kecamatan Biringkanaya",
+      "kd_sub_kegiatan": "7.01.03.2.02.0002",
+      "nm_sub_kegiatan": "Pembangunan Sarana dan Prasarana Kelurahan",
+      "kd_rek": "5.2.04.02.07.0006",
+      "nm_rek": "Belanja Modal Bangunan Air Kotor Lainnya",
+      "anggaran": "1001718000.00",
+      "realasasi": "0.00"
+    }
+  ]
+}

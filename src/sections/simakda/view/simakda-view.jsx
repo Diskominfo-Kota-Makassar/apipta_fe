@@ -39,8 +39,8 @@ import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-// import realisasiList from './model_realisasi.json';
-// import skpdList from './model_skpd.json';
+import realisasiList from './model_realisasi.json';
+import skpdList from './model_skpd.json';
 
 // ----------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ export default function Simakda() {
 
   const [skpd, setSkpd] = useState('');
 
-  const [skpdList, setSkpdList] = useState([]);
+  const [skpdListAPI, setSkpdListAPI] = useState([]);
   const [simakdaList, setSimakdaList] = useState([]);
 
   const [selectedDate, setSelectedDate] = useState(null);
@@ -103,7 +103,7 @@ export default function Simakda() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: simakdaList,
+    inputData: realisasiList.data,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -132,7 +132,7 @@ export default function Simakda() {
 
     console.log(skpdl);
 
-    setSkpdList(skpdl.data);
+    setSkpdListAPI(skpdl.data);
   };
 
   useEffect(() => {
@@ -186,9 +186,9 @@ export default function Simakda() {
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
               <UserTableHead
-                order={simakdaList}
+                order={realisasiList.data}
                 orderBy={orderBy}
-                rowCount={simakdaList.length}
+                rowCount={realisasiList.data.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
@@ -223,7 +223,7 @@ export default function Simakda() {
         <TablePagination
           page={page}
           component="div"
-          count={simakdaList.length}
+          count={realisasiList.data.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}

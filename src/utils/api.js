@@ -724,11 +724,11 @@ export const getSKPDSimakda = async ({ skpd_id, tanggal }) => {
     const response = await axios.get(`https://simakda.makassarkota.go.id/2024/api/get_skpd`, {
       headers: {
         'Content-Type': 'application/json',
+        'access-control-allow-origin': '*',
         Authorization: `Bearer ${tokenSimakda}`,
       },
     });
 
-    console.log(response);
     const result = await response;
     return result;
   } catch (error) {

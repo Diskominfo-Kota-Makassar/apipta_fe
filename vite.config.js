@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import checker from 'vite-plugin-checker';
 import { VitePWA } from 'vite-plugin-pwa';
+import fs from 'fs';
 
 // ----------------------------------------------------------------------
 
@@ -11,9 +12,9 @@ const manifestForPlugIn = {
   includeAssests: ['favicon.ico', 'apple-touc-icon.png', 'masked-icon.svg'],
 
   manifest: {
-    name: 'Kelurahan Manggala',
-    short_name: 'manggala-sim',
-    description: 'Sistem registrasi layanan kelurahan manggala',
+    name: 'APIP TA',
+    short_name: '',
+    description: 'APIP TA',
     icons: [
       {
         src: '/favicon/android-chrome-192x192.png',
@@ -73,6 +74,10 @@ export default defineConfig({
     ],
   },
   server: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, './localhost-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, './localhost.pem')),
+    },
     port: 3030,
   },
   preview: {

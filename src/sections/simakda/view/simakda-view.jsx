@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
 
 import Card from '@mui/material/Card';
@@ -30,7 +30,7 @@ import Scrollbar from 'src/components/scrollbar';
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 
-import { getSimakda } from 'src/utils/api';
+import { getSimakda, getSKPDSimakda } from 'src/utils/api';
 import { format } from 'date-fns';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -39,8 +39,8 @@ import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import realisasiList from './model_realisasi.json';
-import skpdList from './model_skpd.json';
+// import realisasiList from './model_realisasi.json';
+// import skpdList from './model_skpd.json';
 
 // ----------------------------------------------------------------------
 
@@ -59,9 +59,17 @@ export default function Simakda() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [entitas, setEntitas] = useState('');
+  const [skpd, setSkpd] = useState('');
 
-  const [allAudit, setAllAudit] = useState([]);
+  const [skpdList, setSkpdList] = useState([]);
+  const [simakdaList, setSimakdaList] = useState([]);
+
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    handleSimakdaFromAPI();
+  };
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -95,29 +103,38 @@ export default function Simakda() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: realisasiList.data,
+    inputData: simakdaList,
     comparator: getComparator(order, orderBy),
     filterName,
   });
 
   const notFound = !dataFiltered.length && !!filterName;
 
-  const handleChangeEntitas = (event) => {
-    setEntitas(event.target.value);
+  const handleChangeSkpd = (event) => {
+    setSkpd(event.target.value);
+
+    handleSimakdaFromAPI();
   };
 
-  const handleAuditFromAPI = async () => {
-    const audit = await getSimakda({
-      skpd_id: '7.01.0.00.0.00.01.0000',
-      tanggal: '2024-07-01',
+  const handleSimakdaFromAPI = useCallback(async () => {
+    const simakda = await getSimakda({
+      skpd_id: skpd,
+      tanggal: selectedDate,
     });
-  };
 
-  console.log(skpdList);
+    setSimakdaList(simakda.data);
+  }, [skpd, selectedDate]);
+
+  const handleSkpdFromAPI = async () => {
+    const skpdl = await getSKPDSimakda();
+
+    setSkpdList(skpdl.data);
+  };
 
   useEffect(() => {
-    // handleAuditFromAPI();
-  }, []);
+    handleSkpdFromAPI();
+    handleSimakdaFromAPI();
+  }, [handleSimakdaFromAPI]);
 
   return (
     <Container>
@@ -136,13 +153,8 @@ export default function Simakda() {
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <FormControl fullWidth>
-                <InputLabel id="entitas">Pilih SKPD</InputLabel>
-                <Select
-                  labelId="entitas"
-                  value={entitas}
-                  label="Pilih SKPD"
-                  onChange={handleChangeEntitas}
-                >
+                <InputLabel id="skpd">Pilih SKPD</InputLabel>
+                <Select labelId="skpd" value={skpd} label="Pilih SKPD" onChange={handleChangeSkpd}>
                   {skpdList.data.map((option) => (
                     <MenuItem key={option.kd_skpd} value={option.kd_skpd}>
                       {' '}
@@ -154,7 +166,13 @@ export default function Simakda() {
             </Grid>
             <Grid item xs={6}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label="Pilih Tanggal" name="tanggal" format="YYYY-MM-DD" />
+                <DatePicker
+                  label="Pilih Tanggal"
+                  name="tanggal"
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  format="YYYY-MM-DD"
+                />
               </LocalizationProvider>
             </Grid>
           </Grid>
@@ -164,9 +182,9 @@ export default function Simakda() {
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
               <UserTableHead
-                order={realisasiList.data}
+                order={simakdaList}
                 orderBy={orderBy}
-                rowCount={realisasiList.data.length}
+                rowCount={simakdaList.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
@@ -201,7 +219,7 @@ export default function Simakda() {
         <TablePagination
           page={page}
           component="div"
-          count={allAudit.length}
+          count={simakdaList.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}

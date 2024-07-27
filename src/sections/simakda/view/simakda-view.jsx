@@ -122,11 +122,15 @@ export default function Simakda() {
       tanggal: selectedDate,
     });
 
+    console.log(simakda);
+
     setSimakdaList(simakda.data);
   }, [skpd, selectedDate]);
 
   const handleSkpdFromAPI = async () => {
     const skpdl = await getSKPDSimakda();
+
+    console.log(skpdl);
 
     setSkpdList(skpdl.data);
   };

@@ -68,7 +68,10 @@ export default function Simakda() {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    handleSimakdaFromAPI();
+
+    const formattedDate = format(selectedDate, 'yyyy-MM-dd');
+    console.log('tanggal berubah');
+    console.log(formattedDate);
   };
 
   const handleSort = (event, id) => {
@@ -122,15 +125,11 @@ export default function Simakda() {
       tanggal: selectedDate,
     });
 
-    console.log(simakda);
-
     setSimakdaList(simakda.data);
   }, [skpd, selectedDate]);
 
   const handleSkpdFromAPI = async () => {
     const skpdl = await getSKPDSimakda();
-
-    console.log(skpdl);
 
     setSkpdListAPI(skpdl.data);
   };
@@ -175,7 +174,7 @@ export default function Simakda() {
                   name="tanggal"
                   selected={selectedDate}
                   onChange={handleDateChange}
-                  format="YYYY-MM-DD"
+                  dateFormat="yyyy-MM-dd"
                 />
               </LocalizationProvider>
             </Grid>

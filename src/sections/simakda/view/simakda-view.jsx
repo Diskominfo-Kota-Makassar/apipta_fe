@@ -134,6 +134,8 @@ export default function Simakda() {
     setSkpdListAPI(skpdl.data);
   };
 
+  console.log('test merge to prod');
+
   useEffect(() => {
     handleSkpdFromAPI();
     handleSimakdaFromAPI();

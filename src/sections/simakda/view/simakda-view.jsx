@@ -27,11 +27,13 @@ import { users } from 'src/_mock/user';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
+import dayjs from 'dayjs';
+
 // import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 
 import { getSimakda, getSKPDSimakda } from 'src/utils/api';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
 import UserTableHead from '../user-table-head';
@@ -59,19 +61,15 @@ export default function Simakda() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [skpd, setSkpd] = useState('');
+  const [skpd, setSkpd] = useState('6.01.0.00.0.00.03.0000');
 
   const [skpdListAPI, setSkpdListAPI] = useState([]);
   const [simakdaList, setSimakdaList] = useState([]);
 
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('2024-07-29T16:00:00.000Z');
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-
-    const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-    console.log('tanggal berubah');
-    console.log(formattedDate);
   };
 
   const handleSort = (event, id) => {
@@ -120,10 +118,13 @@ export default function Simakda() {
   };
 
   const handleSimakdaFromAPI = useCallback(async () => {
+    const formattedDate = selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : 'None';
     const simakda = await getSimakda({
       skpd_id: skpd,
-      tanggal: selectedDate,
+      tanggal: formattedDate,
     });
+
+    console.log(simakda);
 
     setSimakdaList(simakda.data);
   }, [skpd, selectedDate]);
@@ -131,10 +132,10 @@ export default function Simakda() {
   const handleSkpdFromAPI = async () => {
     const skpdl = await getSKPDSimakda();
 
+    console.log(skpdl);
+
     setSkpdListAPI(skpdl.data);
   };
-
-  console.log('test merge to prod');
 
   useEffect(() => {
     handleSkpdFromAPI();
@@ -176,7 +177,6 @@ export default function Simakda() {
                   name="tanggal"
                   selected={selectedDate}
                   onChange={handleDateChange}
-                  dateFormat="yyyy-MM-dd"
                 />
               </LocalizationProvider>
             </Grid>

@@ -4,25 +4,10 @@ import { useTheme } from '@mui/material/styles';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
-import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import IconButton from '@mui/material/IconButton';
 
-import {
-  TextField,
-  Stack,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  Button,
-  DialogActions,
-  CircularProgress,
-  TableBody,
-  TableContainer,
-} from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +34,7 @@ export default function UserTableRow({ index, allData, id }) {
       <TableRow hover tabIndex={-1}>
         <TableCell />
 
-        <TableCell>{index}</TableCell>
+        <TableCell>{}</TableCell>
         <TableCell>{allData.nm_skpd}</TableCell>
         <TableCell>{allData.nm_sub_kegiatan}</TableCell>
 

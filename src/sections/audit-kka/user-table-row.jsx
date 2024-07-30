@@ -57,6 +57,8 @@ export default function UserTableRow({
     setOpen(true);
   };
 
+  console.log(allData);
+
   const handleCloseMenu = () => {
     setOpen(false);
   };
@@ -285,7 +287,7 @@ export default function UserTableRow({
                   multiline
                   rows={4}
                   name="kpk"
-                  value={allData.kpk !== null ? allData.kpk : 'Belum di isi KPK'}
+                  value={allData.catatan_kpk !== null ? allData.catatan_kpk : 'Belum di isi KPK'}
                   label="Catatan Review KPK"
                 />
               </Stack>

@@ -4,7 +4,6 @@ import { useRouter } from 'src/routes/hooks/use-router';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
@@ -21,6 +20,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/system/Unstable_Grid/Grid';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { users } from 'src/_mock/user';
 
@@ -50,6 +50,8 @@ export default function Simakda() {
   const notify = (comment) => toast(comment);
 
   const [page, setPage] = useState(0);
+
+  const [loading, setLoading] = useState(false);
 
   const [order, setOrder] = useState('asc');
 
@@ -104,7 +106,7 @@ export default function Simakda() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: realisasiList.data,
+    inputData: simakdaList,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -118,23 +120,27 @@ export default function Simakda() {
   };
 
   const handleSimakdaFromAPI = useCallback(async () => {
-    const formattedDate = selectedDate ? dayjs(selectedDate).format('yyyy-MM-dd') : 'None';
+    setLoading(true);
+    const formattedDate = selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : 'None';
+
     const simakda = await getSimakda({
       skpd_id: skpd,
       tanggal: formattedDate,
     });
 
-    console.log(simakda);
+    console.log('simakda', simakda);
 
-    setSimakdaList(simakda.data);
+    if (simakda.data !== null) {
+      setSimakdaList(simakda.data.data);
+    }
+
+    setLoading(false);
   }, [skpd, selectedDate]);
 
   const handleSkpdFromAPI = async () => {
     const skpdl = await getSKPDSimakda();
 
-    console.log(skpdl);
-
-    setSkpdListAPI(skpdl.data);
+    setSkpdListAPI(skpdl.data.data);
   };
 
   useEffect(() => {
@@ -161,7 +167,7 @@ export default function Simakda() {
               <FormControl fullWidth>
                 <InputLabel id="skpd">Pilih SKPD</InputLabel>
                 <Select labelId="skpd" value={skpd} label="Pilih SKPD" onChange={handleChangeSkpd}>
-                  {skpdList.data.map((option) => (
+                  {skpdListAPI.map((option) => (
                     <MenuItem key={option.kd_skpd} value={option.kd_skpd}>
                       {' '}
                       {option.nm_skpd}{' '}
@@ -188,9 +194,9 @@ export default function Simakda() {
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
               <UserTableHead
-                order={realisasiList.data}
+                order={simakdaList}
                 orderBy={orderBy}
-                rowCount={realisasiList.data.length}
+                rowCount={simakdaList.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
@@ -213,7 +219,7 @@ export default function Simakda() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, simakdaList.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -225,13 +231,26 @@ export default function Simakda() {
         <TablePagination
           page={page}
           component="div"
-          count={realisasiList.data.length}
+          count={simakdaList.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
+
+      {loading && (
+        <CircularProgress
+          size={48}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: '-12px',
+            marginLeft: '-12px',
+          }}
+        />
+      )}
     </Container>
   );
 }

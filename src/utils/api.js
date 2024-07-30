@@ -175,6 +175,7 @@ export const putUpdateAuditKKA = async ({
   bpkp = '',
   obrik = '',
   pj = '',
+  catatan_kpk = '',
 }) => {
   try {
     if (tim_ketua !== '') {
@@ -258,6 +259,22 @@ export const putUpdateAuditKKA = async ({
         `${baseURL}/audit_kka/${id_audit}`,
         {
           catatan_wpj,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const result = response;
+      return result;
+    }
+    if (catatan_kpk !== '') {
+      const response = await axios.put(
+        `${baseURL}/audit_kka/${id_audit}`,
+        {
+          catatan_kpk,
         },
         {
           headers: {
@@ -695,6 +712,7 @@ export const postChat = async ({
   }
 };
 
+// export const getSimakda = async ({ skpd_id, tanggal }) => {
 export const getSimakda = async ({ skpd_id, tanggal }) => {
   try {
     const tokenSimakda =

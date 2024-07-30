@@ -40,7 +40,7 @@ export default function KPK() {
 
     const res = await putUpdateAuditKKA({
       id_audit: form.get('id_audit'),
-      pj: form.get('pj'),
+      catatan_kpk: form.get('catatan_kpk'),
     });
 
     console.log(res);
@@ -167,7 +167,7 @@ export default function KPK() {
                         value={allData.pj}
                         label="Catatan Reviu PJ"
                       />
-                      <TextField multiline rows={4} name="kpk" label="Catatan Reviu KPK" />
+                      <TextField multiline rows={4} name="catatan_kpk" label="Catatan Reviu KPK" />
                       <Grid container justifyContent="flex-end">
                         <Button variant="contained" type="submit">
                           Update

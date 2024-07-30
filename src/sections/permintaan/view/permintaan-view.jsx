@@ -45,6 +45,7 @@ export default function PermintaanPage() {
   const [filterName, setFilterName] = useState('');
 
   const [user, setUser] = useLocalStorage('user');
+
   const suratTugasTerpilih = user.surat_tugas;
 
   const [noST, setNoST] = useState('');

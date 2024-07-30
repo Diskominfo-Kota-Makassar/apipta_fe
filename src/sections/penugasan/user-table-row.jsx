@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTheme } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
@@ -32,7 +33,6 @@ import {
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import { deletePenugasan, getUsersFromAPI, postSubmitPenugasan } from 'src/utils/api';
-import { LocalizationProvider } from '@mui/x-date-pickers';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
@@ -242,7 +242,7 @@ export default function UserTableRow({
           <IconButton onClick={handleClickOpenDialog}>
             <Iconify icon="material-symbols:delete-outline" />
           </IconButton>
-          <IconButton onClick={handleOpenDialogEdit}>
+          <IconButton onClick={handleCloseDialogEdit}>
             <Iconify icon="tabler:edit" />
           </IconButton>
         </TableCell>
@@ -267,7 +267,7 @@ export default function UserTableRow({
         </DialogActions>
       </Dialog>
       <Dialog
-        open={handleOpenDialogEdit}
+        open={openDialogEdit}
         onClose={handleCloseDialogEdit}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -279,7 +279,7 @@ export default function UserTableRow({
               <form>
                 <Stack spacing={2}>
                   <TextField name="no" label="NO.ST" value={allData.no} />
-                  <DatePicker label="Tgl.ST" name="tgl" value={allData.tgl} />
+                  {/* <DatePicker label="Tgl.ST" name="tgl" value={allData.tgl} /> */}
                   <TextField name="uraian" label="Uraian ST" value={allData.uraian} />
                   {/* <DatePicker label="Tanggal Mulai" name="tgl_mulai" value={allData.tgl_mulai} /> */}
                   {/* <DatePicker

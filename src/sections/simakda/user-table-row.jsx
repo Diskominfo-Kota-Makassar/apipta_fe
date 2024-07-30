@@ -34,7 +34,7 @@ export default function UserTableRow({ index, allData, id }) {
       <TableRow hover tabIndex={-1}>
         <TableCell />
 
-        <TableCell>{}</TableCell>
+        <TableCell>{index}</TableCell>
         <TableCell>{allData.nm_skpd}</TableCell>
         <TableCell>{allData.nm_sub_kegiatan}</TableCell>
 

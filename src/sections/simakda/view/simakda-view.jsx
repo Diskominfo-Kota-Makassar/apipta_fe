@@ -68,7 +68,7 @@ export default function Simakda() {
   const [skpdListAPI, setSkpdListAPI] = useState([]);
   const [simakdaList, setSimakdaList] = useState([]);
 
-  const [selectedDate, setSelectedDate] = useState('2024-07-29T16:00:00.000Z');
+  const [selectedDate, setSelectedDate] = useState('');
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -181,9 +181,9 @@ export default function Simakda() {
                 <DatePicker
                   label="Pilih Tanggal"
                   name="tanggal"
-                  selected={selectedDate}
                   onChange={handleDateChange}
                   inputFormat="YYYY-MM-DD"
+                  defaultValue={dayjs('2023-07-29')}
                 />
               </LocalizationProvider>
             </Grid>
@@ -214,7 +214,11 @@ export default function Simakda() {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
-                    <UserTableRow index={index + 1} id={row.kd_skpd} allData={row} />
+                    <UserTableRow
+                      index={page * rowsPerPage + index + 1}
+                      id={row.kd_skpd}
+                      allData={row}
+                    />
                   ))}
 
                 <TableEmptyRows

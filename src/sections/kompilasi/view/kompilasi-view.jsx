@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -36,6 +37,8 @@ export default function Kompilasi() {
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
+
+  const [user, setUser] = useLocalStorage('user');
 
   const [selected, setSelected] = useState([]);
 
@@ -103,14 +106,17 @@ export default function Kompilasi() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">TEMUAN HASIL AUDIT</Typography>
 
-        <Button
-          variant="contained"
-          onClick={() => router.push('/kompilasi/tambah-temuan')}
-          color="inherit"
-          startIcon={<Iconify icon="eva:plus-fill" />}
-        >
-          Tambah Temuan
-        </Button>
+        {user.role_id !== 6 && user.role_id !== 9 && (
+          <Button
+            variant="contained"
+            onClick={() => router.push('/kompilasi/tambah-temuan')}
+            color="inherit"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
+            Tambah Temuan
+          </Button>
+        )}
+
         <Button variant="contained" onClick={() => router.push('/kompilasi/lihat-kompilasi')}>
           {' '}
           Lihat Kompilasi Temuan Hasil Audit{' '}

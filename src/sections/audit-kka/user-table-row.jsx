@@ -21,8 +21,6 @@ import {
   CircularProgress,
   Stack,
   TextField,
-  ListItem,
-  Grid,
   Typography,
   CardContent,
 } from '@mui/material';
@@ -96,7 +94,6 @@ export default function UserTableRow({
   };
 
   const handleSession = () => {
-    console.log(allData);
     if (user[0].role_id === 3) {
       return navigate('/audit-kka/anggota-tim', { state: allData });
     }
@@ -125,6 +122,9 @@ export default function UserTableRow({
     }
     if (user[0].role_id === 8) {
       return navigate('/audit-kka/dalnis', { state: allData });
+    }
+    if (user[0].role_id === 9) {
+      return navigate('/audit-kka/kpk', { state: allData });
     }
     return () => {};
   };
@@ -280,6 +280,13 @@ export default function UserTableRow({
                   name="pj"
                   value={allData.pj !== null ? allData.pj : 'Belum di isi PJ'}
                   label="Catatan Review PJ"
+                />
+                <TextField
+                  multiline
+                  rows={4}
+                  name="kpk"
+                  value={allData.kpk !== null ? allData.kpk : 'Belum di isi KPK'}
+                  label="Catatan Review KPK"
                 />
               </Stack>
             </form>

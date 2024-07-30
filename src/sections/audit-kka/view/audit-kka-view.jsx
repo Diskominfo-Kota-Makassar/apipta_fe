@@ -176,16 +176,19 @@ export default function AuditKKA() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">List Pengujian</Typography>
 
-        {(user.role_id !== 5 || user.role_id !== 3) && (
-          <Button
-            variant="contained"
-            onClick={() => router.push('/audit-kka/tambah-audit-kka')}
-            color="inherit"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-          >
-            Tambah Pengujian
-          </Button>
-        )}
+        {user.role_id !== 5 ||
+          user.role_id !== 3 ||
+          user.role_id !== 6 ||
+          (user.role_id !== 9 && (
+            <Button
+              variant="contained"
+              onClick={() => router.push('/audit-kka/tambah-audit-kka')}
+              color="inherit"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+            >
+              Tambah Pengujian
+            </Button>
+          ))}
       </Stack>
 
       <Card>

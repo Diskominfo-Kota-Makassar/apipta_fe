@@ -717,14 +717,13 @@ export const getSimakda = async ({ skpd_id, tanggal }) => {
     return error;
   }
 };
-export const getSKPDSimakda = async ({ skpd_id, tanggal }) => {
+export const getSKPDSimakda = async () => {
   try {
     const tokenSimakda =
       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiYXBpcCIsImVtYWlsIjoiYXBpIiwidHlwZSI6InJlYWxpc2FzaSIsInVzZXJfdHlwZSI6ImNsaWVudCIsImV4cF9kYXRlIjoiMjAyNS0xMi0zMSJ9.VqG0icbA4tToorsLBnBmJWfCrF0p0B8PIi3WsrnmR6U';
     const response = await axios.get(`https://simakda.makassarkota.go.id/2024/api/get_skpd`, {
       headers: {
         'Content-Type': 'application/json',
-        'access-control-allow-origin': '*',
         Authorization: `Bearer ${tokenSimakda}`,
       },
     });

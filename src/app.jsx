@@ -21,6 +21,7 @@ import WPJ from './sections/audit-kka/view/session/wpj';
 import BPKP from './sections/audit-kka/view/session/bpkp';
 import Obrik from './sections/audit-kka/view/session/obrik';
 import PJ from './sections/audit-kka/view/session/pj';
+import KPK from './sections/audit-kka/view/session/kpk';
 import TambahKompilasi from './sections/kompilasi/view/tambah-kompilasi';
 import LihatKompilasi from './sections/kompilasi/view/lihat-kompilasi';
 import { SimakdaView } from './sections/simakda/view';
@@ -199,6 +200,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <PJ />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="audit-kka/kpk"
+              element={
+                <ProtectedRoute>
+                  <KPK />
                 </ProtectedRoute>
               }
             />

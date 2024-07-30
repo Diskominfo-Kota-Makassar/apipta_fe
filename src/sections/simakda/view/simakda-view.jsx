@@ -118,7 +118,7 @@ export default function Simakda() {
   };
 
   const handleSimakdaFromAPI = useCallback(async () => {
-    const formattedDate = selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : 'None';
+    const formattedDate = selectedDate ? dayjs(selectedDate).format('yyyy-MM-dd') : 'None';
     const simakda = await getSimakda({
       skpd_id: skpd,
       tanggal: formattedDate,
@@ -177,6 +177,7 @@ export default function Simakda() {
                   name="tanggal"
                   selected={selectedDate}
                   onChange={handleDateChange}
+                  inputFormat="YYYY-MM-DD"
                 />
               </LocalizationProvider>
             </Grid>

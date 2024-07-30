@@ -972,6 +972,79 @@ export default function AuditKKA() {
           </Button>
         </Card>
       )}
+
+      {/* session kpk */}
+      {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Naskah hasil audit
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[5].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File surat tanggapan obrik
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[6].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File draft laporan hasil audit
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[7].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File laporan hasil audit (final)
+          </Button>
+        </Card>
+      )}
     </Container>
   );
 }

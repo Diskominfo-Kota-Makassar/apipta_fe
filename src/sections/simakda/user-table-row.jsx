@@ -25,6 +25,12 @@ export default function UserTableRow({ index, allData, id }) {
     setOpen(true);
   };
 
+  const formatToIndonesian = (amount) =>
+    new Intl.NumberFormat('id-ID', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
+
   const handleCloseMenu = () => {
     setOpen(false);
   };
@@ -41,8 +47,8 @@ export default function UserTableRow({ index, allData, id }) {
         <TableCell>{allData.kd_rek}</TableCell>
 
         <TableCell>{allData.nm_rek}</TableCell>
-        <TableCell>{allData.anggaran}</TableCell>
-        <TableCell>{allData.realasasi}</TableCell>
+        <TableCell>{formatToIndonesian(allData.anggaran)}</TableCell>
+        <TableCell>{formatToIndonesian(allData.realasasi)}</TableCell>
       </TableRow>
 
       {loading && (

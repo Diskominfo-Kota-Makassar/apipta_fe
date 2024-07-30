@@ -176,7 +176,7 @@ export default function PermohonanPage() {
                   { id: 'pj_id', label: 'PJ' },
                   { id: 'tgl_mulai', label: 'TANGGAL MULAI' },
                   { id: 'tgl_berakhir', label: 'TANGGAL BERAKHIR' },
-                  { id: 'keterangan', label: 'STATUS', align: 'center' },
+                  // { id: 'keterangan', label: 'STATUS', align: 'center' },
                   { id: '', label: 'AKSI' },
                 ]}
               />

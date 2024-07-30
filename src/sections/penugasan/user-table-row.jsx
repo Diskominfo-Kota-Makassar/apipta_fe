@@ -237,7 +237,7 @@ export default function UserTableRow({
         <TableCell>{pj_id}</TableCell>
         <TableCell>{tgl_mulai}</TableCell>
         <TableCell>{tgl_berakhir}</TableCell>
-        <TableCell />
+        {/* <TableCell /> */}
         <TableCell align="right">
           <IconButton onClick={handleClickOpenDialog}>
             <Iconify icon="material-symbols:delete-outline" />

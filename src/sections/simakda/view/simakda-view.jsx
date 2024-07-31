@@ -68,7 +68,7 @@ export default function Simakda() {
   const [skpdListAPI, setSkpdListAPI] = useState([]);
   const [simakdaList, setSimakdaList] = useState([]);
 
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState();
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -121,7 +121,7 @@ export default function Simakda() {
 
   const handleSimakdaFromAPI = useCallback(async () => {
     setLoading(true);
-    const formattedDate = selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : 'None';
+    const formattedDate = selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : '2024-07-01';
 
     const simakda = await getSimakda({
       skpd_id: skpd,
@@ -130,9 +130,11 @@ export default function Simakda() {
 
     console.log('simakda', simakda);
 
-    if (simakda.data !== null) {
-      setSimakdaList(simakda.data.data);
-    }
+    // if (simakda.data !== null) {
+    //   setSimakdaList(simakda.data.data);
+    // }
+
+    setSimakdaList(simakda.data.data);
 
     setLoading(false);
   }, [skpd, selectedDate]);
@@ -183,7 +185,7 @@ export default function Simakda() {
                   name="tanggal"
                   onChange={handleDateChange}
                   inputFormat="YYYY-MM-DD"
-                  defaultValue={dayjs('2023-07-29')}
+                  defaultValue={dayjs('2024-07-01')}
                 />
               </LocalizationProvider>
             </Grid>

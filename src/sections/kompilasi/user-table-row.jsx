@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { useTheme } from '@mui/material/styles';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
@@ -51,6 +52,8 @@ export default function UserTableRow({
   const [loading, setLoading] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
+
+  const [user, setUser] = useLocalStorage('user');
 
   const router = useRouter();
 
@@ -224,14 +227,16 @@ export default function UserTableRow({
           </Button>
         </TableCell>
 
-        <TableCell align="center">
-          <IconButton onClick={handleClickOpenDialog}>
-            <Iconify icon="material-symbols:delete-outline" />
-          </IconButton>
-          <IconButton onClick={handleOpen}>
-            <Iconify icon="tabler:edit" />
-          </IconButton>
-        </TableCell>
+        {user.role_id !== 6 && user.role_id !== 9 && (
+          <TableCell align="center">
+            <IconButton onClick={handleClickOpenDialog}>
+              <Iconify icon="material-symbols:delete-outline" />
+            </IconButton>
+            <IconButton onClick={handleOpen}>
+              <Iconify icon="tabler:edit" />
+            </IconButton>
+          </TableCell>
+        )}
       </TableRow>
       {/* dialog kompilasi */}
       <Dialog
@@ -275,12 +280,14 @@ export default function UserTableRow({
       >
         <DialogTitle id="alert-dialog-title">Rekomendasi</DialogTitle>
         <DialogContent>
-          <form onSubmit={handleSubmitRekomendasi}>
-            <TextField multiline rows={4} name="masukan" label="Rekomendasi" />
-            <Button sx={{ mt: 1, ml: 2 }} variant="contained" type="submit">
-              Simpan
-            </Button>
-          </form>
+          {user.role_id !== 6 && user.role_id !== 9 && (
+            <form onSubmit={handleSubmitRekomendasi}>
+              <TextField multiline rows={4} name="masukan" label="Rekomendasi" />
+              <Button sx={{ mt: 1, ml: 2 }} variant="contained" type="submit">
+                Simpan
+              </Button>
+            </form>
+          )}
           <TableContainer sx={{ mt: 2 }}>
             <Table>
               <TableHead>
@@ -305,15 +312,17 @@ export default function UserTableRow({
                         LIHAT
                       </Button>
                     </TableCell>
-                    <TableCell>
-                      {' '}
-                      <IconButton onClick={() => handleOpenDialogDeleteRekomendasi(data.id)}>
-                        <Iconify icon="material-symbols:delete-outline" />
-                      </IconButton>
-                      <IconButton onClick={handleOpen}>
-                        <Iconify icon="tabler:edit" />
-                      </IconButton>{' '}
-                    </TableCell>
+                    {user.role_id !== 6 && user.role_id !== 9 && (
+                      <TableCell>
+                        {' '}
+                        <IconButton onClick={() => handleOpenDialogDeleteRekomendasi(data.id)}>
+                          <Iconify icon="material-symbols:delete-outline" />
+                        </IconButton>
+                        <IconButton onClick={handleOpen}>
+                          <Iconify icon="tabler:edit" />
+                        </IconButton>{' '}
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
@@ -350,13 +359,15 @@ export default function UserTableRow({
       >
         <DialogTitle id="alert-dialog-title">Rencana Aksi</DialogTitle>
         <DialogContent>
-          <form onSubmit={handleSubmitRencanaAksi}>
-            <TextField type="hidden" value={idRekomendasi} name="id_rekomendasi" />
-            <TextField multiline rows={4} name="masukan" label="Rencana Aksi" />
-            <Button sx={{ mt: 1, ml: 2 }} variant="contained" type="submit">
-              Simpan
-            </Button>
-          </form>
+          {user.role_id !== 6 && user.role_id !== 9 && (
+            <form onSubmit={handleSubmitRencanaAksi}>
+              <TextField type="hidden" value={idRekomendasi} name="id_rekomendasi" />
+              <TextField multiline rows={4} name="masukan" label="Rencana Aksi" />
+              <Button sx={{ mt: 1, ml: 2 }} variant="contained" type="submit">
+                Simpan
+              </Button>
+            </form>
+          )}
           <TableContainer sx={{ mt: 2 }}>
             <Table>
               <TableHead>
@@ -374,15 +385,17 @@ export default function UserTableRow({
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{data.masukan}</TableCell>
                     <TableCell>Waktu Pelaksanaan</TableCell>
-                    <TableCell>
-                      {' '}
-                      <IconButton onClick={() => handleOpenDialogDeleteAksi(data.id)}>
-                        <Iconify icon="material-symbols:delete-outline" />
-                      </IconButton>
-                      <IconButton onClick={handleOpen}>
-                        <Iconify icon="tabler:edit" />
-                      </IconButton>{' '}
-                    </TableCell>
+                    {user.role_id !== 6 && user.role_id !== 9 && (
+                      <TableCell>
+                        {' '}
+                        <IconButton onClick={() => handleOpenDialogDeleteAksi(data.id)}>
+                          <Iconify icon="material-symbols:delete-outline" />
+                        </IconButton>
+                        <IconButton onClick={handleOpen}>
+                          <Iconify icon="tabler:edit" />
+                        </IconButton>{' '}
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>

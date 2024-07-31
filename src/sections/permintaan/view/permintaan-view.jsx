@@ -181,7 +181,7 @@ export default function PermintaanPage() {
                   { id: 'no_ref_pka', label: 'NO.REF PKA' },
                   { id: 'judul_dokumen', label: 'Judul Dokumen' },
                   { id: '', label: 'Validasi', align: 'center' },
-                  { id: '', label: 'Aksi' },
+                  user.role_id === 1 || (user.role_id === 2 && { id: '', label: 'Aksi' }),
                 ]}
               />
               <TableBody>

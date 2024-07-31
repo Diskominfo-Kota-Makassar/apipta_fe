@@ -3,6 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
@@ -51,6 +52,7 @@ export default function UserTableRow({
   const [loading, setLoading] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
+  const [userLocal, setUser] = useLocalStorage('user');
 
   const [pj, setPj] = useState('');
   const [wpj, setWpj] = useState('');
@@ -238,14 +240,17 @@ export default function UserTableRow({
         <TableCell>{tgl_mulai}</TableCell>
         <TableCell>{tgl_berakhir}</TableCell>
         {/* <TableCell /> */}
-        <TableCell align="right">
-          <IconButton onClick={handleClickOpenDialog}>
-            <Iconify icon="material-symbols:delete-outline" />
-          </IconButton>
-          <IconButton onClick={handleCloseDialogEdit}>
-            <Iconify icon="tabler:edit" />
-          </IconButton>
-        </TableCell>
+        {userLocal.role_id === 1 ||
+          (userLocal.role_id === 2 && (
+            <TableCell align="right">
+              <IconButton onClick={handleClickOpenDialog}>
+                <Iconify icon="material-symbols:delete-outline" />
+              </IconButton>
+              <IconButton onClick={handleCloseDialogEdit}>
+                <Iconify icon="tabler:edit" />
+              </IconButton>
+            </TableCell>
+          ))}
       </TableRow>
       <Dialog
         open={openDialog}

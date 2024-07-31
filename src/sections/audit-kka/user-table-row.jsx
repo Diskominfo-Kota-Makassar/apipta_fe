@@ -40,7 +40,7 @@ export default function UserTableRow({
   allData,
 }) {
   const theme = useTheme();
-  const user = useLocalStorage('user');
+  const [user, setUser] = useLocalStorage('user');
   const [loading, setLoading] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
@@ -150,9 +150,12 @@ export default function UserTableRow({
         </TableCell>
 
         <TableCell align="center">
-          <IconButton onClick={handleClickOpenDialog}>
-            <Iconify icon="material-symbols:delete-outline" />
-          </IconButton>
+          {user.role_id === 1 ||
+            (user.role_id === 2 && (
+              <IconButton onClick={handleClickOpenDialog}>
+                <Iconify icon="material-symbols:delete-outline" />
+              </IconButton>
+            ))}
           <IconButton onClick={handleOpenDialogEdit}>
             <Iconify icon="tabler:eye" />
           </IconButton>
@@ -296,7 +299,7 @@ export default function UserTableRow({
         </DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={handleCloseDialogEdit}>
-            Keluar
+            Tutup
           </Button>
         </DialogActions>
       </Dialog>

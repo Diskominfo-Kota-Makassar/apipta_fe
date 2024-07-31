@@ -177,7 +177,7 @@ export default function PermohonanPage() {
                   { id: 'tgl_mulai', label: 'TANGGAL MULAI' },
                   { id: 'tgl_berakhir', label: 'TANGGAL BERAKHIR' },
                   // { id: 'keterangan', label: 'STATUS', align: 'center' },
-                  { id: '', label: 'AKSI' },
+                  user.role_id === 1 || (user.role_id === 2 && { id: '', label: 'AKSI' }),
                 ]}
               />
               <TableBody>

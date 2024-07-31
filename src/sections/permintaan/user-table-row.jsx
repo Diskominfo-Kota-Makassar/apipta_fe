@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'src/routes/hooks/use-router';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
@@ -43,7 +44,7 @@ export default function UserTableRow({
   const [loading, setLoading] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
-
+  const [user, setUser] = useLocalStorage('user');
   const navigate = useNavigate();
 
   const router = useRouter();
@@ -114,14 +115,17 @@ export default function UserTableRow({
             {...label}
           /> */}
         </TableCell>
-        <TableCell align="right">
-          <IconButton onClick={handleClickOpenDialog}>
-            <Iconify icon="material-symbols:delete-outline" />
-          </IconButton>
-          <IconButton onClick={handleOpen}>
-            <Iconify icon="tabler:edit" />
-          </IconButton>
-        </TableCell>
+        {user.role_id === 1 ||
+          (user.role_id === 2 && (
+            <TableCell align="right">
+              <IconButton onClick={handleClickOpenDialog}>
+                <Iconify icon="material-symbols:delete-outline" />
+              </IconButton>
+              <IconButton onClick={handleOpen}>
+                <Iconify icon="tabler:edit" />
+              </IconButton>
+            </TableCell>
+          ))}
       </TableRow>
       <Dialog
         open={openDialog}

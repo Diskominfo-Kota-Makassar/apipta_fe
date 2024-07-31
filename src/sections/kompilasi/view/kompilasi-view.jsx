@@ -149,7 +149,7 @@ export default function Kompilasi() {
                   { id: 'sebab', label: 'Sebab' },
                   { id: 'akibat', label: 'Akibat' },
                   { id: 'rekomendasi', label: 'ٌRekomendasi' },
-                  { id: 'aksi', label: 'Aksi' },
+                  user.role_id === 1 || (user.role_id === 2 && { id: 'aksi', label: 'Aksi' }),
                 ]}
               />
               <TableBody>

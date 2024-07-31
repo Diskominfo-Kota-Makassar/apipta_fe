@@ -297,7 +297,7 @@ export default function UserTableRow({
                   <TableCell>No</TableCell>
                   <TableCell>Rekomendasi</TableCell>
                   <TableCell>Rencana Aksi</TableCell>
-                  <TableCell>Aksi</TableCell>
+                  {user.role_id === 1 || (user.role_id === 2 && <TableCell>Aksi</TableCell>)}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -377,10 +377,9 @@ export default function UserTableRow({
               <TableHead>
                 <TableRow>
                   <TableCell>No.</TableCell>
-
                   <TableCell>Rencana Aksi</TableCell>
                   <TableCell>Waktu</TableCell>
-                  <TableCell>Aksi</TableCell>
+                  {user.role_id === 1 || (user.role_id === 2 && <TableCell>Aksi</TableCell>)}
                 </TableRow>
               </TableHead>
               <TableBody>

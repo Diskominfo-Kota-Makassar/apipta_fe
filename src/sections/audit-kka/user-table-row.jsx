@@ -149,7 +149,7 @@ export default function UserTableRow({
           </Button>
         </TableCell>
 
-        <TableCell align="center">
+        <TableCell>
           {user.role_id === 1 ||
             (user.role_id === 2 && (
               <IconButton onClick={handleClickOpenDialog}>

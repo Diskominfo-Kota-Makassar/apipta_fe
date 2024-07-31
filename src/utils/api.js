@@ -134,6 +134,48 @@ export const postSubmitPenugasan = async ({
     return error;
   }
 };
+export const putSubmitPenugasan = async ({
+  id_penugasan = '',
+  no = '',
+  tgl = '',
+  uraian = '',
+  tgl_mulai = '',
+  tgl_berakhir = '',
+  pj_id = '',
+  wpj_id = '',
+  dalnis_id = '',
+  tim_id = [],
+  kt_id = '',
+  bpkp = '',
+}) => {
+  try {
+    const response = await axios.put(
+      `${baseURL}/penugasan/${id_penugasan}`,
+      {
+        no,
+        tgl,
+        uraian,
+        tgl_mulai,
+        tgl_berakhir,
+        pj_id,
+        wpj_id,
+        dalnis_id,
+        tim_id,
+        kt_id,
+        bpkp,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
 export const postSubmitAuditKKA = async ({
   file_kesimpulan,
   file_bukti_dukung,
@@ -364,6 +406,38 @@ export const postSubmitPermintaan = async ({
     formData.append('judul_doc', judul_doc);
     formData.append('ket', ket);
     const response = await axios.post(`${baseURL}/permintaan`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const putSubmitPermintaan = async ({
+  id_permintaan = '',
+  file,
+  no = '',
+  tgl_penugasan = '',
+  uraian = '',
+  no_ref_kka = '',
+  no_ref_pka = '',
+  judul_doc = '',
+  ket = '',
+}) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('no', no);
+    formData.append('tgl_penugasan', tgl_penugasan);
+    formData.append('uraian', uraian);
+    formData.append('no_ref_kka', no_ref_kka);
+    formData.append('no_ref_pka', no_ref_pka);
+    formData.append('judul_doc', judul_doc);
+    formData.append('ket', ket);
+    const response = await axios.put(`${baseURL}/permintaan/${id_permintaan}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

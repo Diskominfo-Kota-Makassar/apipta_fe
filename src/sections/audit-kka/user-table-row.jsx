@@ -96,10 +96,10 @@ export default function UserTableRow({
   };
 
   const handleSession = () => {
-    if (user[0].role_id === 3) {
+    if (user.role_id === 3) {
       return navigate('/audit-kka/anggota-tim', { state: allData });
     }
-    if (user[0].role_id === 2) {
+    if (user.role_id === 2) {
       if (allData.catatan_wpj === null || '') {
         return navigate('/audit-kka/ketua-tim', { state: allData });
       }
@@ -110,22 +110,22 @@ export default function UserTableRow({
         return navigate('/audit-kka/ketua-tim-review-2', { state: allData });
       }
     }
-    if (user[0].role_id === 4) {
+    if (user.role_id === 4) {
       return navigate('/audit-kka/wpj', { state: allData });
     }
-    if (user[0].role_id === 5) {
+    if (user.role_id === 5) {
       return navigate('/audit-kka/obrik', { state: allData });
     }
-    if (user[0].role_id === 6) {
+    if (user.role_id === 6) {
       return navigate('/audit-kka/bpkp', { state: allData });
     }
-    if (user[0].role_id === 7) {
+    if (user.role_id === 7) {
       return navigate('/audit-kka/pj', { state: allData });
     }
-    if (user[0].role_id === 8) {
+    if (user.role_id === 8) {
       return navigate('/audit-kka/dalnis', { state: allData });
     }
-    if (user[0].role_id === 9) {
+    if (user.role_id === 9) {
       return navigate('/audit-kka/kpk', { state: allData });
     }
     return () => {};

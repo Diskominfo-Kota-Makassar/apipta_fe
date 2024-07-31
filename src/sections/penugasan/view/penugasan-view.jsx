@@ -169,13 +169,13 @@ export default function PermohonanPage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: '', label: 'NO' },
-                  { id: 'no', label: 'NO.ST' },
-                  { id: 'tgl', label: 'TGL.ST' },
-                  { id: 'uraian', label: 'URAIAN.ST' },
-                  { id: 'pj_id', label: 'PJ' },
-                  { id: 'tgl_mulai', label: 'TANGGAL MULAI' },
-                  { id: 'tgl_berakhir', label: 'TANGGAL BERAKHIR' },
+                  { key: 'id', id: '', label: 'NO' },
+                  { key: 'nost', id: 'no', label: 'NO.ST' },
+                  { key: 'tgl', id: 'tgl', label: 'TGL.ST' },
+                  { key: 'uraian', id: 'uraian', label: 'URAIAN.ST' },
+                  { key: 'pj_id', id: 'pj_id', label: 'PJ' },
+                  { key: 'itgl_mulaid', id: 'tgl_mulai', label: 'TANGGAL MULAI' },
+                  { key: 'tgl_berakhir', id: 'tgl_berakhir', label: 'TANGGAL BERAKHIR' },
                   // { id: 'keterangan', label: 'STATUS', align: 'center' },
                   user.role_id === 1 || (user.role_id === 2 && { id: '', label: 'AKSI' }),
                 ]}

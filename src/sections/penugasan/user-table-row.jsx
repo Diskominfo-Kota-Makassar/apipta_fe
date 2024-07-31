@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTheme } from '@mui/material/styles';
+import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
+
+import { toast, ToastContainer } from 'react-toastify';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
@@ -33,7 +36,8 @@ import {
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { deletePenugasan, getUsersFromAPI, postSubmitPenugasan } from 'src/utils/api';
+import { deletePenugasan, getUsersFromAPI, putSubmitPenugasan } from 'src/utils/api';
+import 'react-toastify/dist/ReactToastify.css';
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
@@ -46,13 +50,14 @@ export default function UserTableRow({
   tgl_mulai,
   tgl_berakhir,
   allData,
-  notify,
 }) {
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
   const [userLocal, setUser] = useLocalStorage('user');
+
+  const notify = (comment) => toast(comment);
 
   const [pj, setPj] = useState('');
   const [wpj, setWpj] = useState('');
@@ -71,9 +76,11 @@ export default function UserTableRow({
 
   const [bpkp, setBpkp] = useState('');
 
-  // const handleOpenMenu = (event) => {
-  //   setOpen(event.currentTarget);
-  // };
+  const [tglST, setTglST] = useState('');
+
+  const handleOpenMenu = (event) => {
+    setOpen(event.currentTarget);
+  };
 
   const handleChangeBpkp = (event) => {
     setBpkp(event.target.value);
@@ -159,12 +166,13 @@ export default function UserTableRow({
     setOpenDialogEdit(false);
   };
 
-  const handlePostPenugasan = async (event) => {
+  const handlePutPenugasan = async (event) => {
     event.preventDefault();
     setLoading(true);
     const form = new FormData(event.currentTarget);
 
-    const res = await postSubmitPenugasan({
+    const res = await putSubmitPenugasan({
+      id_penugasan: form.get('id_penugasan'),
       no: form.get('no'),
       tgl: form.get('tgl'),
       uraian: form.get('uraian'),
@@ -178,13 +186,14 @@ export default function UserTableRow({
       bpkp,
     });
 
+    console.log(res.status);
     console.log(res);
 
-    if (res.status === 201) {
+    if (res.status === 200) {
+      console.log('masuk sukses');
+      setOpenDialogEdit(false);
       setLoading(false);
-      // window.location.reload();
       notify('Berhasil Menambahkan Penugasan');
-      window.history.back();
     } else {
       setLoading(false);
       notify('Gagal Menambahkan Penugasan');
@@ -246,7 +255,7 @@ export default function UserTableRow({
               <IconButton onClick={handleClickOpenDialog}>
                 <Iconify icon="material-symbols:delete-outline" />
               </IconButton>
-              <IconButton onClick={handleCloseDialogEdit}>
+              <IconButton onClick={handleOpenDialogEdit}>
                 <Iconify icon="tabler:edit" />
               </IconButton>
             </TableCell>
@@ -277,24 +286,39 @@ export default function UserTableRow({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Detail Pengujian</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Detail Penugasan</DialogTitle>
         <DialogContent>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <CardContent>
-              <form>
+              <form onSubmit={handlePutPenugasan}>
                 <Stack spacing={2}>
+                  <TextField
+                    name="id_penugasan"
+                    label="ID"
+                    value={allData.id}
+                    sx={{ display: 'none' }}
+                  />
                   <TextField name="no" label="NO.ST" value={allData.no} />
-                  {/* <DatePicker label="Tgl.ST" name="tgl" value={allData.tgl} /> */}
-                  <TextField name="uraian" label="Uraian ST" value={allData.uraian} />
-                  {/* <DatePicker label="Tanggal Mulai" name="tgl_mulai" value={allData.tgl_mulai} /> */}
-                  {/* <DatePicker
+                  <DatePicker
+                    label="Tgl.ST"
+                    defaultValue={dayjs(allData.tgl)}
+                    onChange={(newValue) => setTglST(newValue)}
+                    name="tgl"
+                  />
+                  <TextField name="uraian" label="Uraian ST" defaultValue={allData.uraian} />
+                  <DatePicker
+                    label="Tanggal Mulai"
+                    name="tgl_mulai"
+                    value={dayjs(allData.tgl_mulai)}
+                  />
+                  <DatePicker
                     label="Tanggal Berakhir"
                     name="tgl_berakhir"
-                    value={allData.tgl_berakhir}
-                  /> */}
+                    value={dayjs(allData.tgl_berakhir)}
+                  />
                   <FormControl fullWidth>
                     <InputLabel>Pilih PJ</InputLabel>
-                    <Select value={allData.pj_id} label="Pilih PJ" onChange={handleChangePj}>
+                    <Select value={pj} label="Pilih PJ" onChange={handleChangePj}>
                       {pjList.map((option) => (
                         <MenuItem key={option.id} value={option.id}>
                           {' '}
@@ -305,7 +329,7 @@ export default function UserTableRow({
                   </FormControl>
                   <FormControl fullWidth>
                     <InputLabel>Pilih WPJ</InputLabel>
-                    <Select value={allData.wpj_id} label="Pilih WPJ" onChange={handleChangeWpj}>
+                    <Select value={wpj} label="Pilih WPJ" onChange={handleChangeWpj}>
                       {wpjList.map((option) => (
                         <MenuItem key={option.id} value={option.id}>
                           {' '}
@@ -316,11 +340,7 @@ export default function UserTableRow({
                   </FormControl>
                   <FormControl fullWidth>
                     <InputLabel>Pilih Dalnis</InputLabel>
-                    <Select
-                      value={allData.dalnis_id}
-                      label="Pilih Dalnis"
-                      onChange={handleChangeDalnis}
-                    >
+                    <Select value={dalnis} label="Pilih Dalnis" onChange={handleChangeDalnis}>
                       {dalnisList.map((option) => (
                         <MenuItem key={option.id} value={option.id}>
                           {' '}
@@ -331,7 +351,7 @@ export default function UserTableRow({
                   </FormControl>
                   <FormControl fullWidth>
                     <InputLabel>Pilih KT</InputLabel>
-                    <Select value={allData.kt_id} label="Pilih KT" onChange={handleChangeKt}>
+                    <Select value={kt} label="Pilih KT" onChange={handleChangeKt}>
                       {ktList.map((option) => (
                         <MenuItem key={option.id} value={option.id}>
                           {' '}
@@ -346,7 +366,7 @@ export default function UserTableRow({
                       labelId="Pilih Anggota Tim"
                       id="Pilih Anggota Tim"
                       multiple
-                      value={allData.at}
+                      value={at}
                       onChange={handleChangeAt}
                       input={<OutlinedInput label="Pilih Anggota Tim" />}
                       renderValue={(selected) => selected.map(getUserNameById).join(', ')}
@@ -362,13 +382,13 @@ export default function UserTableRow({
                   </FormControl>
                   <FormControl fullWidth>
                     <InputLabel id="golongan">Melibatkan QA BPKP</InputLabel>
-                    <Select
-                      label="Melibatkan QA BPKP"
-                      value={allData.bpkp}
-                      onChange={handleChangeBpkp}
-                    >
-                      <MenuItem value="ya">Ya</MenuItem>
-                      <MenuItem value="tidak">Tidak</MenuItem>
+                    <Select label="Melibatkan QA BPKP" value={bpkp} onChange={handleChangeBpkp}>
+                      <MenuItem key="ya" value="ya">
+                        Ya
+                      </MenuItem>
+                      <MenuItem key="tidak" value="tidak">
+                        Tidak
+                      </MenuItem>
                     </Select>
                   </FormControl>
                   <FormControl fullWidth>
@@ -387,6 +407,9 @@ export default function UserTableRow({
                     </Select>
                   </FormControl>
                   <Grid container justifyContent="flex-end">
+                    <Button variant="contained" onClick={handleCloseDialogEdit}>
+                      Batal
+                    </Button>
                     <Button variant="contained" type="submit">
                       Submit
                     </Button>
@@ -396,11 +419,6 @@ export default function UserTableRow({
             </CardContent>
           </LocalizationProvider>
         </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={handleCloseDialogEdit}>
-            Keluar
-          </Button>
-        </DialogActions>
       </Dialog>
       {loading && (
         <CircularProgress
@@ -428,5 +446,4 @@ UserTableRow.propTypes = {
   tgl_mulai: PropTypes.any,
   tgl_berakhir: PropTypes.any,
   allData: PropTypes.any,
-  notify: PropTypes.any,
 };

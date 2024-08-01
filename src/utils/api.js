@@ -405,6 +405,7 @@ export const postSubmitPermintaan = async ({
     formData.append('no_ref_pka', no_ref_pka);
     formData.append('judul_doc', judul_doc);
     formData.append('ket', ket);
+
     const response = await axios.post(`${baseURL}/permintaan`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -426,6 +427,7 @@ export const putSubmitPermintaan = async ({
   no_ref_pka = '',
   judul_doc = '',
   ket = '',
+  status,
 }) => {
   try {
     const formData = new FormData();
@@ -437,6 +439,8 @@ export const putSubmitPermintaan = async ({
     formData.append('no_ref_pka', no_ref_pka);
     formData.append('judul_doc', judul_doc);
     formData.append('ket', ket);
+    formData.append('status', +status);
+
     const response = await axios.put(`${baseURL}/permintaan/${id_permintaan}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -648,6 +652,26 @@ export const postSubmitRekomendasi = async ({ id_kompilasi, masukan = '' }) => {
     return error;
   }
 };
+export const putSubmitRekomendasi = async ({ id_kompilasi, id_rekomendasi, masukan = '' }) => {
+  try {
+    const response = await axios.put(
+      `${baseURL}/rekomendasi/${id_rekomendasi}`,
+      {
+        id_kompilasi,
+        masukan,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
 export const postSubmitRencanaAksi = async ({ id_rekomendasi, masukan = '' }) => {
   try {
     const response = await axios.post(
@@ -821,6 +845,37 @@ export const getSKPDSimakda = async () => {
     });
 
     const result = await response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const putSubmitKompilasi = async ({
+  id_kompilasi = '',
+  kondisi = '',
+  kriteria = '',
+  sebab = '',
+  akibat = '',
+  no_lhp = '',
+}) => {
+  try {
+    const response = await axios.put(
+      `${baseURL}/kompilasi/${id_kompilasi}`,
+      {
+        kondisi,
+        kriteria,
+        sebab,
+        akibat,
+        no_lhp,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
     return result;
   } catch (error) {
     return error;

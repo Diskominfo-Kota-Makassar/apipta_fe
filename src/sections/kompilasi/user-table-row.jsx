@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { useTheme } from '@mui/material/styles';
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PropTypes from 'prop-types';
@@ -20,9 +22,11 @@ import {
   DialogContentText,
   Button,
   DialogActions,
+  Grid,
   CircularProgress,
   TableBody,
   TableContainer,
+  CardContent,
 } from '@mui/material';
 
 // import Label from 'src/components/label';
@@ -33,6 +37,8 @@ import {
   deleteAksi,
   postSubmitRekomendasi,
   postSubmitRencanaAksi,
+  putSubmitKompilasi,
+  putSubmitRekomendasi,
 } from 'src/utils/api';
 
 // ----------------------------------------------------------------------
@@ -71,6 +77,8 @@ export default function UserTableRow({
   const handleCloseMenu = () => {
     setOpen(false);
   };
+
+  console.log(allData);
 
   const handleDeletePenugasan = async (event) => {
     setOpenDialog(false);
@@ -124,6 +132,9 @@ export default function UserTableRow({
   const [openDialogDeleteRekomendasi, setOpenDialogDeleteRekomendasi] = useState(false);
   const [openDialogDeleteAksi, setOpenDialogDeleteAksi] = useState(false);
 
+  const [openDialogEdit, setOpenDialogEdit] = useState(false);
+  const [openDialogEditRekomendasi, setOpenDialogEditRekomendasi] = useState(false);
+
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
   };
@@ -150,6 +161,20 @@ export default function UserTableRow({
   const handleCloseDialogRencanaAksi = () => {
     setOpenDialogRencanaAksi(false);
   };
+
+  const handleOpenDialogEdit = () => {
+    setOpenDialogEdit(true);
+  };
+  const handleCloseDialogEdit = () => {
+    setOpenDialogEdit(false);
+  };
+  const handleOpenDialogEditRekomendasi = () => {
+    setOpenDialogEditRekomendasi(true);
+  };
+  const handleCloseDialogEditRekomendasi = () => {
+    setOpenDialogEditRekomendasi(false);
+  };
+
   const handleOpenDialogDeleteRekomendasi = (idRekomen) => {
     setIdRekomendasiForDelete(idRekomen);
     setOpenDialogDeleteRekomendasi(true);
@@ -186,6 +211,26 @@ export default function UserTableRow({
       notify('Gagal Menambahkan rekomendasi');
     }
   };
+  const handleputRekomendasi = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+
+    const res = await putSubmitRekomendasi({
+      id_kompilasi: form.get('id_kompilasi'),
+      id_rekomendasi: form.get('id_rekomendasi'),
+      masukan: form.get('masukan'),
+    });
+
+    if (res.status === 201) {
+      setLoading(false);
+      window.location.reload();
+      notify('Berhasil Menambahkan rekomendasi');
+    } else {
+      setLoading(false);
+      notify('Gagal Menambahkan rekomendasi');
+    }
+  };
   const handleSubmitRencanaAksi = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -204,6 +249,34 @@ export default function UserTableRow({
       setLoading(false);
       window.location.reload();
       notify('Gagal Menambahkan rencana aksi');
+    }
+  };
+
+  const handlePutKompilasi = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+
+    const res = await putSubmitKompilasi({
+      id_kompilasi: form.get('id_kompilasi'),
+      no_lhp: form.get('no_lhp'),
+      kondisi: form.get('kondisi'),
+      kriteria: form.get('kriteria'),
+      sebab: form.get('sebab'),
+      akibat: form.get('akibat'),
+    });
+
+    console.log(res);
+
+    if (res.status === 200) {
+      setLoading(false);
+      setOpenDialogEdit(false);
+
+      notify('Berhasil Update Kompilasi');
+      window.location.reload();
+    } else {
+      setLoading(false);
+      notify('Gagal Update Kompilasi');
     }
   };
 
@@ -233,7 +306,7 @@ export default function UserTableRow({
               <IconButton onClick={handleClickOpenDialog}>
                 <Iconify icon="material-symbols:delete-outline" />
               </IconButton>
-              <IconButton onClick={handleOpen}>
+              <IconButton onClick={handleOpenDialogEdit}>
                 <Iconify icon="tabler:edit" />
               </IconButton>
             </TableCell>
@@ -321,7 +394,7 @@ export default function UserTableRow({
                           <IconButton onClick={() => handleOpenDialogDeleteRekomendasi(data.id)}>
                             <Iconify icon="material-symbols:delete-outline" />
                           </IconButton>
-                          <IconButton onClick={handleOpen}>
+                          <IconButton onClick={handleOpenDialogEditRekomendasi}>
                             <Iconify icon="tabler:edit" />
                           </IconButton>{' '}
                         </TableCell>
@@ -426,6 +499,122 @@ export default function UserTableRow({
             Setuju
           </Button>
         </DialogActions>
+      </Dialog>
+
+      {/* dialog edit kompilasi */}
+      <Dialog
+        open={openDialogEdit}
+        onClose={handleCloseDialogEdit}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Edit Kompilasi</DialogTitle>
+        <DialogContent>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <CardContent>
+              <form onSubmit={handlePutKompilasi}>
+                <Stack spacing={2}>
+                  <TextField
+                    name="id_kompilasi"
+                    value={allData.id}
+                    InputProps={{ readOnly: true }}
+                    // sx={{ display: 'none' }}
+                  />
+                  <TextField
+                    multiline
+                    rows={4}
+                    defaultValue={allData.no_lhp}
+                    name="no_lhp"
+                    label="No. LHP"
+                  />
+                  <TextField
+                    multiline
+                    rows={4}
+                    defaultValue={allData.kondisi}
+                    name="kondisi"
+                    label="Kondisi"
+                  />
+                  <TextField
+                    multiline
+                    rows={4}
+                    defaultValue={allData.sebab}
+                    name="sebab"
+                    label="Sebab"
+                  />
+                  <TextField
+                    multiline
+                    rows={4}
+                    defaultValue={allData.kriteria}
+                    name="kriteria"
+                    label="Kriteria"
+                  />
+                  <TextField
+                    multiline
+                    rows={4}
+                    defaultValue={allData.akibat}
+                    name="akibat"
+                    label="Akibat"
+                  />
+                  <Grid container justifyContent="flex-end">
+                    <Button variant="contained" onClick={handleCloseDialogEdit}>
+                      Batal
+                    </Button>
+                    <Button variant="contained" type="submit">
+                      Submit
+                    </Button>
+                  </Grid>
+                </Stack>
+              </form>
+            </CardContent>
+          </LocalizationProvider>
+        </DialogContent>
+      </Dialog>
+
+      {/* dialog edit rekomendasi */}
+      <Dialog
+        open={openDialogEditRekomendasi}
+        onClose={handleCloseDialogEditRekomendasi}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Edit Rekomendasi</DialogTitle>
+        <DialogContent>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <CardContent>
+              <form onSubmit={handleputRekomendasi}>
+                <Stack spacing={2}>
+                  <TextField
+                    name="id_kompilasi"
+                    value={allData.rekomendasis.id_kompilasi}
+                    InputProps={{ readOnly: true }}
+                    // sx={{ display: 'none' }}
+                  />
+                  <TextField
+                    name="id_rekomendasi"
+                    value={allData.rekomendasis.id}
+                    InputProps={{ readOnly: true }}
+                    // sx={{ display: 'none' }}
+                  />
+                  <TextField
+                    multiline
+                    rows={4}
+                    name="masukan"
+                    defaultValue={allData.masukan}
+                    label="Rekomendasi"
+                  />
+                  <Grid container justifyContent="flex-end">
+                    <Button variant="contained" onClick={handleCloseDialogEdit}>
+                      Batal
+                    </Button>
+                    <Button variant="contained" type="submit">
+                      Submit
+                    </Button>
+                  </Grid>
+                </Stack>
+              </form>
+            </CardContent>
+          </LocalizationProvider>
+        </DialogContent>
       </Dialog>
     </>
   );

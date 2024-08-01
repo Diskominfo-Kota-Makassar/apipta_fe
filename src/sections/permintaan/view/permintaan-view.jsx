@@ -116,6 +116,8 @@ export default function PermintaanPage() {
   const handlePermintaanFromAPI = useCallback(async () => {
     const permintaan = await getPermintaanFromAPI();
 
+    console.log('permintaan', permintaan);
+
     const prm = permintaan.data.filter((p) => p.no === noST);
     setAllPermintaan(prm);
   }, [noST]);

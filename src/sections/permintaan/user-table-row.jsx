@@ -141,18 +141,18 @@ export default function UserTableRow({
       judul_doc: form.get('judul_doc'),
       ket: form.get('ket'),
       file: valueFile,
+      status: form.get('status'),
     });
 
-    console.log(res);
+    console.log('respon', res);
 
-    if (res.status === 201) {
+    if (res.status === 200) {
       setLoading(false);
-      // window.location.reload();
-      notify('Berhasil Menambahkan Penugasan');
-      window.history.back();
+      handleCloseDialogEdit();
+      notify('Berhasil Update Permintaan');
     } else {
       setLoading(false);
-      notify('Gagal Menambahkan Penugasan');
+      notify('Gagal Update Permintaan');
     }
   };
 
@@ -260,7 +260,15 @@ export default function UserTableRow({
                     InputProps={{
                       readOnly: true,
                     }}
-                    // sx={{ display: 'none' }}
+                    sx={{ display: 'none' }}
+                  />
+                  <TextField
+                    name="status"
+                    value={allData.status}
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                    sx={{ display: 'none' }}
                   />
                   <TextField
                     name="no"

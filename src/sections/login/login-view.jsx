@@ -69,13 +69,26 @@ export default function LoginView() {
       password: form.get('password'),
     });
 
-    // if (res.role_id === 200 && jabatan !== res.role_id) {
-    //   setLoading(false);
-    //   notify('Role User Tidak Sesuai');
-    //   return;
-    // }
+    // console.log('res', res);
+    // console.log('jabatan', jabatan);
+    // console.log('status', res.status);
+    // console.log('jabatanAPI', res.data.data.role_id.toString());
 
-    if (res.status === 200) {
+    if (res.status === 200 && jabatan !== res.data.data.role_id) {
+      setLoading(false);
+      notify('Role User Tidak Sesuai');
+      return;
+    }
+
+    if (res.status !== 200) {
+      if (res.response.status === 404) {
+        setLoading(false);
+        notify('Surat tugas tidak sesuai');
+        return;
+      }
+    }
+
+    if (res.status === 200 && jabatan === res.data.data.role_id) {
       setLoading(false);
       notify('Berhasil Login');
 
@@ -87,7 +100,7 @@ export default function LoginView() {
       });
     } else {
       setLoading(false);
-      notify('Username atau password atau role yang kamu masukkan salah');
+      notify('Username atau password tidak sesuai');
     }
   };
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -17,12 +17,22 @@ import {
   Button,
   DialogActions,
   CircularProgress,
+  Grid,
+  Stack,
+  CardContent,
+  MenuItem,
+  InputLabel,
+  Select,
+  TextField,
+  FormControl,
 } from '@mui/material';
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { deleteUser } from 'src/utils/api';
+import { deleteUser, putSubmitUser, getRolesFromAPI } from 'src/utils/api';
 // import { id } from 'date-fns/locale';
+import entitasList from './view/entitas.json';
+import golonganList from './view/golongan.json';
 
 // ----------------------------------------------------------------------
 
@@ -37,11 +47,17 @@ export default function UserTableRow({
   nama,
   masa_berlaku,
   notify,
+  allData,
 }) {
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
+
+  const [golongan, setGolongan] = useState('');
+  const [jabatanList, setJabatanList] = useState([{}]);
+  const [jabatan, setJabatan] = useState('');
+  const [entitasFromApi, setEntitasFromApi] = useState('');
 
   // const handleOpenMenu = (event) => {
   //   setOpen(event.currentTarget);
@@ -71,6 +87,14 @@ export default function UserTableRow({
   };
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [openDialogEdit, setOpenDialogEdit] = useState(false);
+
+  const handleOpenDialogEdit = () => {
+    setOpenDialogEdit(true);
+  };
+  const handleCloseDialogEdit = () => {
+    setOpenDialogEdit(false);
+  };
 
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -79,6 +103,56 @@ export default function UserTableRow({
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+
+  const handleChangeGolongan = (event) => {
+    setGolongan(event.target.value);
+  };
+
+  const handleChangeJabatan = (event) => {
+    setJabatan(event.target.value);
+  };
+  const handleChangeEntitas = (event) => {
+    setEntitasFromApi(event.target.value);
+  };
+
+  const handleRolesFromAPI = async () => {
+    const roles = await getRolesFromAPI();
+    setJabatanList(roles.data);
+  };
+
+  const handlePutUser = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+    const now = new Date();
+
+    const res = await putSubmitUser({
+      id_user: form.get('id_user'),
+      nama: form.get('nama'),
+      username: form.get('username'),
+      password: form.get('password'),
+      role_id: form.get('jabatan'),
+      entitas: form.get('entitas'),
+      masa_berlaku: now,
+      email: form.get('email'),
+      nip: form.get('nip'),
+      golongan: form.get('golongan'),
+      jabatan: form.get('jabatan'),
+    });
+
+    if (res.status === 200) {
+      setLoading(false);
+      setOpenDialogEdit(false);
+      notify('Berhasil Update User');
+    } else {
+      setLoading(false);
+      notify('Gagal Update User');
+    }
+  };
+
+  useEffect(() => {
+    handleRolesFromAPI();
+  }, []);
 
   return (
     <>
@@ -90,8 +164,6 @@ export default function UserTableRow({
         <TableCell>{username}</TableCell>
         <TableCell>{entitas}</TableCell>
 
-        <TableCell>{masa_berlaku}</TableCell>
-
         <TableCell>{email}</TableCell>
         <TableCell>{nip}</TableCell>
         <TableCell align="center">{catatan}</TableCell>
@@ -100,7 +172,7 @@ export default function UserTableRow({
           <IconButton onClick={handleClickOpenDialog}>
             <Iconify icon="material-symbols:delete-outline" />
           </IconButton>
-          <IconButton onClick={handleOpen}>
+          <IconButton onClick={handleOpenDialogEdit}>
             <Iconify icon="tabler:edit" />
           </IconButton>
         </TableCell>
@@ -123,6 +195,90 @@ export default function UserTableRow({
             Setuju
           </Button>
         </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openDialogEdit}
+        onClose={handleCloseDialogEdit}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">EDIT USER</DialogTitle>
+        <DialogContent>
+          <CardContent>
+            <form onSubmit={handlePutUser}>
+              <Stack spacing={2}>
+                <TextField
+                  name="id_user"
+                  value={allData.id}
+                  label="id user"
+                  // sx={{ display: 'none' }}
+                />
+                <TextField name="nama" defaultValue={allData.nama} label="Nama" />
+                <TextField name="username" defaultValue={allData.username} label="Username" />
+                <TextField name="password" label="Password" />
+                <TextField name="email" defaultValue={allData.email} label="Email" />
+                <TextField name="nip" defaultValue={allData.nip} label="NIP" />
+                <FormControl fullWidth>
+                  <InputLabel id="entitas">Entitas</InputLabel>
+                  <Select
+                    labelId="entitas"
+                    name="entitas"
+                    label="Entitas"
+                    onChange={handleChangeEntitas}
+                  >
+                    {entitasList.data.map((option) => (
+                      <MenuItem key={option.id} value={option.nama_entitas}>
+                        {' '}
+                        {option.nama_entitas}{' '}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl fullWidth>
+                  <InputLabel id="golongan">Golongan</InputLabel>
+                  <Select
+                    labelId="golongan"
+                    name="golongan"
+                    label="Golongan"
+                    onChange={handleChangeGolongan}
+                  >
+                    {golonganList.data.map((option) => (
+                      <MenuItem key={option.id} value={option.golongan}>
+                        {' '}
+                        {option.golongan}{' '}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel id="jabatan">Jabatan</InputLabel>
+                  <Select
+                    labelId="jabatan"
+                    name="jabatan"
+                    label="Jabatan"
+                    onChange={handleChangeJabatan}
+                  >
+                    {jabatanList.map((option) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {' '}
+                        {option.name}{' '}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Grid>
+                  <Button variant="contained" onClick={handleCloseDialogEdit}>
+                    Batal
+                  </Button>
+                  <Button variant="contained" type="submit">
+                    Submit
+                  </Button>
+                </Grid>
+              </Stack>
+            </form>
+          </CardContent>
+        </DialogContent>
       </Dialog>
       {loading && (
         <CircularProgress
@@ -151,4 +307,5 @@ UserTableRow.propTypes = {
   nip: PropTypes.any,
   notify: PropTypes.any,
   catatan: PropTypes.any,
+  allData: PropTypes.any,
 };

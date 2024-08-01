@@ -92,6 +92,46 @@ export const postSubmitUser = async ({
     return error;
   }
 };
+export const putSubmitUser = async ({
+  id_user,
+  nama = '',
+  username = '',
+  password = '',
+  role_id,
+  entitas = '',
+  masa_berlaku = '',
+  email = '',
+  nip = '',
+  golongan = '',
+  jabatan = '',
+}) => {
+  try {
+    const response = await axios.put(
+      `${baseURL}/user/${id_user}`,
+      {
+        nama,
+        username,
+        password,
+        role_id,
+        entitas,
+        masa_berlaku,
+        email,
+        nip,
+        golongan,
+        jabatan,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const postSubmitPenugasan = async ({
   no = '',

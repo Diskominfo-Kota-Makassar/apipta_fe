@@ -19,7 +19,7 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 // import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 import {
   getAuditFromAPI,
@@ -55,6 +55,8 @@ export default function AuditKKA() {
   const [allAudit, setAllAudit] = useState([]);
 
   const [user, setUser] = useLocalStorage('user');
+
+  console.log(user);
 
   const suratTugasTerpilih = user.surat_tugas;
 
@@ -176,7 +178,7 @@ export default function AuditKKA() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">List Pengujian</Typography>
 
-        {user.role_id !== 5 && user.role_id !== 3 && user.role_id !== 6 && user.role_id !== 9 && (
+        {(user.role_id !== 1 && user.role_id !== 2) || (
           <Button
             variant="contained"
             onClick={() => router.push('/audit-kka/tambah-audit-kka')}
@@ -1042,6 +1044,7 @@ export default function AuditKKA() {
           </Button>
         </Card>
       )}
+      <ToastContainer position="top-center" />
     </Container>
   );
 }

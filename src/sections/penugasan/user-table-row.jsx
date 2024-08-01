@@ -50,6 +50,7 @@ export default function UserTableRow({
   tgl_mulai,
   tgl_berakhir,
   allData,
+  notify,
 }) {
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
@@ -57,7 +58,7 @@ export default function UserTableRow({
   const [open, setOpen] = useState(false);
   const [userLocal, setUser] = useLocalStorage('user');
 
-  const notify = (comment) => toast(comment);
+  // const notify = (comment) => toast(comment);
 
   const [pj, setPj] = useState('');
   const [wpj, setWpj] = useState('');
@@ -193,10 +194,10 @@ export default function UserTableRow({
       console.log('masuk sukses');
       setOpenDialogEdit(false);
       setLoading(false);
-      notify('Berhasil Menambahkan Penugasan');
+      notify('Berhasil Edit Penugasan');
     } else {
       setLoading(false);
-      notify('Gagal Menambahkan Penugasan');
+      notify('Gagal Edit Penugasan');
     }
   };
 
@@ -249,18 +250,18 @@ export default function UserTableRow({
         <TableCell>{tgl_mulai}</TableCell>
         <TableCell>{tgl_berakhir}</TableCell>
         {/* <TableCell /> */}
-        {userLocal.role_id === 1 ||
-          (userLocal.role_id === 2 && (
-            <TableCell align="right">
-              <IconButton onClick={handleClickOpenDialog}>
-                <Iconify icon="material-symbols:delete-outline" />
-              </IconButton>
-              <IconButton onClick={handleOpenDialogEdit}>
-                <Iconify icon="tabler:edit" />
-              </IconButton>
-            </TableCell>
-          ))}
+        {(userLocal.role_id === 1 || userLocal.role_id === 2) && (
+          <TableCell align="right">
+            <IconButton onClick={handleClickOpenDialog}>
+              <Iconify icon="material-symbols:delete-outline" />
+            </IconButton>
+            <IconButton onClick={handleOpenDialogEdit}>
+              <Iconify icon="tabler:edit" />
+            </IconButton>
+          </TableCell>
+        )}
       </TableRow>
+
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
@@ -446,4 +447,5 @@ UserTableRow.propTypes = {
   tgl_mulai: PropTypes.any,
   tgl_berakhir: PropTypes.any,
   allData: PropTypes.any,
+  notify: PropTypes.any,
 };

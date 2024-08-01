@@ -141,18 +141,16 @@ export default function PermintaanPage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Form Daftar Permintaan</Typography>
         {console.log(user)}
-        {user.role_id !== 5 ||
-          user.role_id !== 6 ||
-          (user.role_id !== 9 && (
-            <Button
-              variant="contained"
-              onClick={() => router.push('/permintaan/tambah-permintaan')}
-              color="inherit"
-              startIcon={<Iconify icon="eva:plus-fill" />}
-            >
-              Tambah Permintaan
-            </Button>
-          ))}
+        {(user.role_id !== 5 || user.role_id !== 6 || user.role_id !== 9) && (
+          <Button
+            variant="contained"
+            onClick={() => router.push('/permintaan/tambah-permintaan')}
+            color="inherit"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
+            Tambah Permintaan
+          </Button>
+        )}
       </Stack>
 
       <Card>
@@ -225,6 +223,7 @@ export default function PermintaanPage() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
+      <ToastContainer position="top-center" />
     </Container>
   );
 }

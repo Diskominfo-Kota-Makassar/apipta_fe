@@ -45,7 +45,7 @@ export default function AppView() {
 
   useEffect(() => {
     handlePenugasanFromAPI();
-  });
+  }, [handlePenugasanFromAPI]);
 
   return (
     <Container maxWidth="xl">

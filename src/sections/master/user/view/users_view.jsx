@@ -205,6 +205,7 @@ export default function UsersView() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
+      <ToastContainer position="top-center" />
     </Container>
   );
 }

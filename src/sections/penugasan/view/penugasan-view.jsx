@@ -18,7 +18,7 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 // import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 import { getPenugasanFromAPI } from 'src/utils/api';
 
@@ -108,6 +108,8 @@ export default function PermohonanPage() {
 
   const router = useRouter();
 
+  console.log(user);
+
   const handlePenugasanFromAPI = useCallback(async () => {
     try {
       const penugasan = await getPenugasanFromAPI();
@@ -177,7 +179,7 @@ export default function PermohonanPage() {
                   { key: 'itgl_mulaid', id: 'tgl_mulai', label: 'TANGGAL MULAI' },
                   { key: 'tgl_berakhir', id: 'tgl_berakhir', label: 'TANGGAL BERAKHIR' },
                   // { id: 'keterangan', label: 'STATUS', align: 'center' },
-                  user.role_id === 1 || (user.role_id === 2 && { id: '', label: 'AKSI' }),
+                  (user.role_id === 1 || user.role_id === 2) && { id: '', label: 'AKSI' },
                 ]}
               />
               <TableBody>
@@ -221,6 +223,7 @@ export default function PermohonanPage() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
+      <ToastContainer position="top-center" />
     </Container>
   );
 }

@@ -106,17 +106,16 @@ export default function Kompilasi() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">TEMUAN HASIL AUDIT</Typography>
 
-        {user.role_id === 1 ||
-          (user.role_id === 2 && (
-            <Button
-              variant="contained"
-              onClick={() => router.push('/kompilasi/tambah-temuan')}
-              color="inherit"
-              startIcon={<Iconify icon="eva:plus-fill" />}
-            >
-              Tambah Temuan
-            </Button>
-          ))}
+        {(user.role_id === 1 && user.role_id === 2) || (
+          <Button
+            variant="contained"
+            onClick={() => router.push('/kompilasi/tambah-temuan')}
+            color="inherit"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
+            Tambah Temuan
+          </Button>
+        )}
 
         <Button variant="contained" onClick={() => router.push('/kompilasi/lihat-kompilasi')}>
           {' '}
@@ -190,6 +189,7 @@ export default function Kompilasi() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
+      <ToastContainer position="top-center" />
     </Container>
   );
 }

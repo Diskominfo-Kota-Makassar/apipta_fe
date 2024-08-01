@@ -4,14 +4,11 @@ import axios from 'axios';
 export const baseURL = 'https://apipta.makassarkota.go.id/api';
 export const fileBaseURL = 'https://opendata.makassarkota.go.id/storage';
 
-export const postLogin = async ({ surat_tugas = '', username = '', password = '', role_id }) => {
+export const postLogin = async ({ id_penugasan = '', username = '', password = '', role_id }) => {
   try {
     const response = await axios.post(
       `${baseURL}/login`,
-      {
-        username,
-        password,
-      },
+      { id_penugasan, username, password },
       {
         headers: {
           'Content-Type': 'application/json',

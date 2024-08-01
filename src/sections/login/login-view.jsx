@@ -64,7 +64,7 @@ export default function LoginView() {
 
     const res = await postLogin({
       role_id: jabatan,
-      surat_tugas: suratTugas,
+      id_penugasan: suratTugas,
       username: form.get('username'),
       password: form.get('password'),
     });

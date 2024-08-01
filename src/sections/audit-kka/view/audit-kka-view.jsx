@@ -163,10 +163,12 @@ export default function AuditKKA() {
     // const st_id = user.surat_tugas;
     const file = await getFileAuditFromAPI({ id_surat_tugas: suratTugasTerpilih });
 
-    // console.log('file', file.data);
+    console.log('file', file.data);
 
     setValueDraftNaskahFromAPI(file.data);
   }, [suratTugasTerpilih]);
+
+  console.log('file', valueDraftNaskahFromAPI);
 
   useEffect(() => {
     handleFileAuditFromAPI();
@@ -874,6 +876,24 @@ export default function AuditKKA() {
           >
             {' '}
             View File draft laporan hasil audit
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 7 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[7].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File laporan hasil audit (final)
           </Button>
         </Card>
       )}

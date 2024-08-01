@@ -652,12 +652,30 @@ export const postSubmitRekomendasi = async ({ id_kompilasi, masukan = '' }) => {
     return error;
   }
 };
-export const putSubmitRekomendasi = async ({ id_kompilasi, id_rekomendasi, masukan = '' }) => {
+export const putSubmitRekomendasi = async ({ id_rekomendasi, masukan = '' }) => {
   try {
     const response = await axios.put(
       `${baseURL}/rekomendasi/${id_rekomendasi}`,
       {
-        id_kompilasi,
+        masukan,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const putSubmitRencanaAksi = async ({ id_aksi, masukan = '' }) => {
+  try {
+    const response = await axios.put(
+      `${baseURL}/aksi/${id_aksi}`,
+      {
         masukan,
       },
       {

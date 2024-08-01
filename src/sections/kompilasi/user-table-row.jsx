@@ -39,6 +39,7 @@ import {
   postSubmitRencanaAksi,
   putSubmitKompilasi,
   putSubmitRekomendasi,
+  putSubmitRencanaAksi,
 } from 'src/utils/api';
 
 // ----------------------------------------------------------------------
@@ -69,6 +70,10 @@ export default function UserTableRow({
   const [idRekomendasiForDelete, setIdRekomendasiForDelete] = useState();
   const [idAksiForDelete, setIdAksiForDelete] = useState();
   const [dataAksi, setDataAksi] = useState([]);
+  const [dataRekomendasi, setDataRekomendasi] = useState();
+  const [dataAksiForEdit, setDataAksiForEdit] = useState();
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleOpen = () => {
     setOpen(true);
@@ -87,8 +92,9 @@ export default function UserTableRow({
 
     if (res.status === 200) {
       setLoading(false);
-      window.location.reload();
       notify('Berhasil Menghapus Kompilasi');
+      await delay(2000);
+      window.location.reload();
     } else {
       setLoading(false);
       notify('Gagal Menghapus Kompilasi');
@@ -103,8 +109,9 @@ export default function UserTableRow({
 
     if (res.status === 200) {
       setLoading(false);
-      window.location.reload();
       notify('Berhasil Menghapus Rekomendasi');
+      await delay(2000);
+      window.location.reload();
     } else {
       setLoading(false);
       notify('Gagal Menghapus Rekomendasi');
@@ -134,6 +141,7 @@ export default function UserTableRow({
 
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
   const [openDialogEditRekomendasi, setOpenDialogEditRekomendasi] = useState(false);
+  const [openDialogEditAksi, setOpenDialogEditAksi] = useState(false);
 
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -168,8 +176,18 @@ export default function UserTableRow({
   const handleCloseDialogEdit = () => {
     setOpenDialogEdit(false);
   };
-  const handleOpenDialogEditRekomendasi = () => {
+  const handleOpenDialogEditRekomendasi = (data) => {
+    setDataRekomendasi(data);
+    console.log('aksi', data);
     setOpenDialogEditRekomendasi(true);
+  };
+  const handleCloseDialogEditAksi = () => {
+    setOpenDialogEditAksi(false);
+  };
+  const handleOpenDialogEditAksi = (data) => {
+    setDataAksiForEdit(data);
+    console.log('aksi', data);
+    setOpenDialogEditAksi(true);
   };
   const handleCloseDialogEditRekomendasi = () => {
     setOpenDialogEditRekomendasi(false);
@@ -204,8 +222,9 @@ export default function UserTableRow({
 
     if (res.status === 201) {
       setLoading(false);
-      window.location.reload();
       notify('Berhasil Menambahkan rekomendasi');
+      await delay(2000);
+      window.location.reload();
     } else {
       setLoading(false);
       notify('Gagal Menambahkan rekomendasi');
@@ -217,18 +236,44 @@ export default function UserTableRow({
     const form = new FormData(event.currentTarget);
 
     const res = await putSubmitRekomendasi({
-      id_kompilasi: form.get('id_kompilasi'),
       id_rekomendasi: form.get('id_rekomendasi'),
       masukan: form.get('masukan'),
     });
 
-    if (res.status === 201) {
+    console.log('res rekomendasi', res);
+
+    if (res.status === 200) {
       setLoading(false);
+      setOpenDialogEditRekomendasi(false);
+      notify('Berhasil Update rekomendasi');
+      await delay(2000);
       window.location.reload();
-      notify('Berhasil Menambahkan rekomendasi');
     } else {
       setLoading(false);
-      notify('Gagal Menambahkan rekomendasi');
+      notify('Gagal Update rekomendasi');
+    }
+  };
+  const handleputAksi = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+
+    const res = await putSubmitRencanaAksi({
+      id_aksi: form.get('id_aksi'),
+      masukan: form.get('masukan'),
+    });
+
+    console.log('res aksi', res);
+
+    if (res.status === 200) {
+      setLoading(false);
+      setOpenDialogEditAksi(false);
+      notify('Berhasil update aksi');
+      await delay(2000);
+      window.location.reload();
+    } else {
+      setLoading(false);
+      notify('Gagal update aksi');
     }
   };
   const handleSubmitRencanaAksi = async (event) => {
@@ -243,14 +288,17 @@ export default function UserTableRow({
 
     if (res.status === 201) {
       setLoading(false);
-      window.location.reload();
       notify('Berhasil Menambahkan rencana aksi');
+      await delay(2000);
+      window.location.reload();
     } else {
       setLoading(false);
       window.location.reload();
       notify('Gagal Menambahkan rencana aksi');
     }
   };
+
+  console.log('data rekomendasi', dataRekomendasi);
 
   const handlePutKompilasi = async (event) => {
     event.preventDefault();
@@ -273,6 +321,7 @@ export default function UserTableRow({
       setOpenDialogEdit(false);
 
       notify('Berhasil Update Kompilasi');
+      await delay(2000);
       window.location.reload();
     } else {
       setLoading(false);
@@ -394,7 +443,7 @@ export default function UserTableRow({
                           <IconButton onClick={() => handleOpenDialogDeleteRekomendasi(data.id)}>
                             <Iconify icon="material-symbols:delete-outline" />
                           </IconButton>
-                          <IconButton onClick={handleOpenDialogEditRekomendasi}>
+                          <IconButton onClick={() => handleOpenDialogEditRekomendasi(data)}>
                             <Iconify icon="tabler:edit" />
                           </IconButton>{' '}
                         </TableCell>
@@ -460,7 +509,7 @@ export default function UserTableRow({
                   <TableRow>
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{data.masukan}</TableCell>
-                    <TableCell>Waktu Pelaksanaan</TableCell>
+                    <TableCell>{data.createdAt}</TableCell>
                     {user.role_id === 1 ||
                       (user.role_id === 2 && (
                         <TableCell>
@@ -468,7 +517,7 @@ export default function UserTableRow({
                           <IconButton onClick={() => handleOpenDialogDeleteAksi(data.id)}>
                             <Iconify icon="material-symbols:delete-outline" />
                           </IconButton>
-                          <IconButton onClick={handleOpen}>
+                          <IconButton onClick={() => handleOpenDialogEditAksi(data)}>
                             <Iconify icon="tabler:edit" />
                           </IconButton>{' '}
                         </TableCell>
@@ -584,26 +633,61 @@ export default function UserTableRow({
               <form onSubmit={handleputRekomendasi}>
                 <Stack spacing={2}>
                   <TextField
-                    name="id_kompilasi"
-                    value={allData.rekomendasis.id_kompilasi}
-                    InputProps={{ readOnly: true }}
-                    // sx={{ display: 'none' }}
-                  />
-                  <TextField
                     name="id_rekomendasi"
-                    value={allData.rekomendasis.id}
                     InputProps={{ readOnly: true }}
-                    // sx={{ display: 'none' }}
+                    value={dataRekomendasi !== undefined ? dataRekomendasi.id : ''}
+                    sx={{ display: 'none' }}
                   />
                   <TextField
                     multiline
                     rows={4}
                     name="masukan"
-                    defaultValue={allData.masukan}
+                    defaultValue={dataRekomendasi !== undefined ? dataRekomendasi.masukan : ''}
                     label="Rekomendasi"
                   />
                   <Grid container justifyContent="flex-end">
                     <Button variant="contained" onClick={handleCloseDialogEdit}>
+                      Batal
+                    </Button>
+                    <Button variant="contained" type="submit">
+                      Submit
+                    </Button>
+                  </Grid>
+                </Stack>
+              </form>
+            </CardContent>
+          </LocalizationProvider>
+        </DialogContent>
+      </Dialog>
+
+      {/* dialog edit aksi */}
+      <Dialog
+        open={openDialogEditAksi}
+        onClose={handleCloseDialogEditAksi}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Edit Aksi</DialogTitle>
+        <DialogContent>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <CardContent>
+              <form onSubmit={handleputAksi}>
+                <Stack spacing={2}>
+                  <TextField
+                    name="id_aksi"
+                    InputProps={{ readOnly: true }}
+                    value={dataAksiForEdit !== undefined ? dataAksiForEdit.id : ''}
+                    sx={{ display: 'none' }}
+                  />
+                  <TextField
+                    multiline
+                    rows={4}
+                    name="masukan"
+                    defaultValue={dataAksiForEdit !== undefined ? dataAksiForEdit.masukan : ''}
+                    label="Rekomendasi"
+                  />
+                  <Grid container justifyContent="flex-end">
+                    <Button variant="contained" onClick={handleCloseDialogEditAksi}>
                       Batal
                     </Button>
                     <Button variant="contained" type="submit">

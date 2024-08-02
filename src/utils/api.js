@@ -93,7 +93,7 @@ export const putSubmitUser = async ({
   id_user,
   nama = '',
   username = '',
-  password = '',
+  // password = '',
   role_id,
   entitas = '',
   masa_berlaku = '',
@@ -108,7 +108,7 @@ export const putSubmitUser = async ({
       {
         nama,
         username,
-        password,
+        // password,
         role_id,
         entitas,
         masa_berlaku,
@@ -116,6 +116,25 @@ export const putSubmitUser = async ({
         nip,
         golongan,
         jabatan,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const putSubmitPassword = async ({ id_user, password = '' }) => {
+  try {
+    const response = await axios.put(
+      `${baseURL}/user/${id_user}`,
+      {
+        password,
       },
       {
         headers: {

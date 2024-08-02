@@ -29,7 +29,7 @@ import {
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { deleteUser, putSubmitUser, getRolesFromAPI } from 'src/utils/api';
+import { deleteUser, putSubmitUser, getRolesFromAPI, putSubmitPassword } from 'src/utils/api';
 // import { id } from 'date-fns/locale';
 import entitasList from './view/entitas.json';
 import golonganList from './view/golongan.json';
@@ -88,6 +88,7 @@ export default function UserTableRow({
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
+  const [openDialogEditPass, setOpenDialogEditPass] = useState(false);
 
   const handleOpenDialogEdit = () => {
     setOpenDialogEdit(true);
@@ -99,7 +100,13 @@ export default function UserTableRow({
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
   };
+  const handleClickOpenDialogEditPass = () => {
+    setOpenDialogEditPass(true);
+  };
 
+  const handleCloseDialogEditPass = () => {
+    setOpenDialogEditPass(false);
+  };
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
@@ -120,6 +127,26 @@ export default function UserTableRow({
     setJabatanList(roles.data);
   };
 
+  const handlePutPassword = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+    const now = new Date();
+
+    const res = await putSubmitPassword({
+      id_user: form.get('id_user'),
+      password: form.get('password'),
+    });
+
+    if (res.status === 200) {
+      setLoading(false);
+      setOpenDialogEditPass(false);
+      notify('Berhasil Update Password');
+    } else {
+      setLoading(false);
+      notify('Gagal Update Password');
+    }
+  };
   const handlePutUser = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -130,7 +157,7 @@ export default function UserTableRow({
       id_user: form.get('id_user'),
       nama: form.get('nama'),
       username: form.get('username'),
-      password: form.get('password'),
+      // password: form.get('password'),
       role_id: form.get('jabatan'),
       entitas: form.get('entitas'),
       masa_berlaku: now,
@@ -172,6 +199,9 @@ export default function UserTableRow({
           <IconButton onClick={handleClickOpenDialog}>
             <Iconify icon="material-symbols:delete-outline" />
           </IconButton>
+          <IconButton onClick={handleClickOpenDialogEditPass}>
+            <Iconify icon="material-symbols:password" />
+          </IconButton>
           <IconButton onClick={handleOpenDialogEdit}>
             <Iconify icon="tabler:edit" />
           </IconButton>
@@ -197,6 +227,37 @@ export default function UserTableRow({
         </DialogActions>
       </Dialog>
       <Dialog
+        open={openDialogEditPass}
+        onClose={handleCloseDialogEditPass}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">EDIT PASSWORD</DialogTitle>
+        <DialogContent>
+          <CardContent>
+            <form onSubmit={handlePutPassword}>
+              <Stack spacing={2}>
+                <TextField
+                  name="id_user"
+                  value={allData.id}
+                  label="id user"
+                  sx={{ display: 'none' }}
+                />
+                <TextField name="password" label="Password" />
+                <Grid>
+                  <Button variant="contained" onClick={handleCloseDialogEditPass}>
+                    Batal
+                  </Button>
+                  <Button variant="contained" type="submit">
+                    Submit
+                  </Button>
+                </Grid>
+              </Stack>
+            </form>
+          </CardContent>
+        </DialogContent>
+      </Dialog>
+      <Dialog
         open={openDialogEdit}
         onClose={handleCloseDialogEdit}
         aria-labelledby="alert-dialog-title"
@@ -211,11 +272,11 @@ export default function UserTableRow({
                   name="id_user"
                   value={allData.id}
                   label="id user"
-                  // sx={{ display: 'none' }}
+                  sx={{ display: 'none' }}
                 />
                 <TextField name="nama" defaultValue={allData.nama} label="Nama" />
                 <TextField name="username" defaultValue={allData.username} label="Username" />
-                <TextField name="password" label="Password" />
+                {/* <TextField name="password" label="Password" /> */}
                 <TextField name="email" defaultValue={allData.email} label="Email" />
                 <TextField name="nip" defaultValue={allData.nip} label="NIP" />
                 <FormControl fullWidth>

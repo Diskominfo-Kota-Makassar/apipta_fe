@@ -108,8 +108,6 @@ export default function PermohonanPage() {
 
   const router = useRouter();
 
-  console.log(user);
-
   const handlePenugasanFromAPI = useCallback(async () => {
     try {
       const penugasan = await getPenugasanFromAPI();

@@ -29,6 +29,8 @@ import {
   getFileAuditFromAPI,
   baseURL,
   fileBaseURL,
+  getPenugasanFromAPI,
+  putSubmitCatatanPenugasan,
 } from 'src/utils/api';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -57,7 +59,12 @@ export default function AuditKKA() {
 
   const [user, setUser] = useLocalStorage('user');
 
-  console.log(user);
+  const [allPenugasan, setAllPenugasan] = useState([]);
+
+  const [openDialogEdit, setOpenDialogEdit] = useState(false);
+
+  const [catatan_pj, setCatatan_pj] = useState('');
+  const [catatan_kpk, setCatatan_kpk] = useState('');
 
   const suratTugasTerpilih = user.surat_tugas;
 
@@ -169,12 +176,78 @@ export default function AuditKKA() {
     setValueDraftNaskahFromAPI(file.data);
   }, [suratTugasTerpilih]);
 
-  console.log('file', valueDraftNaskahFromAPI);
+  const handlePenugasanFromAPI = useCallback(async () => {
+    try {
+      const penugasan = await getPenugasanFromAPI();
+
+      if (user.role_id === 1) {
+        setAllPenugasan(penugasan.data);
+        return;
+      }
+
+      if (user.surat_tugas !== '') {
+        const id_surat_dipilih = user.surat_tugas;
+        const penugasanTerpilih = penugasan.data.find((option) => option.id === id_surat_dipilih);
+        setCatatan_kpk(penugasanTerpilih.catatan_kpk);
+        setCatatan_pj(penugasanTerpilih.catatan_pj);
+        console.log('penugasan terpilih', penugasanTerpilih);
+        setAllPenugasan([penugasanTerpilih]);
+      } else {
+        setAllPenugasan([]);
+      }
+    } catch (error) {
+      console.error('Error fetching penugasan data:', error);
+      // Handle error appropriately
+    }
+  }, [user]);
+
+  const handlePutCatatanPenugasanKPK = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+
+    const res = await putSubmitCatatanPenugasan({
+      id_penugasan: form.get('id_penugasan'),
+      catatan_kpk: form.get('catatan_kpk'),
+    });
+
+    if (res.status === 200) {
+      setOpenDialogEdit(false);
+      setLoading(false);
+      notify('Berhasil Edit Pengujian');
+      handlePenugasanFromAPI();
+    } else {
+      setLoading(false);
+      notify('Gagal Edit Pengujian');
+    }
+  };
+  const handlePutCatatanPenugasanPJ = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const form = new FormData(event.currentTarget);
+
+    const res = await putSubmitCatatanPenugasan({
+      id_penugasan: form.get('id_penugasan'),
+      catatan_pj: form.get('catatan_pj'),
+    });
+
+    if (res.status === 200) {
+      setOpenDialogEdit(false);
+      setLoading(false);
+      notify('Berhasil Edit Pengujian');
+    } else {
+      setLoading(false);
+      notify('Gagal Edit Pengujian');
+    }
+  };
+
+  console.log('all penugasan', allPenugasan);
 
   useEffect(() => {
     handleFileAuditFromAPI();
+    handlePenugasanFromAPI();
     handleAuditFromAPI();
-  }, [handleAuditFromAPI, handleFileAuditFromAPI]);
+  }, [handleAuditFromAPI, handleFileAuditFromAPI, handlePenugasanFromAPI]);
 
   return (
     <Container>
@@ -955,13 +1028,35 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 1 && (
+      {user.role_id === 7 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
-          <form>
-            <TextField multiline rows={4} name="pj" label="Catatan Reviu PJ" />
+          <form onSubmit={handlePutCatatanPenugasanPJ}>
+            <TextField name="id_penugasan" value={user.surat_tugas} sx={{ display: 'none' }} />
+            <TextField
+              multiline
+              rows={4}
+              name="catatan_pj"
+              defaultValue={catatan_pj !== '' ? catatan_pj : 'Belum ada catatan PJ'}
+              label="Catatan Reviu Penanggung Jawab"
+              sx={{ width: '70%' }}
+            />
             <Button variant="contained" type="submit">
               Simpan
             </Button>
+          </form>
+        </Card>
+      )}
+      {user.role_id === 7 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_kpk}
+              name="catatan_kpk"
+              label="Catatan Reviu KPK"
+              sx={{ width: '70%' }}
+            />
           </form>
         </Card>
       )}
@@ -1164,17 +1259,28 @@ export default function AuditKKA() {
       {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form>
-            <TextField multiline rows={4} name="pj" label="Catatan Reviu Penanggung Jawab" />
-            <Button variant="contained" type="submit">
-              Simpan
-            </Button>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_pj !== '' ? catatan_pj : 'Belum ada catatan PJ'}
+              label="Catatan Reviu Penanggung Jawab"
+              sx={{ width: '70%' }}
+            />
           </form>
         </Card>
       )}
       {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
-          <form>
-            <TextField multiline rows={4} name="pj" label="Catatan Reviu KPK" />
+          <form onSubmit={handlePutCatatanPenugasanKPK}>
+            <TextField name="id_penugasan" value={user.surat_tugas} sx={{ display: 'none' }} />
+            <TextField
+              multiline
+              rows={4}
+              defaultValue={catatan_kpk}
+              name="catatan_kpk"
+              label="Catatan Reviu KPK"
+              sx={{ width: '70%' }}
+            />
 
             <Button variant="contained" type="submit">
               Simpan

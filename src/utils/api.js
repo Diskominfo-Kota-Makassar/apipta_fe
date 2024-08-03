@@ -232,6 +232,47 @@ export const putSubmitPenugasan = async ({
     return error;
   }
 };
+export const putSubmitCatatanPenugasan = async ({
+  id_penugasan = '',
+  catatan_pj = '',
+  catatan_kpk = '',
+}) => {
+  try {
+    if (catatan_kpk !== '') {
+      const response = await axios.put(
+        `${baseURL}/penugasan/${id_penugasan}`,
+        {
+          catatan_kpk,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const result = response;
+      return result;
+    }
+    if (catatan_pj !== '') {
+      const response = await axios.put(
+        `${baseURL}/penugasan/${id_penugasan}`,
+        {
+          catatan_pj,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const result = response;
+      return result;
+    }
+    return null;
+  } catch (error) {
+    return error;
+  }
+};
 export const postSubmitAuditKKA = async ({
   file_kesimpulan,
   file_bukti_dukung,

@@ -385,6 +385,78 @@ export default function AuditKKA() {
         </Card>
       )}
 
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Laporan QA BPKP
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Naskah hasil audit
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[5].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File surat tanggapan obrik
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[6].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File draft laporan hasil audit
+          </Button>
+        </Card>
+      )}
+
       {user.role_id === 8 && valueDraftNaskahFromAPI.length !== 0 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form>
@@ -393,6 +465,21 @@ export default function AuditKKA() {
               rows={4}
               value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
               label="Catatan Reviu Penanggung Jawab"
+              sx={{ width: '70%' }}
+            />
+          </form>
+        </Card>
+      )}
+
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_kpk}
+              name="catatan_kpk"
+              label="Catatan Reviu KPK"
               sx={{ width: '70%' }}
             />
           </form>
@@ -432,6 +519,95 @@ export default function AuditKKA() {
           </form>
         </Card>
       )}
+
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Laporan QA BPKP
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Naskah hasil audit
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[5].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File surat tanggapan obrik
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[6].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File draft laporan hasil audit
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_kpk}
+              name="catatan_kpk"
+              label="Catatan Reviu KPK"
+              sx={{ width: '70%' }}
+            />
+          </form>
+        </Card>
+      )}
+
+      {/* end wpj */}
 
       {user.role_id === 2 && valueDraftNaskahFromAPI.length === 1 && (
         <Card sx={{ mt: 3, p: 3 }}>
@@ -990,6 +1166,42 @@ export default function AuditKKA() {
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
+                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Draft Naskah{' '}
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 7 && valueDraftNaskahFromAPI.length !== 6 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Laporan QA BPKP
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 7 && valueDraftNaskahFromAPI.length !== 6 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
                 `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
                 '_blank'
               )
@@ -1058,19 +1270,15 @@ export default function AuditKKA() {
 
       {user.role_id === 7 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
-          <Button
-            sx={{ mt: 1 }}
-            onClick={() =>
-              window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
-                '_blank'
-              )
-            }
-            variant="contained"
-          >
-            {' '}
-            View File Laporan QA BPKP
-          </Button>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
+              label="Catatan Reviu Penanggung Jawab"
+              sx={{ width: '70%' }}
+            />
+          </form>
         </Card>
       )}
 
@@ -1167,6 +1375,42 @@ export default function AuditKKA() {
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
+                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Draft Naskah{' '}
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Laporan QA BPKP
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
                 `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
                 '_blank'
               )
@@ -1217,19 +1461,15 @@ export default function AuditKKA() {
 
       {user.role_id === 2 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
-          <Button
-            sx={{ mt: 1 }}
-            onClick={() =>
-              window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
-                '_blank'
-              )
-            }
-            variant="contained"
-          >
-            {' '}
-            View File Laporan QA BPKP
-          </Button>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
+              label="Catatan Reviu Penanggung Jawab"
+              sx={{ width: '70%' }}
+            />
+          </form>
         </Card>
       )}
 
@@ -1248,6 +1488,21 @@ export default function AuditKKA() {
             {' '}
             View File laporan hasil audit (final)
           </Button>
+        </Card>
+      )}
+
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_kpk}
+              name="catatan_kpk"
+              label="Catatan Reviu KPK"
+              sx={{ width: '70%' }}
+            />
+          </form>
         </Card>
       )}
 

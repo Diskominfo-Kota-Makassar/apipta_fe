@@ -473,6 +473,24 @@ export default function AuditKKA() {
 
       {user.role_id === 8 && valueDraftNaskahFromAPI.length >= 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[7].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File laporan hasil audit (final)
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length >= 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
           <form>
             <TextField
               multiline
@@ -589,6 +607,24 @@ export default function AuditKKA() {
               sx={{ width: '70%' }}
             />
           </form>
+        </Card>
+      )}
+
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length >= 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[7].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File laporan hasil audit (final)
+          </Button>
         </Card>
       )}
 

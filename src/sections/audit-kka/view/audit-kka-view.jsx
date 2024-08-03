@@ -385,6 +385,20 @@ export default function AuditKKA() {
         </Card>
       )}
 
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length !== 0 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
+              label="Catatan Reviu Penanggung Jawab"
+              sx={{ width: '70%' }}
+            />
+          </form>
+        </Card>
+      )}
+
       {/* file session wpj */}
 
       {user.role_id === 4 && valueDraftNaskahFromAPI.length !== 0 && (
@@ -402,6 +416,20 @@ export default function AuditKKA() {
             {' '}
             View File Draft Naskah{' '}
           </Button>
+        </Card>
+      )}
+
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length !== 0 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
+              label="Catatan Reviu Penanggung Jawab"
+              sx={{ width: '70%' }}
+            />
+          </form>
         </Card>
       )}
 
@@ -1066,6 +1094,20 @@ export default function AuditKKA() {
 
       {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
         <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
+              label="Catatan Reviu Penanggung Jawab"
+              sx={{ width: '70%' }}
+            />
+          </form>
+        </Card>
+      )}
+
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+        <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handleSubmitFile}>
             <MuiFileInput
               sx={{ mr: 3 }}
@@ -1171,17 +1213,6 @@ export default function AuditKKA() {
             {' '}
             View File laporan hasil audit (final)
           </Button>
-        </Card>
-      )}
-
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
-        <Card sx={{ mt: 3, p: 3 }}>
-          <form>
-            <TextField multiline rows={4} name="pj" label="Catatan Reviu Penanggung Jawab" />
-            <Button variant="contained" type="submit">
-              Simpan
-            </Button>
-          </form>
         </Card>
       )}
 

@@ -12,6 +12,7 @@ import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
+import { TextField, Grid } from '@mui/material';
 
 import { users } from 'src/_mock/user';
 
@@ -954,6 +955,17 @@ export default function AuditKKA() {
         </Card>
       )}
 
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 1 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField multiline rows={4} name="pj" label="Catatan Reviu PJ" />
+            <Button variant="contained" type="submit">
+              Simpan
+            </Button>
+          </form>
+        </Card>
+      )}
+
       {/* end session pj */}
 
       {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
@@ -1066,6 +1078,17 @@ export default function AuditKKA() {
         </Card>
       )}
 
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField multiline rows={4} name="pj" label="Catatan Reviu Penanggung Jawab" />
+            <Button variant="contained" type="submit">
+              Simpan
+            </Button>
+          </form>
+        </Card>
+      )}
+
       {/* session kpk */}
       {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
@@ -1136,6 +1159,27 @@ export default function AuditKKA() {
             {' '}
             View File laporan hasil audit (final)
           </Button>
+        </Card>
+      )}
+      {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField multiline rows={4} name="pj" label="Catatan Reviu Penanggung Jawab" />
+            <Button variant="contained" type="submit">
+              Simpan
+            </Button>
+          </form>
+        </Card>
+      )}
+      {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField multiline rows={4} name="pj" label="Catatan Reviu KPK" />
+
+            <Button variant="contained" type="submit">
+              Simpan
+            </Button>
+          </form>
         </Card>
       )}
       <ToastContainer position="top-center" />

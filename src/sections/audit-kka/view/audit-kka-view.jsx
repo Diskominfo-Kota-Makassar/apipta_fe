@@ -1223,6 +1223,42 @@ export default function AuditKKA() {
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
+                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Draft Naskah{' '}
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Laporan QA BPKP
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
                 `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[4].file}`,
                 '_blank'
               )
@@ -1273,6 +1309,20 @@ export default function AuditKKA() {
 
       {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
+              label="Catatan Reviu Penanggung Jawab"
+              sx={{ width: '70%' }}
+            />
+          </form>
+        </Card>
+      )}
+
+      {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
             onClick={() =>
@@ -1288,19 +1338,7 @@ export default function AuditKKA() {
           </Button>
         </Card>
       )}
-      {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
-        <Card sx={{ mt: 3, p: 3 }}>
-          <form>
-            <TextField
-              multiline
-              rows={4}
-              value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
-              label="Catatan Reviu Penanggung Jawab"
-              sx={{ width: '70%' }}
-            />
-          </form>
-        </Card>
-      )}
+
       {user.role_id === 9 && valueDraftNaskahFromAPI.length === 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handlePutCatatanPenugasanKPK}>

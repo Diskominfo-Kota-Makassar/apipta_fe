@@ -892,6 +892,41 @@ export default function AuditKKA() {
       )}
 
       {/* after kt upload file */}
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Draft Naskah{' '}
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[3].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File Laporan QA BPKP
+          </Button>
+        </Card>
+      )}
 
       {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
         <Card sx={{ mt: 3, p: 3 }}>
@@ -1092,7 +1127,7 @@ export default function AuditKKA() {
 
       {/* end session pj */}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+      {/* {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form>
             <TextField
@@ -1104,7 +1139,7 @@ export default function AuditKKA() {
             />
           </form>
         </Card>
-      )}
+      )} */}
 
       {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
         <Card sx={{ mt: 3, p: 3 }}>

@@ -1028,7 +1028,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 7 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 7 && valueDraftNaskahFromAPI.length !== 0 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form onSubmit={handlePutCatatanPenugasanPJ}>
             <TextField name="id_penugasan" value={user.surat_tugas} sx={{ display: 'none' }} />

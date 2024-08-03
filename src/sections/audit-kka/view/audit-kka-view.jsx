@@ -385,7 +385,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 8 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length >= 4 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -403,7 +403,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 8 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length >= 5 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -421,7 +421,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 8 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length >= 6 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -439,7 +439,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 8 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length >= 7 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -471,7 +471,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 8 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 8 && valueDraftNaskahFromAPI.length >= 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form>
             <TextField
@@ -506,21 +506,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 4 && valueDraftNaskahFromAPI.length !== 0 && (
-        <Card sx={{ mt: 3, p: 3 }}>
-          <form>
-            <TextField
-              multiline
-              rows={4}
-              value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
-              label="Catatan Reviu Penanggung Jawab"
-              sx={{ width: '70%' }}
-            />
-          </form>
-        </Card>
-      )}
-
-      {user.role_id === 4 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length >= 4 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -538,7 +524,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 4 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length >= 5 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -556,7 +542,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 4 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length >= 6 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -574,7 +560,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 4 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length >= 7 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -592,7 +578,21 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 4 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length !== 0 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <form>
+            <TextField
+              multiline
+              rows={4}
+              value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
+              label="Catatan Reviu Penanggung Jawab"
+              sx={{ width: '70%' }}
+            />
+          </form>
+        </Card>
+      )}
+
+      {user.role_id === 4 && valueDraftNaskahFromAPI.length >= 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form>
             <TextField
@@ -1335,7 +1335,7 @@ export default function AuditKKA() {
 
       {/* end session pj */}
 
-      {/* {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form>
             <TextField
@@ -1347,7 +1347,7 @@ export default function AuditKKA() {
             />
           </form>
         </Card>
-      )} */}
+      )}
 
       {user.role_id === 2 && valueDraftNaskahFromAPI.length === 7 && (
         <Card sx={{ mt: 3, p: 3 }}>
@@ -1473,7 +1473,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length >= 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
             sx={{ mt: 1 }}
@@ -1491,7 +1491,7 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 8 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length >= 8 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <form>
             <TextField

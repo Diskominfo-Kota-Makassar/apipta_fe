@@ -190,7 +190,6 @@ export default function AuditKKA() {
         const penugasanTerpilih = penugasan.data.find((option) => option.id === id_surat_dipilih);
         setCatatan_kpk(penugasanTerpilih.catatan_kpk);
         setCatatan_pj(penugasanTerpilih.catatan_pj);
-        console.log('penugasan terpilih', penugasanTerpilih);
         setAllPenugasan([penugasanTerpilih]);
       } else {
         setAllPenugasan([]);
@@ -242,6 +241,8 @@ export default function AuditKKA() {
   };
 
   console.log('all penugasan', allPenugasan);
+  console.log('catatan kpk', catatan_kpk);
+  console.log('catatan pj', catatan_pj);
 
   useEffect(() => {
     handleFileAuditFromAPI();
@@ -1036,7 +1037,7 @@ export default function AuditKKA() {
               multiline
               rows={4}
               name="catatan_pj"
-              defaultValue={catatan_pj !== '' ? catatan_pj : 'Belum ada catatan PJ'}
+              defaultValue={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
               label="Catatan Reviu Penanggung Jawab"
               sx={{ width: '70%' }}
             />
@@ -1262,7 +1263,7 @@ export default function AuditKKA() {
             <TextField
               multiline
               rows={4}
-              value={catatan_pj !== '' ? catatan_pj : 'Belum ada catatan PJ'}
+              value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
               label="Catatan Reviu Penanggung Jawab"
               sx={{ width: '70%' }}
             />

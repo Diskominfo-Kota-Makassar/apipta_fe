@@ -81,7 +81,9 @@ export default function NotificationsPopover() {
   const [user, setUser] = useLocalStorage('user');
 
   const [notif, setNotif] = useState([]);
-  const totalUnRead = notif.length;
+  // console.log('notif', notif);
+  const totalUnRead = notif !== undefined ? notif.length : 0;
+  console.log('totalunread', totalUnRead);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -103,11 +105,9 @@ export default function NotificationsPopover() {
   const handleNotifFromAPI = useCallback(async () => {
     const notifAPI = await getNotifWithUser({ user_id: user !== null && user.user_id });
 
-    console.log(user.user_id);
-
-    console.log(notifAPI);
-
-    setNotif(notifAPI.data);
+    if (notifAPI.status === 200) {
+      setNotif(notifAPI.data);
+    }
   }, [user]);
 
   useEffect(() => {

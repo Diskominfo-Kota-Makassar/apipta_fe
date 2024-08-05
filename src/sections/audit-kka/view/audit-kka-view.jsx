@@ -354,7 +354,7 @@ export default function AuditKKA() {
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
                 '_blank'
               )
             }
@@ -373,7 +373,7 @@ export default function AuditKKA() {
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
                 '_blank'
               )
             }
@@ -512,7 +512,7 @@ export default function AuditKKA() {
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
                 '_blank'
               )
             }
@@ -1110,7 +1110,7 @@ export default function AuditKKA() {
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
                 '_blank'
               )
             }
@@ -1202,7 +1202,7 @@ export default function AuditKKA() {
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
                 '_blank'
               )
             }
@@ -1398,7 +1398,7 @@ export default function AuditKKA() {
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
                 '_blank'
               )
             }
@@ -1536,7 +1536,7 @@ export default function AuditKKA() {
             sx={{ mt: 1 }}
             onClick={() =>
               window.open(
-                `${fileBaseURL}/file/inspektorat/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
                 '_blank'
               )
             }

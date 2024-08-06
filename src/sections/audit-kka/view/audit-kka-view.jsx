@@ -1322,6 +1322,24 @@ export default function AuditKKA() {
         </Card>
       )}
 
+      {user.role_id === 7 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[2].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View Surat Tugas BPKP
+          </Button>
+        </Card>
+      )}
+
       {user.role_id === 7 && valueDraftNaskahFromAPI.length !== 6 && (
         <Card sx={{ mt: 3, p: 3 }}>
           <Button
@@ -1390,24 +1408,6 @@ export default function AuditKKA() {
           >
             {' '}
             View File draft laporan hasil audit
-          </Button>
-        </Card>
-      )}
-
-      {user.role_id === 7 && valueDraftNaskahFromAPI.length === 8 && (
-        <Card sx={{ mt: 3, p: 3 }}>
-          <Button
-            sx={{ mt: 1 }}
-            onClick={() =>
-              window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[2].file}`,
-                '_blank'
-              )
-            }
-            variant="contained"
-          >
-            {' '}
-            View Surat Tugas BPKP
           </Button>
         </Card>
       )}

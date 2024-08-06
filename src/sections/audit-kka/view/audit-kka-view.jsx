@@ -12,7 +12,15 @@ import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
-import { TextField, Grid } from '@mui/material';
+import {
+  TextField,
+  Grid,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  CardContent,
+} from '@mui/material';
 
 import { users } from 'src/_mock/user';
 
@@ -31,6 +39,7 @@ import {
   fileBaseURL,
   getPenugasanFromAPI,
   putSubmitCatatanPenugasan,
+  handlePutFileAudit,
 } from 'src/utils/api';
 import TableNoData from '../table-no-data';
 import UserTableRow from '../user-table-row';
@@ -62,6 +71,7 @@ export default function AuditKKA() {
   const [allPenugasan, setAllPenugasan] = useState([]);
 
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
+  const [openDialogEditFile, setOpenDialogEditFile] = useState(false);
 
   const [catatan_pj, setCatatan_pj] = useState('');
   const [catatan_kpk, setCatatan_kpk] = useState('');
@@ -110,6 +120,14 @@ export default function AuditKKA() {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
+  const handleOpenDialogEdit = (data) => {
+    setOpenDialogEditFile(true);
+    console.log('data', data);
+  };
+  const handleCloseDialogEdit = () => {
+    setOpenDialogEditFile(false);
+  };
+
   const handleChangeDraftNaskah = (newValue) => {
     setValueDraftNaskah(newValue);
   };
@@ -149,6 +167,29 @@ export default function AuditKKA() {
     } else {
       setLoading(false);
       notify('Gagal Menambahkan File Draft');
+    }
+  };
+
+  const handlePutSubmitFile = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    const form = new FormData(event.currentTarget);
+
+    const res = await handlePutFileAudit({
+      file: valueDraftNaskah,
+      id_file: form.get('id_file'),
+    });
+
+    console.log('res', res);
+
+    if (res.status === 201) {
+      setLoading(false);
+      window.location.reload();
+      notify('Berhasil Update File');
+    } else {
+      setLoading(false);
+      notify('Gagal Update File');
     }
   };
 
@@ -319,6 +360,32 @@ export default function AuditKKA() {
           </TableContainer>
         </Scrollbar>
 
+        <Dialog
+          open={openDialogEditFile}
+          onClose={handleCloseDialogEdit}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Detail Permintaan</DialogTitle>
+          <DialogContent>
+            <CardContent>
+              <form onSubmit={handlePutSubmitFile}>
+                <MuiFileInput
+                  sx={{ mr: 3 }}
+                  name="draft_naskah"
+                  placeholder="Pilih File "
+                  value={valueDraftNaskah}
+                  onChange={handleChangeDraftNaskah}
+                />
+                <Button sx={{ mt: 1 }} type="submit" variant="contained">
+                  {' '}
+                  Simpan{' '}
+                </Button>
+              </form>
+            </CardContent>
+          </DialogContent>
+        </Dialog>
+
         <TablePagination
           page={page}
           component="div"
@@ -348,21 +415,26 @@ export default function AuditKKA() {
         </Card>
       )}
 
-      {user.role_id === 2 && valueDraftNaskahFromAPI.length === 1 && (
+      {user.role_id === 2 && valueDraftNaskahFromAPI.length >= 1 && (
         <Card sx={{ mt: 3, p: 3 }}>
-          <Button
-            sx={{ mt: 1 }}
-            onClick={() =>
-              window.open(
-                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
-                '_blank'
-              )
-            }
-            variant="contained"
-          >
-            {' '}
-            View File Draft Naskah{' '}
-          </Button>
+          <Grid>
+            <Button
+              sx={{ mt: 1 }}
+              onClick={() =>
+                window.open(
+                  `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[0].file}`,
+                  '_blank'
+                )
+              }
+              variant="contained"
+            >
+              {' '}
+              View File Draft Naskah{' '}
+            </Button>
+            {/* <IconButton onClick={() => handleOpenDialogEdit(valueDraftNaskahFromAPI[0])}>
+              <Iconify icon="tabler:edit" />
+            </IconButton> */}
+          </Grid>
         </Card>
       )}
 
@@ -762,7 +834,7 @@ export default function AuditKKA() {
               variant="contained"
             >
               {' '}
-              Surat Tugas BPKP
+              Surat Tugas QA
             </Button>
           </Card>
         )}
@@ -800,7 +872,7 @@ export default function AuditKKA() {
               variant="contained"
             >
               {' '}
-              Surat Tugas BPKP
+              Surat Tugas QA
             </Button>
           </Card>
         )}
@@ -824,6 +896,24 @@ export default function AuditKKA() {
             </Button>
           </Card>
         )}
+
+      {user.role_id === 6 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[7].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File laporan hasil audit (final)
+          </Button>
+        </Card>
+      )}
 
       {/* end session bpkp */}
 
@@ -1043,6 +1133,24 @@ export default function AuditKKA() {
           >
             {' '}
             View File surat tanggapan obrik
+          </Button>
+        </Card>
+      )}
+
+      {user.role_id === 5 && valueDraftNaskahFromAPI.length === 8 && (
+        <Card sx={{ mt: 3, p: 3 }}>
+          <Button
+            sx={{ mt: 1 }}
+            onClick={() =>
+              window.open(
+                `${fileBaseURL}/file/inspektorat/${valueDraftNaskahFromAPI[7].file}`,
+                '_blank'
+              )
+            }
+            variant="contained"
+          >
+            {' '}
+            View File laporan hasil audit (final)
           </Button>
         </Card>
       )}

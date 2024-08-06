@@ -4,6 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
 import { postSubmitKompilasi } from 'src/utils/api';
+import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -28,43 +29,9 @@ export default function TambahKompilasi() {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
-  const [valueFile, setValueFile] = useState(null);
+  const [user, setUser] = useLocalStorage('user');
 
-  const [allPenugasan, setAllPenugasan] = useState([]);
-  const [noSuratST, setNoSuratST] = useState('');
-  const [tglST, setTglST] = useState('');
-  const [uraianST, setUraianST] = useState('');
-
-  const [at, setAt] = useState([]);
-  const [atList, setAtList] = useState([]);
-
-  const handleChangeFile = (newValue) => {
-    setValueFile(newValue);
-  };
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
+  console.log('user', user);
 
   const handlePostKompilasi = async (event) => {
     event.preventDefault();
@@ -91,8 +58,6 @@ export default function TambahKompilasi() {
       notify('Gagal Menambahkan Kompilasi');
     }
   };
-
-  useEffect(() => {}, []);
 
   return (
     <Container>

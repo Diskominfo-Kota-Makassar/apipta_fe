@@ -680,6 +680,22 @@ export const handlePostFileAudit = async ({ file, user_id = '', penugasan_id = '
   }
 };
 
+export const handlePutFileAudit = async ({ file, id_file }) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await axios.put(`${baseURL}/audit_kka/user/file/update/${id_file}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    const result = response;
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const handlePostFileAuditBPKP = async ({ file, id_audit = '', bpkp = '' }) => {
   try {
     const formData = new FormData();

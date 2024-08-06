@@ -566,7 +566,7 @@ export default function AuditKKA() {
           <form>
             <TextField
               multiline
-              rows={4}
+              rows={3}
               value={catatan_kpk}
               name="catatan_kpk"
               label="Catatan Reviu KPK"
@@ -705,7 +705,7 @@ export default function AuditKKA() {
           <form>
             <TextField
               multiline
-              rows={4}
+              rows={3}
               value={catatan_kpk}
               name="catatan_kpk"
               label="Catatan Reviu KPK"
@@ -1436,7 +1436,7 @@ export default function AuditKKA() {
           <form>
             <TextField
               multiline
-              // rows={10}
+              rows={3}
               value={catatan_kpk}
               name="catatan_kpk"
               label="Catatan Reviu KPK"
@@ -1609,7 +1609,7 @@ export default function AuditKKA() {
           <form>
             <TextField
               multiline
-              // rows={4}
+              rows={3}
               value={catatan_kpk}
               name="catatan_kpk"
               label="Catatan Reviu KPK"

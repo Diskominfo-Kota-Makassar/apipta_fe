@@ -182,9 +182,17 @@ export default function LoginView() {
   );
 
   const handleRolesFromAPI = async () => {
+    const desiredOrder = [1, 3, 2, 8, 4, 5, 6, 7, 9, 10];
     const roles = await getRolesFromAPI();
-    setJabatanList(roles.data);
+
+    const sortedRoles = roles.data.sort(
+      (a, b) => desiredOrder.indexOf(a.id) - desiredOrder.indexOf(b.id)
+    );
+
+    setJabatanList(sortedRoles);
   };
+
+  console.log(jabatanList);
 
   useEffect(() => {
     handleRolesFromAPI();

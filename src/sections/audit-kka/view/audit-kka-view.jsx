@@ -1748,7 +1748,7 @@ export default function AuditKKA() {
             <TextField name="id_penugasan" value={user.surat_tugas} sx={{ display: 'none' }} />
             <TextField
               multiline
-              // rows={4}
+              rows={3}
               defaultValue={catatan_kpk}
               name="catatan_kpk"
               label="Catatan Reviu KPK"

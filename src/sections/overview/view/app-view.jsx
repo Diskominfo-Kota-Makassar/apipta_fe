@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
+import { LineChart } from '@mui/x-charts/LineChart';
+
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
 import { getPenugasanFromAPI } from 'src/utils/api';
 
@@ -25,7 +27,7 @@ export default function AppView() {
     try {
       const penugasan = await getPenugasanFromAPI();
 
-      if (user.role_id === 1) {
+      if (user.role_id === 1 || user.role_id === 7) {
         setAllPenugasan(penugasan.data);
         return;
       }
@@ -42,6 +44,8 @@ export default function AppView() {
       // Handle error appropriately
     }
   }, [user]);
+
+  console.log('allPenugasan', allPenugasan.data);
 
   useEffect(() => {
     handlePenugasanFromAPI();
@@ -118,12 +122,24 @@ export default function AppView() {
                 </Grid>
               </Grid>
 
-              <BarChart
-                series={[{ data: [35, 44] }, { data: [51, 6] }, { data: [51, 6] }]}
+              {/* <BarChart
+                // series={[{ data: [35, 44] }, { data: [51, 6] }, { data: [51, 6] }]}
+                series={[{ data: [35, 44] }]}
                 height={290}
                 // xAxis={[{ data: ['Q1', 'Q2', 'Q3', 'Q4'], scaleType: 'band' }]}
                 xAxis={[{ data: ['Permintaan', 'Penugasan'], scaleType: 'band' }]}
                 margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+              /> */}
+
+              <LineChart
+                xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+                series={[
+                  {
+                    data: [0, allPenugasan.length],
+                  },
+                ]}
+                width={500}
+                height={300}
               />
             </Box>
           </Card>

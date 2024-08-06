@@ -1418,7 +1418,7 @@ export default function AuditKKA() {
             <TextField name="id_penugasan" value={user.surat_tugas} sx={{ display: 'none' }} />
             <TextField
               multiline
-              rows={4}
+              // rows={4}
               name="catatan_pj"
               defaultValue={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
               label="Catatan Reviu Penanggung Jawab"
@@ -1454,7 +1454,7 @@ export default function AuditKKA() {
           <form>
             <TextField
               multiline
-              rows={4}
+              // rows={10}
               value={catatan_kpk}
               name="catatan_kpk"
               label="Catatan Reviu KPK"
@@ -1595,7 +1595,7 @@ export default function AuditKKA() {
           <form>
             <TextField
               multiline
-              rows={4}
+              // rows={4}
               value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
               label="Catatan Reviu Penanggung Jawab"
               sx={{ width: '70%' }}
@@ -1627,7 +1627,7 @@ export default function AuditKKA() {
           <form>
             <TextField
               multiline
-              rows={4}
+              // rows={4}
               value={catatan_kpk}
               name="catatan_kpk"
               label="Catatan Reviu KPK"
@@ -1733,7 +1733,7 @@ export default function AuditKKA() {
           <form>
             <TextField
               multiline
-              rows={4}
+              // rows={4}
               value={catatan_pj !== null ? catatan_pj : 'Belum ada catatan PJ'}
               label="Catatan Reviu Penanggung Jawab"
               sx={{ width: '70%' }}
@@ -1766,7 +1766,7 @@ export default function AuditKKA() {
             <TextField name="id_penugasan" value={user.surat_tugas} sx={{ display: 'none' }} />
             <TextField
               multiline
-              rows={4}
+              // rows={4}
               defaultValue={catatan_kpk}
               name="catatan_kpk"
               label="Catatan Reviu KPK"

@@ -25,6 +25,7 @@ import KPK from './sections/audit-kka/view/session/kpk';
 import TambahKompilasi from './sections/kompilasi/view/tambah-kompilasi';
 import LihatKompilasi from './sections/kompilasi/view/lihat-kompilasi';
 import { SimakdaView } from './sections/simakda/view';
+import LaporanPage from './sections/laporan/view/laporan-view';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const ChatView = lazy(() => import('src/pages/chat'));
@@ -61,6 +62,15 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <IndexPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="laporan"
+              element={
+                <ProtectedRoute>
+                  <LaporanPage />
                 </ProtectedRoute>
               }
             />

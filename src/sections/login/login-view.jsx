@@ -56,7 +56,7 @@ export default function LoginView() {
       notify('Pilih Role User Terlebih Dahulu');
       return;
     }
-    if (jabatan !== 1 && suratTugas === '') {
+    if (jabatan !== 1 && jabatan !== 10 && suratTugas === '') {
       setLoading(false);
       notify('Pilih Surat Tugas Terlebih Dahulu');
       return;
@@ -132,7 +132,7 @@ export default function LoginView() {
             ))}
           </Select>
         </FormControl>
-        {jabatan !== 1 && (
+        {jabatan !== 1 && jabatan !== 10 && (
           <FormControl fullWidth>
             <InputLabel>Pilih Surat Tugas</InputLabel>
             <Select onChange={handleChangeST} label="Pilih Surat Tugas">

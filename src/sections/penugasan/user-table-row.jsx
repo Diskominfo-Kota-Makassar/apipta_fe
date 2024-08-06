@@ -101,7 +101,6 @@ export default function UserTableRow({
   };
   const handleChangeObrik = (event) => {
     setObrik(event.target.value);
-    const selectedOption = obrikList.find((option) => option.id === event.target.value);
   };
   const handleChangeAt = (event) => {
     const {
@@ -185,6 +184,7 @@ export default function UserTableRow({
       kt_id: kt,
       tim_id: at,
       bpkp,
+      obrik_id: obrik,
     });
 
     console.log(res.status);

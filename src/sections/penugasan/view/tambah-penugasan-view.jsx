@@ -73,7 +73,6 @@ export default function TambahPenugasan() {
   };
   const handleChangeObrik = (event) => {
     setObrik(event.target.value);
-    const selectedOption = obrikList.find((option) => option.id === event.target.value);
   };
   const handleChangeAt = (event) => {
     const {
@@ -126,6 +125,7 @@ export default function TambahPenugasan() {
       kt_id: kt,
       tim_id: at,
       bpkp,
+      obrik_id: obrik,
     });
 
     console.log(res);
@@ -202,7 +202,7 @@ export default function TambahPenugasan() {
                     <Stack spacing={2}>
                       <TextField name="no" label="NO.ST" />
                       <DatePicker label="Tgl.ST" name="tgl" />
-                      <TextField name="uraian" label="Uraian ST" />
+                      <TextField multiline rows={10} name="uraian" label="Uraian ST" />
                       <DatePicker label="Tanggal Mulai" name="tgl_mulai" />
                       <DatePicker label="Tanggal Berakhir" name="tgl_berakhir" />
                       <FormControl fullWidth>

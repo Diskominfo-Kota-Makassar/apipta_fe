@@ -23,6 +23,7 @@ import Scrollbar from 'src/components/scrollbar';
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
 import navConfigAdmin from './config-navigation-admin';
+import navConfigWalikota from './config-navigation-walikota';
 import navConfigBPKP from './config-navigation-bpkp';
 import navConfigChat from './config-navigation-chat';
 
@@ -80,6 +81,15 @@ export default function Nav({ openNav, onCloseNav }) {
       ))}
     </Stack>
   );
+
+  const renderMenuWalikota = (
+    <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
+      {navConfigWalikota.map((item) => (
+        <NavItem key={item.title} item={item} />
+      ))}
+    </Stack>
+  );
+
   const renderMenuBpkp = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {navConfigBPKP.map((item) => (
@@ -115,11 +125,16 @@ export default function Nav({ openNav, onCloseNav }) {
           {user.role_id === 1 && renderMenuAdmin}
           {user.role_id === 5 && renderMenuBpkp}
           {user.role_id === 3 && renderMenuBpkp}
-          {user.role_id !== 1 && user.role_id !== 5 && user.role_id !== 3 && renderMenu}
+          {user.role_id !== 1 &&
+            user.role_id !== 5 &&
+            user.role_id !== 3 &&
+            user.role_id !== 10 &&
+            renderMenu}
+          {user.role_id === 10 && renderMenuWalikota}
         </>
       )}
 
-      <Box sx={{ mt: '100px' }}>{renderChat}</Box>
+      {user.role_id !== 10 && <Box sx={{ mt: '100px' }}>{renderChat}</Box>}
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   );

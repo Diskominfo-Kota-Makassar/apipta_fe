@@ -161,6 +161,7 @@ export const postSubmitPenugasan = async ({
   tim_id = [],
   kt_id = '',
   bpkp = '',
+  obrik_id = '',
 }) => {
   try {
     const response = await axios.post(
@@ -177,6 +178,7 @@ export const postSubmitPenugasan = async ({
         tim_id,
         kt_id,
         bpkp,
+        obrik_id,
       },
       {
         headers: {
@@ -203,6 +205,7 @@ export const putSubmitPenugasan = async ({
   tim_id = [],
   kt_id = '',
   bpkp = '',
+  obrik_id = '',
 }) => {
   try {
     const response = await axios.put(
@@ -219,6 +222,7 @@ export const putSubmitPenugasan = async ({
         tim_id,
         kt_id,
         bpkp,
+        obrik_id,
       },
       {
         headers: {
@@ -650,6 +654,21 @@ export const deleteAudit = async (id) => {
 export const getFileAuditFromAPI = async ({ id_surat_tugas = '' }) => {
   try {
     const response = await axios.get(`${baseURL}/audit_kka/user/file/${id_surat_tugas}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.data;
+
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getAllFileAuditFromAPI = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/audit_kka/user/file/all`, {
       headers: {
         'Content-Type': 'application/json',
       },

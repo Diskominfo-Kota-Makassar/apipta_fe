@@ -134,7 +134,7 @@ export default function Nav({ openNav, onCloseNav }) {
         </>
       )}
 
-      {user.role_id !== 10 && <Box sx={{ mt: '100px' }}>{renderChat}</Box>}
+      {user !== null && user.role_id !== 10 && <Box sx={{ mt: '100px' }}>{renderChat}</Box>}
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   );

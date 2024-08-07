@@ -736,6 +736,10 @@ export const handlePostFileAuditBPKP = async ({ file, id_audit = '', bpkp = '' }
 // Koompilasi
 
 export const postSubmitKompilasi = async ({
+  penugasan_id,
+  no_temuan = '',
+  temuan = '',
+  tgl_lhp,
   kondisi = '',
   kriteria = '',
   sebab = '',
@@ -746,6 +750,10 @@ export const postSubmitKompilasi = async ({
     const response = await axios.post(
       `${baseURL}/kompilasi`,
       {
+        penugasan_id,
+        no_temuan,
+        temuan,
+        tgl_lhp,
         kondisi,
         kriteria,
         sebab,

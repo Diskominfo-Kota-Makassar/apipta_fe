@@ -334,19 +334,25 @@ export default function UserTableRow({
       <TableRow hover tabIndex={-1}>
         <TableCell />
 
-        <TableCell>{index}</TableCell>
-        <TableCell>{no_lhp}</TableCell>
-        <TableCell>{kondisi}</TableCell>
+        <TableCell sx={{ verticalAlign: 'top' }}>{index}</TableCell>
+        <TableCell sx={{ verticalAlign: 'top' }}>{no_lhp}</TableCell>
+        <TableCell sx={{ verticalAlign: 'top' }}>{kondisi}</TableCell>
 
-        <TableCell>{kriteria}</TableCell>
+        <TableCell sx={{ verticalAlign: 'top' }}>{kriteria}</TableCell>
 
-        <TableCell>{sebab}</TableCell>
-        <TableCell>{akibat}</TableCell>
+        <TableCell sx={{ verticalAlign: 'top' }}>{sebab}</TableCell>
+        <TableCell sx={{ verticalAlign: 'top' }}>{akibat}</TableCell>
 
-        <TableCell>
+        <TableCell sx={{ verticalAlign: 'top' }}>
           <Button variant="contained" color="success" onClick={handleClickOpenDialogRekomendasi}>
             LIHAT
           </Button>
+        </TableCell>
+        <TableCell sx={{ verticalAlign: 'top' }}>
+          Terintegrasi
+          <IconButton onClick={handleClickOpenDialog}>
+            <Iconify icon="fluent-mdl2:accept" />
+          </IconButton>
         </TableCell>
 
         {user.role_id === 1 ||

@@ -27,6 +27,7 @@ import {
   TableBody,
   TableContainer,
   CardContent,
+  Typography,
 } from '@mui/material';
 
 // import Label from 'src/components/label';
@@ -141,6 +142,7 @@ export default function UserTableRow({
 
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
   const [openDialogEditRekomendasi, setOpenDialogEditRekomendasi] = useState(false);
+  const [openDialogIntegrasi, setOpenDialogIntegrasi] = useState(false);
   const [openDialogEditAksi, setOpenDialogEditAksi] = useState(false);
 
   const handleClickOpenDialog = () => {
@@ -149,6 +151,12 @@ export default function UserTableRow({
 
   const handleClickOpenDialogRekomendasi = () => {
     setOpenDialogRekomendasi(true);
+  };
+  const handleClickOpenDialogIntegrasi = () => {
+    setOpenDialogIntegrasi(true);
+  };
+  const handleCloseDialogIntegrasi = () => {
+    setOpenDialogIntegrasi(false);
   };
 
   const handleClickOpenDialogRencanaAksi = (data) => {
@@ -349,10 +357,9 @@ export default function UserTableRow({
           </Button>
         </TableCell>
         <TableCell sx={{ verticalAlign: 'top' }}>
-          Terintegrasi
-          <IconButton onClick={handleClickOpenDialog}>
-            <Iconify icon="fluent-mdl2:accept" />
-          </IconButton>
+          <Button variant="contained" color="error" onClick={handleClickOpenDialogIntegrasi}>
+            INTEGRASIKAN
+          </Button>
         </TableCell>
 
         {user.role_id === 1 ||
@@ -553,6 +560,36 @@ export default function UserTableRow({
           <Button onClick={handleDeleteAksi} autoFocus>
             Setuju
           </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* dialog integrasi */}
+      <Dialog
+        open={openDialogIntegrasi}
+        onClose={handleCloseDialogIntegrasi}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        {/* <DialogTitle id="alert-dialog-title">Konfirmasi Hapus</DialogTitle> */}
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <TableCell
+              sx={{
+                verticalAlign: 'top',
+                border: `1px solid ${theme.palette.success.main}`,
+                borderRadius: '8px',
+                fontWeight: 'bold',
+              }}
+            >
+              Integrasi Success
+              <IconButton>
+                <Iconify icon="fluent-mdl2:accept" />
+              </IconButton>
+            </TableCell>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogIntegrasi}>Close</Button>
         </DialogActions>
       </Dialog>
 

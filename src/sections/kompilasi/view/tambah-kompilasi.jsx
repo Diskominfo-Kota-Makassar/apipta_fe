@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
 import { postSubmitKompilasi } from 'src/utils/api';
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -39,7 +40,11 @@ export default function TambahKompilasi() {
     const form = new FormData(event.currentTarget);
 
     const res = await postSubmitKompilasi({
+      penugasan_id: form.get('penugasan_id'),
       no_lhp: form.get('no_lhp'),
+      no_temuan: form.get('no_temuan'),
+      temuan: form.get('temuan'),
+      tgl_lhp: form.get('tgl_temuan'),
       kondisi: form.get('kondisi'),
       kriteria: form.get('kriteria'),
       sebab: form.get('sebab'),
@@ -84,10 +89,19 @@ export default function TambahKompilasi() {
                 <CardContent>
                   <form onSubmit={handlePostKompilasi}>
                     <Stack spacing={2}>
+                      <TextField
+                        name="penugasan_id"
+                        value={user.surat_tugas}
+                        sx={{ display: 'none' }}
+                      />
                       <TextField multiline rows={4} name="no_lhp" label="No. LHP" />
                       <TextField multiline rows={4} name="no_temuan" label="No. Temuan" />
                       <TextField multiline rows={4} name="temuan" label="Temuan" />
-                      <TextField multiline rows={4} name="tgl_temuan" label="Tgl. Temuan" />
+                      <DatePicker
+                        label="Tanggal Temuan"
+                        name="tgl_temuan"
+                        format="YYYY-MM-DD HH:mm:ss"
+                      />
                       <TextField multiline rows={4} name="kondisi" label="Kondisi" />
                       <TextField multiline rows={4} name="sebab" label="Sebab" />
                       <TextField multiline rows={4} name="kriteria" label="Kriteria" />

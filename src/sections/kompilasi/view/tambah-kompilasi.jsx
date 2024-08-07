@@ -85,6 +85,9 @@ export default function TambahKompilasi() {
                   <form onSubmit={handlePostKompilasi}>
                     <Stack spacing={2}>
                       <TextField multiline rows={4} name="no_lhp" label="No. LHP" />
+                      <TextField multiline rows={4} name="no_temuan" label="No. Temuan" />
+                      <TextField multiline rows={4} name="temuan" label="Temuan" />
+                      <TextField multiline rows={4} name="tgl_temuan" label="Tgl. Temuan" />
                       <TextField multiline rows={4} name="kondisi" label="Kondisi" />
                       <TextField multiline rows={4} name="sebab" label="Sebab" />
                       <TextField multiline rows={4} name="kriteria" label="Kriteria" />

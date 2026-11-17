@@ -11,39 +11,43 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useLocalStorage('user', null);
   const navigate = useNavigate();
 
-  // call this function when you want to authenticate the user
-  //   const login = async (data) => {
-  //     setUser(data);
-  //     navigate('/', { replace: true });
-  //   };
   const login = useCallback(
     async (data) => {
       setUser(data);
+      if (data?.token) {
+        try {
+          window.localStorage.setItem('token', data.token);
+        } catch (e) {
+          // ignore
+        }
+      }
       navigate('/', { replace: true });
     },
     [navigate, setUser]
   );
 
-  // call this function to sign out logged in user
-  //   const logout = () => {
-  //     setUser(null);
-  //     navigate('/login', { replace: true });
-  //   };
-
-  // Function to sign out logged-in user
   const logout = useCallback(() => {
     setUser(null);
+    try {
+      window.localStorage.removeItem('user');
+      window.localStorage.removeItem('token');
+    } catch (e) {
+      // ignore
+    }
     navigate('/login', { replace: true });
   }, [navigate, setUser]);
 
   const value = useMemo(
     () => ({
       user,
+      token: user?.token || null,
+      isAuthenticated: !!(user && (user.token || user.user_id)),
       login,
       logout,
     }),
     [user, login, logout]
   );
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

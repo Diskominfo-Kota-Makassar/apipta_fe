@@ -7,6 +7,7 @@ import { Routes, Route, Outlet } from 'react-router-dom';
 import ThemeProvider from 'src/theme';
 import { ProtectedRoute } from './routes/components/protectedRoute';
 import { AuthProvider } from './routes/hooks/useAuth';
+import LogoutPage from './pages/logout';
 import UsersView from './sections/master/user/view/users_view';
 import PermintaanPage from './sections/permintaan/view/permintaan-view';
 import ValidasiPermintaan from './sections/permintaan/view/validasi-permintaan';
@@ -249,7 +250,7 @@ export default function App() {
             <Route
               path="users"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={[1]}>
                   <UsersView />
                 </ProtectedRoute>
               }
@@ -258,7 +259,7 @@ export default function App() {
             <Route
               path="users/tambah-user"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={[1]}>
                   {' '}
                   <FormTambahUser />
                 </ProtectedRoute>
@@ -283,7 +284,7 @@ export default function App() {
             />
           </Route>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/logout" element={<LoginPage />} />
+          <Route path="/logout" element={<LogoutPage />} />
         </Routes>
       </AuthProvider>
     </ThemeProvider>

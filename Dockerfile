@@ -20,6 +20,7 @@ RUN npm install -g serve
 
 # Copy compiled assets and server configuration
 COPY --from=builder /usr/src/app/dist ./dist
+COPY serve.json ./dist/serve.json
 COPY serve.json ./serve.json
 
 # Hardening: Run as non-root user
@@ -32,5 +33,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
 
-# Start static server
-CMD ["serve", "-s", "dist", "-l", "3000", "-c", "serve.json"]
+# Start static server (serve reads serve.json automatically from dist)
+CMD ["serve", "-s", "dist", "-l", "3000"]

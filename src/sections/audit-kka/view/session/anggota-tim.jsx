@@ -4,6 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
 import { getUsersFromAPI, postSubmitAuditKKA } from 'src/utils/api';
+import { validateUploadFile } from 'src/utils/file-validation';
 import { MuiFileInput } from 'mui-file-input';
 
 import Stack from '@mui/material/Stack';
@@ -93,6 +94,34 @@ export default function AnggotaTim() {
   const handlePostAuditKKA = async (event) => {
     event.preventDefault();
     setLoading(true);
+
+    if (valueKesimpulanKKA) {
+      const valid = validateUploadFile(valueKesimpulanKKA);
+      if (!valid.valid) {
+        setLoading(false);
+        notify(`File Kesimpulan: ${valid.error}`);
+        return;
+      }
+    }
+    if (valueBuktiDukung) {
+      const valid = validateUploadFile(valueBuktiDukung);
+      if (!valid.valid) {
+        setLoading(false);
+        notify(`File Bukti Dukung: ${valid.error}`);
+        return;
+      }
+    }
+    if (valueHasilPengujian && valueHasilPengujian.length > 0) {
+      for (let i = 0; i < valueHasilPengujian.length; i += 1) {
+        const valid = validateUploadFile(valueHasilPengujian[i]);
+        if (!valid.valid) {
+          setLoading(false);
+          notify(`File Pengujian (${valueHasilPengujian[i].name}): ${valid.error}`);
+          return;
+        }
+      }
+    }
+
     const form = new FormData(event.currentTarget);
 
     const res = await postSubmitAuditKKA({
@@ -102,8 +131,6 @@ export default function AnggotaTim() {
       hasil_pengujian: valueHasilPengujian,
       catatan_review: form.get('catatan_review'),
     });
-
-    console.log(res);
 
     if (res.status === 201) {
       setLoading(false);

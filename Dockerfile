@@ -1,23 +1,36 @@
-# Use an official Node runtime as a parent image
-FROM node:alpine
+# Multi-stage build for security & resource optimization
+# Stage 1: Build application assets
+FROM node:18-alpine AS builder
 
-# Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
 COPY package*.json ./
-
-# Install any dependencies
 RUN npm install --legacy-peer-deps
 
-# Copy the rest of the application code
 COPY . .
-
-# Build your app
 RUN npm run build
 
-# Install serve package globally to serve your app
+# Stage 2: Minimal runtime container with non-root user
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install serve package
 RUN npm install -g serve
 
-# Command to run the app
-CMD ["serve", "-s", "dist"]
+# Copy compiled assets and server configuration
+COPY --from=builder /usr/src/app/dist ./dist
+COPY serve.json ./serve.json
+
+# Hardening: Run as non-root user
+USER node
+
+# Expose web server port
+EXPOSE 3000
+
+# Container healthcheck (verifies HTTP 200 without modifying state)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
+
+# Start static server
+CMD ["serve", "-s", "dist", "-l", "3000", "-c", "serve.json"]

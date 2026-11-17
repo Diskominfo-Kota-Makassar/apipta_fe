@@ -1,13 +1,79 @@
 import axios from 'axios';
 
-// const baseURL = 'http://localhost:3200/api';
-export const baseURL = 'https://apipta.makassarkota.go.id/api';
-export const fileBaseURL = 'https://opendata.makassarkota.go.id/storage';
+export const baseURL = import.meta.env.VITE_API_URL || 'https://apipta.makassarkota.go.id/api';
+export const fileBaseURL = import.meta.env.VITE_FILE_URL || 'https://opendata.makassarkota.go.id/storage';
+
+/**
+ * Resolves file URL safely.
+ * Standardizes file path resolution and allows routing through authenticated backend proxy.
+ */
+export const getFileUrl = (fileName) => {
+  if (!fileName) return '';
+  if (fileName.startsWith('http://') || fileName.startsWith('https://')) {
+    return fileName;
+  }
+  const cleanName = fileName.replace(/^\/+/, '');
+  return `${fileBaseURL}/file/inspektorat/${cleanName}`;
+};
+
+/**
+ * Retrieve active auth token from localStorage
+ */
+export const getAuthToken = () => {
+  try {
+    const directToken = window.localStorage.getItem('token');
+    if (directToken) return directToken;
+    const userStr = window.localStorage.getItem('user');
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      if (user && user.token) return user.token;
+    }
+  } catch (e) {
+    // ignore
+  }
+  return null;
+};
+
+// Create hardened Axios instance with credentials and interceptors
+export const api = axios.create({
+  baseURL,
+  timeout: 30000,
+});
+
+// Request Interceptor: Attach Authorization Bearer token to all requests
+api.interceptors.request.use(
+  (config) => {
+    const token = getAuthToken();
+    if (token && !config.headers.Authorization) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response Interceptor: Handle 401 Unauthorized globally
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+        try {
+          window.localStorage.removeItem('user');
+          window.localStorage.removeItem('token');
+        } catch (e) {
+          // ignore
+        }
+        window.location.href = '/login?session_expired=1';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const postLogin = async ({ id_penugasan = '', username = '', password = '', role_id }) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/login`,
+    const response = await api.post(`${baseURL}/login`,
       { id_penugasan, username, password },
       {
         headers: {
@@ -24,7 +90,7 @@ export const postLogin = async ({ id_penugasan = '', username = '', password = '
 
 export const getRolesFromAPI = async () => {
   try {
-    const response = await axios.get(`${baseURL}/roles`, {
+    const response = await api.get(`${baseURL}/roles`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -38,7 +104,7 @@ export const getRolesFromAPI = async () => {
 
 export const getAuditFromAPI = async ({ id_penugasan = '' }) => {
   try {
-    const response = await axios.get(`${baseURL}/audit_kka/penugasan/${id_penugasan}`, {
+    const response = await api.get(`${baseURL}/audit_kka/penugasan/${id_penugasan}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -63,8 +129,7 @@ export const postSubmitUser = async ({
   jabatan = '',
 }) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/register`,
+    const response = await api.post(`${baseURL}/register`,
       {
         nama,
         username,
@@ -103,8 +168,7 @@ export const putSubmitUser = async ({
   jabatan = '',
 }) => {
   try {
-    const response = await axios.put(
-      `${baseURL}/user/${id_user}`,
+    const response = await api.put(`${baseURL}/user/${id_user}`,
       {
         nama,
         username,
@@ -131,8 +195,7 @@ export const putSubmitUser = async ({
 };
 export const putSubmitPassword = async ({ id_user, password = '' }) => {
   try {
-    const response = await axios.put(
-      `${baseURL}/user/${id_user}`,
+    const response = await api.put(`${baseURL}/user/${id_user}`,
       {
         password,
       },
@@ -164,8 +227,7 @@ export const postSubmitPenugasan = async ({
   obrik_id = '',
 }) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/penugasan`,
+    const response = await api.post(`${baseURL}/penugasan`,
       {
         no,
         tgl,
@@ -208,8 +270,7 @@ export const putSubmitPenugasan = async ({
   obrik_id = '',
 }) => {
   try {
-    const response = await axios.put(
-      `${baseURL}/penugasan/${id_penugasan}`,
+    const response = await api.put(`${baseURL}/penugasan/${id_penugasan}`,
       {
         no,
         tgl,
@@ -243,8 +304,7 @@ export const putSubmitCatatanPenugasan = async ({
 }) => {
   try {
     if (catatan_kpk !== '') {
-      const response = await axios.put(
-        `${baseURL}/penugasan/${id_penugasan}`,
+      const response = await api.put(`${baseURL}/penugasan/${id_penugasan}`,
         {
           catatan_kpk,
         },
@@ -258,8 +318,7 @@ export const putSubmitCatatanPenugasan = async ({
       return result;
     }
     if (catatan_pj !== '') {
-      const response = await axios.put(
-        `${baseURL}/penugasan/${id_penugasan}`,
+      const response = await api.put(`${baseURL}/penugasan/${id_penugasan}`,
         {
           catatan_pj,
         },
@@ -291,7 +350,6 @@ export const postSubmitAuditKKA = async ({
     formData.append('file_bukti_dukung', file_bukti_dukung);
 
     if (hasil_pengujian.length !== 0) {
-      console.log('null terbaca');
       hasil_pengujian.forEach((file) => {
         formData.append('hasil_pengujian', file);
       });
@@ -299,7 +357,7 @@ export const postSubmitAuditKKA = async ({
     formData.append('id_audit', id_audit);
     formData.append('tim_ketua', tim_ketua);
     formData.append('catatan_review', catatan_review);
-    const response = await axios.post(`${baseURL}/audit_kka`, formData, {
+    const response = await api.post(`${baseURL}/audit_kka`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -322,8 +380,7 @@ export const putUpdateAuditKKA = async ({
 }) => {
   try {
     if (tim_ketua !== '') {
-      const response = await axios.put(
-        `${baseURL}/audit_kka/${id_audit}`,
+      const response = await api.put(`${baseURL}/audit_kka/${id_audit}`,
         {
           tim_ketua,
         },
@@ -337,8 +394,7 @@ export const putUpdateAuditKKA = async ({
       return result;
     }
     if (dalnis !== '') {
-      const response = await axios.put(
-        `${baseURL}/audit_kka/${id_audit}`,
+      const response = await api.put(`${baseURL}/audit_kka/${id_audit}`,
         {
           dalnis,
         },
@@ -352,8 +408,7 @@ export const putUpdateAuditKKA = async ({
       return result;
     }
     if (bpkp !== '') {
-      const response = await axios.put(
-        `${baseURL}/audit_kka/${id_audit}`,
+      const response = await api.put(`${baseURL}/audit_kka/${id_audit}`,
         {
           bpkp,
         },
@@ -367,8 +422,7 @@ export const putUpdateAuditKKA = async ({
       return result;
     }
     if (obrik !== '') {
-      const response = await axios.put(
-        `${baseURL}/audit_kka/${id_audit}`,
+      const response = await api.put(`${baseURL}/audit_kka/${id_audit}`,
         {
           obrik,
         },
@@ -382,8 +436,7 @@ export const putUpdateAuditKKA = async ({
       return result;
     }
     if (pj !== '') {
-      const response = await axios.put(
-        `${baseURL}/audit_kka/${id_audit}`,
+      const response = await api.put(`${baseURL}/audit_kka/${id_audit}`,
         {
           pj,
         },
@@ -398,8 +451,7 @@ export const putUpdateAuditKKA = async ({
       return result;
     }
     if (catatan_wpj !== '') {
-      const response = await axios.put(
-        `${baseURL}/audit_kka/${id_audit}`,
+      const response = await api.put(`${baseURL}/audit_kka/${id_audit}`,
         {
           catatan_wpj,
         },
@@ -414,8 +466,7 @@ export const putUpdateAuditKKA = async ({
       return result;
     }
     if (catatan_kpk !== '') {
-      const response = await axios.put(
-        `${baseURL}/audit_kka/${id_audit}`,
+      const response = await api.put(`${baseURL}/audit_kka/${id_audit}`,
         {
           catatan_kpk,
         },
@@ -443,8 +494,7 @@ export const postSubmitAuditKKAAwal = async ({
   tim_anggota = [],
 }) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/audit_kka/awal`,
+    const response = await api.post(`${baseURL}/audit_kka/awal`,
       {
         no_penugasan,
         no_ref_kka,
@@ -467,8 +517,7 @@ export const postSubmitAuditKKAAwal = async ({
 };
 export const postUpdatePermintaan = async ({ id = '', status = '' }) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/permintaan/status`,
+    const response = await api.post(`${baseURL}/permintaan/status`,
       {
         id,
         status,
@@ -507,7 +556,7 @@ export const postSubmitPermintaan = async ({
     formData.append('judul_doc', judul_doc);
     formData.append('ket', ket);
 
-    const response = await axios.post(`${baseURL}/permintaan`, formData, {
+    const response = await api.post(`${baseURL}/permintaan`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -542,7 +591,7 @@ export const putSubmitPermintaan = async ({
     formData.append('ket', ket);
     formData.append('status', +status);
 
-    const response = await axios.put(`${baseURL}/permintaan/${id_permintaan}`, formData, {
+    const response = await api.put(`${baseURL}/permintaan/${id_permintaan}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -556,7 +605,7 @@ export const putSubmitPermintaan = async ({
 
 export const getUsersFromAPI = async () => {
   try {
-    const response = await axios.get(`${baseURL}/user/all`, {
+    const response = await api.get(`${baseURL}/user/all`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -570,7 +619,7 @@ export const getUsersFromAPI = async () => {
 
 export const getPenugasanFromAPI = async () => {
   try {
-    const response = await axios.get(`${baseURL}/penugasan`, {
+    const response = await api.get(`${baseURL}/penugasan`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -583,7 +632,7 @@ export const getPenugasanFromAPI = async () => {
 };
 export const getPermintaanFromAPI = async () => {
   try {
-    const response = await axios.get(`${baseURL}/permintaan`, {
+    const response = await api.get(`${baseURL}/permintaan`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -597,7 +646,7 @@ export const getPermintaanFromAPI = async () => {
 
 export const deleteUser = async (id) => {
   try {
-    const response = await axios.delete(`${baseURL}/user/${id}`, {
+    const response = await api.delete(`${baseURL}/user/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -611,7 +660,7 @@ export const deleteUser = async (id) => {
 
 export const deletePenugasan = async (id) => {
   try {
-    const response = await axios.delete(`${baseURL}/penugasan/${id}`, {
+    const response = await api.delete(`${baseURL}/penugasan/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -625,7 +674,7 @@ export const deletePenugasan = async (id) => {
 
 export const deletePermintaan = async (id) => {
   try {
-    const response = await axios.delete(`${baseURL}/permintaan/${id}`, {
+    const response = await api.delete(`${baseURL}/permintaan/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -639,7 +688,7 @@ export const deletePermintaan = async (id) => {
 
 export const deleteAudit = async (id) => {
   try {
-    const response = await axios.delete(`${baseURL}/audit_kka/${id}`, {
+    const response = await api.delete(`${baseURL}/audit_kka/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -653,7 +702,7 @@ export const deleteAudit = async (id) => {
 
 export const getFileAuditFromAPI = async ({ id_surat_tugas = '' }) => {
   try {
-    const response = await axios.get(`${baseURL}/audit_kka/user/file/${id_surat_tugas}`, {
+    const response = await api.get(`${baseURL}/audit_kka/user/file/${id_surat_tugas}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -668,7 +717,7 @@ export const getFileAuditFromAPI = async ({ id_surat_tugas = '' }) => {
 
 export const getAllFileAuditFromAPI = async () => {
   try {
-    const response = await axios.get(`${baseURL}/audit_kka/user/file/all`, {
+    const response = await api.get(`${baseURL}/audit_kka/user/file/all`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -687,7 +736,7 @@ export const handlePostFileAudit = async ({ file, user_id = '', penugasan_id = '
     formData.append('user_id', user_id);
     formData.append('penugasan_id', penugasan_id);
     formData.append('file', file);
-    const response = await axios.post(`${baseURL}/audit_kka/user/file`, formData, {
+    const response = await api.post(`${baseURL}/audit_kka/user/file`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -703,7 +752,7 @@ export const handlePutFileAudit = async ({ file, id_file }) => {
   try {
     const formData = new FormData();
     formData.append('file', file);
-    const response = await axios.put(`${baseURL}/audit_kka/user/file/update/${id_file}`, formData, {
+    const response = await api.put(`${baseURL}/audit_kka/user/file/update/${id_file}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -721,7 +770,7 @@ export const handlePostFileAuditBPKP = async ({ file, id_audit = '', bpkp = '' }
     formData.append('id_audit', id_audit);
     formData.append('bpkp', bpkp);
     formData.append('file', file);
-    const response = await axios.post(`${baseURL}/audit_kka/bpkp/file`, formData, {
+    const response = await api.post(`${baseURL}/audit_kka/bpkp/file`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -747,8 +796,7 @@ export const postSubmitKompilasi = async ({
   no_lhp = '',
 }) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/kompilasi`,
+    const response = await api.post(`${baseURL}/kompilasi`,
       {
         penugasan_id,
         no_temuan,
@@ -774,8 +822,7 @@ export const postSubmitKompilasi = async ({
 };
 export const postSubmitRekomendasi = async ({ id_kompilasi, masukan = '' }) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/rekomendasi`,
+    const response = await api.post(`${baseURL}/rekomendasi`,
       {
         id_kompilasi,
         masukan,
@@ -794,8 +841,7 @@ export const postSubmitRekomendasi = async ({ id_kompilasi, masukan = '' }) => {
 };
 export const putSubmitRekomendasi = async ({ id_rekomendasi, masukan = '' }) => {
   try {
-    const response = await axios.put(
-      `${baseURL}/rekomendasi/${id_rekomendasi}`,
+    const response = await api.put(`${baseURL}/rekomendasi/${id_rekomendasi}`,
       {
         masukan,
       },
@@ -813,8 +859,7 @@ export const putSubmitRekomendasi = async ({ id_rekomendasi, masukan = '' }) => 
 };
 export const putSubmitRencanaAksi = async ({ id_aksi, masukan = '' }) => {
   try {
-    const response = await axios.put(
-      `${baseURL}/aksi/${id_aksi}`,
+    const response = await api.put(`${baseURL}/aksi/${id_aksi}`,
       {
         masukan,
       },
@@ -832,8 +877,7 @@ export const putSubmitRencanaAksi = async ({ id_aksi, masukan = '' }) => {
 };
 export const postSubmitRencanaAksi = async ({ id_rekomendasi, masukan = '' }) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/aksi`,
+    const response = await api.post(`${baseURL}/aksi`,
       {
         id_rekomendasi,
         masukan,
@@ -853,13 +897,12 @@ export const postSubmitRencanaAksi = async ({ id_rekomendasi, masukan = '' }) =>
 
 export const getKompilasi = async () => {
   try {
-    const response = await axios.get(`${baseURL}/kompilasi`, {
+    const response = await api.get(`${baseURL}/kompilasi`, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
     const result = await response.data;
-    console.log(result);
     return result;
   } catch (error) {
     return error;
@@ -868,7 +911,7 @@ export const getKompilasi = async () => {
 
 export const deleteKompilasi = async (id) => {
   try {
-    const response = await axios.delete(`${baseURL}/kompilasi/${id}`, {
+    const response = await api.delete(`${baseURL}/kompilasi/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -881,7 +924,7 @@ export const deleteKompilasi = async (id) => {
 };
 export const deleteRekomendasi = async (id) => {
   try {
-    const response = await axios.delete(`${baseURL}/kompilasi/rekomendasi/${id}`, {
+    const response = await api.delete(`${baseURL}/kompilasi/rekomendasi/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -894,7 +937,7 @@ export const deleteRekomendasi = async (id) => {
 };
 export const deleteAksi = async (id) => {
   try {
-    const response = await axios.delete(`${baseURL}/kompilasi/aksi/${id}`, {
+    const response = await api.delete(`${baseURL}/kompilasi/aksi/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -908,7 +951,7 @@ export const deleteAksi = async (id) => {
 
 export const getNotifWithUser = async ({ user_id }) => {
   try {
-    const response = await axios.get(`${baseURL}/notif/by/user/${user_id}`, {
+    const response = await api.get(`${baseURL}/notif/by/user/${user_id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -922,7 +965,7 @@ export const getNotifWithUser = async ({ user_id }) => {
 
 export const getChat = async ({ pengirimEmail = '' }) => {
   try {
-    const response = await axios.get(`${baseURL}/chats/${pengirimEmail}`, {
+    const response = await api.get(`${baseURL}/chats/${pengirimEmail}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -944,8 +987,7 @@ export const postChat = async ({
   isi = '',
 }) => {
   try {
-    const response = await axios.post(
-      `${baseURL}/chats`,
+    const response = await api.post(`${baseURL}/chats`,
       {
         no,
         penugasan_id,
@@ -971,8 +1013,7 @@ export const postChat = async ({
 // export const getSimakda = async ({ skpd_id, tanggal }) => {
 export const getSimakda = async ({ skpd_id, tanggal }) => {
   try {
-    const tokenSimakda =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiYXBpcCIsImVtYWlsIjoiYXBpIiwidHlwZSI6InJlYWxpc2FzaSIsInVzZXJfdHlwZSI6ImNsaWVudCIsImV4cF9kYXRlIjoiMjAyNS0xMi0zMSJ9.VqG0icbA4tToorsLBnBmJWfCrF0p0B8PIi3WsrnmR6U';
+    const tokenSimakda = import.meta.env.VITE_SIMAKDA_TOKEN || "";
     const response = await axios.get(
       `https://simakda.makassarkota.go.id/2024/api/realisasi?kd_skpd=${skpd_id}&tanggal=${tanggal}
 `,
@@ -984,7 +1025,6 @@ export const getSimakda = async ({ skpd_id, tanggal }) => {
       }
     );
 
-    console.log(response);
     const result = await response;
     return result;
   } catch (error) {
@@ -993,8 +1033,7 @@ export const getSimakda = async ({ skpd_id, tanggal }) => {
 };
 export const getSKPDSimakda = async () => {
   try {
-    const tokenSimakda =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJuYW1lIjoiYXBpcCIsImVtYWlsIjoiYXBpIiwidHlwZSI6InJlYWxpc2FzaSIsInVzZXJfdHlwZSI6ImNsaWVudCIsImV4cF9kYXRlIjoiMjAyNS0xMi0zMSJ9.VqG0icbA4tToorsLBnBmJWfCrF0p0B8PIi3WsrnmR6U';
+    const tokenSimakda = import.meta.env.VITE_SIMAKDA_TOKEN || "";
     const response = await axios.get(`https://simakda.makassarkota.go.id/2024/api/get_skpd`, {
       headers: {
         'Content-Type': 'application/json',
@@ -1018,8 +1057,7 @@ export const putSubmitKompilasi = async ({
   no_lhp = '',
 }) => {
   try {
-    const response = await axios.put(
-      `${baseURL}/kompilasi/${id_kompilasi}`,
+    const response = await api.put(`${baseURL}/kompilasi/${id_kompilasi}`,
       {
         kondisi,
         kriteria,

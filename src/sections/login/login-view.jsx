@@ -88,15 +88,25 @@ export default function LoginView() {
       }
     }
 
-    if (res.status === 200 && jabatan === res.data.data.role_id) {
+    if (res?.status === 200 && jabatan === res.data?.data?.role_id) {
       setLoading(false);
       notify('Berhasil Login');
+
+      const token = res.data?.token || res.data?.data?.token || '';
+      if (token) {
+        try {
+          window.localStorage.setItem('token', token);
+        } catch (e) {
+          // ignore
+        }
+      }
 
       await login({
         username: res.data.data.username,
         role_id: res.data.data.role_id,
         user_id: res.data.data.id,
         surat_tugas: suratTugas,
+        token,
       });
     } else {
       setLoading(false);
@@ -106,7 +116,6 @@ export default function LoginView() {
 
   const handleChangeJabatan = (event) => {
     setJabatan(event.target.value);
-    console.log(jabatan);
   };
 
   const handlePenugasanFromAPI = async () => {
@@ -192,9 +201,11 @@ export default function LoginView() {
     setJabatanList(sortedRoles);
   };
 
-  console.log(jabatanList);
-
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('session_expired')) {
+      notify('Sesi Anda telah berakhir. Silakan login kembali.');
+    }
     handleRolesFromAPI();
     handlePenugasanFromAPI();
   }, []);

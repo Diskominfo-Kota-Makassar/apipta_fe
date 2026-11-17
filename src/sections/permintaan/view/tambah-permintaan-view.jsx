@@ -5,6 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { toast, ToastContainer } from 'react-toastify';
 import { getPenugasanFromAPI, postSubmitPermintaan } from 'src/utils/api';
+import { validateUploadFile } from 'src/utils/file-validation';
 import { MuiFileInput } from 'mui-file-input';
 
 import { useLocalStorage } from 'src/routes/hooks/useLocalStorage';
@@ -53,6 +54,20 @@ export default function TambahPermintaan() {
   const handlePostPermintaan = async (event) => {
     event.preventDefault();
     setLoading(true);
+
+    if (valueFile) {
+      const validation = validateUploadFile(valueFile);
+      if (!validation.valid) {
+        setLoading(false);
+        notify(validation.error);
+        return;
+      }
+    } else {
+      setLoading(false);
+      notify('File dokumen wajib dilampirkan');
+      return;
+    }
+
     const form = new FormData(event.currentTarget);
 
     const res = await postSubmitPermintaan({
@@ -65,8 +80,6 @@ export default function TambahPermintaan() {
       ket: form.get('ket'),
       file: valueFile,
     });
-
-    console.log(res);
 
     if (res.status === 201) {
       setLoading(false);
